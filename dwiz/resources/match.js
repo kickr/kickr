@@ -1,5 +1,5 @@
 // POST
-var game = {
+var match = {
   table: {
     team1: 'Klo',
     team2: 'Kaffee'
