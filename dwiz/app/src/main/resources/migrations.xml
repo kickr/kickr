@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    <changeSet author="nikku (generated)" id="1416730974807-1" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <createTable catalogName="EXAMPLE" schemaName="PUBLIC" tableName="MODEL">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED" type="TIMESTAMP"/>
+            <column name="PARENT" type="VARCHAR(255)"/>
+            <column name="REVISION" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikku (generated)" id="1416730974807-2" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addPrimaryKey catalogName="EXAMPLE" columnNames="ID" constraintName="CONSTRAINT_4" schemaName="PUBLIC" tableName="MODEL"/>
+    </changeSet>
+    <changeSet author="nikku (generated)" id="1416730974807-3" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addUniqueConstraint catalogName="EXAMPLE" columnNames="" constraintName="UK_G9MJMON83WCF6DREOD401GC6B" deferrable="false" disabled="false" initiallyDeferred="false" schemaName="PUBLIC" tableName="MODEL"/>
+    </changeSet>
+</databaseChangeLog>
