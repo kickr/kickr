@@ -1,9 +1,9 @@
-package de.nixis.bpmn.repository.core.api;
+package kickr.core.api;
 
-import de.nixis.bpmn.repository.RepositoryApplication;
-import de.nixis.bpmn.repository.RepositoryConfiguration;
-import de.nixis.bpmn.repository.core.model.CreateModelData;
-import de.nixis.bpmn.repository.core.model.ModelData;
+import kickr.RepositoryApplication;
+import kickr.RepositoryConfiguration;
+import kickr.core.model.CreateModelData;
+import kickr.core.model.ModelData;
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import java.util.HashMap;

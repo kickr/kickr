@@ -1,6 +1,6 @@
-package de.nixis.bpmn.repository.service;
+package kickr.service;
 
-import de.nixis.bpmn.repository.db.entity.Model;
+import kickr.db.entity.Model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;

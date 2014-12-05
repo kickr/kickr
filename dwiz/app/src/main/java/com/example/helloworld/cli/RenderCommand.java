@@ -1,6 +1,6 @@
 package com.example.helloworld.cli;
 
-import de.nixis.bpmn.repository.RepositoryConfiguration;
+import kickr.RepositoryConfiguration;
 import io.dropwizard.cli.ConfiguredCommand;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.impl.Arguments;

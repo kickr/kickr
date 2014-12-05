@@ -1,6 +1,6 @@
-package de.nixis.bpmn.repository.db;
+package kickr.db;
 
-import de.nixis.bpmn.repository.db.entity.Model;
+import kickr.db.entity.Model;
 import io.dropwizard.hibernate.AbstractDAO;
 import java.util.List;
 import org.hibernate.SessionFactory;

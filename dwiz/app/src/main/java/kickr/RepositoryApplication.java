@@ -1,9 +1,9 @@
-package de.nixis.bpmn.repository;
+package kickr;
 
-import de.nixis.bpmn.repository.core.api.ModelResource;
-import de.nixis.bpmn.repository.db.ModelDAO;
-import de.nixis.bpmn.repository.db.entity.Model;
-import de.nixis.bpmn.repository.service.ModelService;
+import kickr.core.api.ModelResource;
+import kickr.db.ModelDAO;
+import kickr.db.entity.Model;
+import kickr.service.ModelService;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;

@@ -1,4 +1,4 @@
-package de.nixis.bpmn.repository.db.entity;
+package kickr.db.entity;
 
 import java.io.Serializable;
 import java.util.Date;

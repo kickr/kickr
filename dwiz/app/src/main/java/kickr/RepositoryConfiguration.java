@@ -1,4 +1,4 @@
-package de.nixis.bpmn.repository;
+package kickr;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;

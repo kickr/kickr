@@ -1,6 +1,6 @@
-package de.nixis.bpmn.repository.core.model;
+package kickr.core.model;
 
-import de.nixis.bpmn.repository.db.entity.Model;
+import kickr.db.entity.Model;
 import java.io.Serializable;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;

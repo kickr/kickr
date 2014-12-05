@@ -1,4 +1,4 @@
-package de.nixis.bpmn.repository.service;
+package kickr.service;
 
 /**
  *

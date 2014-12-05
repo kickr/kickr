@@ -1,11 +1,11 @@
-package de.nixis.bpmn.repository.core.api;
+package kickr.core.api;
 
-import de.nixis.bpmn.repository.service.TypeInfo;
-import de.nixis.bpmn.repository.core.model.CreateModelData;
-import de.nixis.bpmn.repository.core.model.ModelData;
-import de.nixis.bpmn.repository.db.ModelDAO;
-import de.nixis.bpmn.repository.db.entity.Model;
-import de.nixis.bpmn.repository.service.ModelService;
+import kickr.service.TypeInfo;
+import kickr.core.model.CreateModelData;
+import kickr.core.model.ModelData;
+import kickr.db.ModelDAO;
+import kickr.db.entity.Model;
+import kickr.service.ModelService;
 import io.dropwizard.hibernate.UnitOfWork;
 import java.util.List;
 import javax.validation.Valid;

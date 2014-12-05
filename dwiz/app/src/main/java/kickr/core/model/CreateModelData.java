@@ -1,4 +1,4 @@
-package de.nixis.bpmn.repository.core.model;
+package kickr.core.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 

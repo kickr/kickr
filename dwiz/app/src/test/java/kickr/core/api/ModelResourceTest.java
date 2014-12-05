@@ -1,11 +1,11 @@
-package de.nixis.bpmn.repository.core.api;
+package kickr.core.api;
 
-import de.nixis.bpmn.repository.core.api.ModelResource;
-import de.nixis.bpmn.repository.core.model.CreateModelData;
-import de.nixis.bpmn.repository.core.model.ModelData;
-import de.nixis.bpmn.repository.db.ModelDAO;
-import de.nixis.bpmn.repository.db.entity.Model;
-import de.nixis.bpmn.repository.service.ModelService;
+import kickr.core.api.ModelResource;
+import kickr.core.model.CreateModelData;
+import kickr.core.model.ModelData;
+import kickr.db.ModelDAO;
+import kickr.db.entity.Model;
+import kickr.service.ModelService;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.ProcessingException;
