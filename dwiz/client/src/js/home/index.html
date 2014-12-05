@@ -1,0 +1,18 @@
+<div class="matches">
+
+  <h3>Last Matches</h3>
+
+  <ul>
+    <li class="match" ng-repeat="match in matches">
+      <match-summary match="match" />
+    </li>
+    <li ng-if="!matches.length">
+      No matches played yet!
+    </li>
+  </ul>
+
+  <p class="links">
+    <a ng-href="#/matches">View all</a>
+    <a ng-href="#/matches/new">File new match</a>
+  </p>
+</div>

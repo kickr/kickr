@@ -1,0 +1,32 @@
+<div>
+  <h4>
+    <a ng-href="/games/{{ game.id }}">{{ game.id }}</a>
+    ({{ game.played | date:'mediumDate' }})
+  </h4>
+
+  <div class="details">
+    <span class="team left">
+      <player-summary
+        player="player"
+        role="role"
+        ng-repeat="player in game.teams.team1" />
+    </span>
+    <span class="versus">vs.</span>
+    <span class="team right">
+      <player-summary
+        player="player"
+        role="role"
+        ng-repeat="player in game.teams.team2" />
+    </span>
+
+    <div class="result">
+      <span class="score">
+        <score score="game.score" />
+      </span>
+
+      <span class="intermediate">
+        <score score="result" ng-repeat="result in game.results" />
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "authors": [
+    "Kickr Team"
+  ],
+  "description": "The kickr client app",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular-route": "~1.3.5",
+    "angular": "~1.3.5",
+    "bootstrap": "~3.3.1"
+  }
+}
