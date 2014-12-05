@@ -5,10 +5,10 @@
     <maven>3.0.0</maven>
   </prerequisites>
 
-  <groupId>de.nixis.bpmn</groupId>
-  <artifactId>repository</artifactId>
+  <groupId>kickr</groupId>
+  <artifactId>backend</artifactId>
   <version>0.0.1</version>
-  <name>repository</name>
+  <name>kickr</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,8 +16,8 @@
     <dropwizard.version>0.8.0-rc1</dropwizard.version>
     <jetty.version>9.2.4.v20141103</jetty.version>
 
-    <exec.mainClass>de.nixis.bpmn.repository.RepositoryApplication</exec.mainClass>
-    <exec.args>server repository.yml</exec.args>
+    <exec.mainClass>kickr.KickrApplication</exec.mainClass>
+    <exec.args>server kickr.yml</exec.args>
   </properties>
 
   <dependencies>

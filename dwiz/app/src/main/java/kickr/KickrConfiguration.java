@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 
-public class RepositoryConfiguration extends Configuration {
+public class KickrConfiguration extends Configuration {
 
   @Valid
   @NotNull

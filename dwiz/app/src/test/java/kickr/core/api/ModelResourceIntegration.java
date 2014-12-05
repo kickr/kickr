@@ -1,7 +1,7 @@
 package kickr.core.api;
 
-import kickr.RepositoryApplication;
-import kickr.RepositoryConfiguration;
+import kickr.KickrApplication;
+import kickr.KickrConfiguration;
 import kickr.core.model.CreateModelData;
 import kickr.core.model.ModelData;
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
@@ -29,8 +29,8 @@ public class ModelResourceIntegration {
 
   
   @Rule
-  public final DropwizardAppRule<RepositoryConfiguration> RULE
-                  = new DropwizardAppRule<>(RepositoryApplication.class, resourceFilePath("repository-test.yml"));
+  public final DropwizardAppRule<KickrConfiguration> RULE
+                  = new DropwizardAppRule<>(KickrApplication.class, resourceFilePath("repository-test.yml"));
 
   private WebTarget api;
   

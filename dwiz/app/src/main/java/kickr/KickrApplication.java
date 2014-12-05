@@ -18,16 +18,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
-public class RepositoryApplication extends Application<RepositoryConfiguration> {
+public class KickrApplication extends Application<KickrConfiguration> {
 
   public static void main(String[] args) throws Exception {
-    new RepositoryApplication().run(args);
+    new KickrApplication().run(args);
   }
 
-  private final HibernateBundle<RepositoryConfiguration> hibernateBundle = 
-    new HibernateBundle<RepositoryConfiguration>(Model.class) {
+  private final HibernateBundle<KickrConfiguration> hibernateBundle = 
+    new HibernateBundle<KickrConfiguration>(Model.class) {
       @Override
-      public DataSourceFactory getDataSourceFactory(RepositoryConfiguration configuration) {
+      public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
         return configuration.getDataSourceFactory();
       }
 
@@ -37,10 +37,10 @@ public class RepositoryApplication extends Application<RepositoryConfiguration> 
       }
     };
 
-  private final MigrationsBundle<RepositoryConfiguration> migrationsBundle =
-    new MigrationsBundle<RepositoryConfiguration>() {
+  private final MigrationsBundle<KickrConfiguration> migrationsBundle =
+    new MigrationsBundle<KickrConfiguration>() {
       @Override
-      public DataSourceFactory getDataSourceFactory(RepositoryConfiguration configuration) {
+      public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
         return configuration.getDataSourceFactory();
       }
     };
@@ -51,7 +51,7 @@ public class RepositoryApplication extends Application<RepositoryConfiguration> 
   }
 
   @Override
-  public void initialize(Bootstrap<RepositoryConfiguration> bootstrap) {
+  public void initialize(Bootstrap<KickrConfiguration> bootstrap) {
     bootstrap.addBundle(new AssetsBundle("/web", "/", "index.html"));
     
     bootstrap.addBundle(migrationsBundle);
@@ -59,7 +59,7 @@ public class RepositoryApplication extends Application<RepositoryConfiguration> 
   }
 
   @Override
-  public void run(RepositoryConfiguration configuration, Environment environment) throws Exception {
+  public void run(KickrConfiguration configuration, Environment environment) throws Exception {
     
     SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
     

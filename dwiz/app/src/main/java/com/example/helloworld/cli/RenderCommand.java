@@ -1,6 +1,6 @@
 package com.example.helloworld.cli;
 
-import kickr.RepositoryConfiguration;
+import kickr.KickrConfiguration;
 import io.dropwizard.cli.ConfiguredCommand;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.impl.Arguments;
@@ -9,7 +9,7 @@ import net.sourceforge.argparse4j.inf.Subparser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RenderCommand extends ConfiguredCommand<RepositoryConfiguration> {
+public class RenderCommand extends ConfiguredCommand<KickrConfiguration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RenderCommand.class);
 
     public RenderCommand() {
@@ -27,9 +27,9 @@ public class RenderCommand extends ConfiguredCommand<RepositoryConfiguration> {
     }
 
     @Override
-    protected void run(Bootstrap<RepositoryConfiguration> bootstrap,
+    protected void run(Bootstrap<KickrConfiguration> bootstrap,
                        Namespace namespace,
-                       RepositoryConfiguration configuration) throws Exception {
+                       KickrConfiguration configuration) throws Exception {
         
       /*final Template template = configuration.buildTemplate();
 
