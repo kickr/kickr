@@ -116,3 +116,7 @@ nb-configuration.xml
 
 ### OS X
 .DS_Store
+
+## Eclipse
+.classpath
+.project
