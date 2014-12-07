@@ -25,6 +25,7 @@
   "browser": {
     "fs": false,
     "angular": "./lib/angular.js",
+    "angular-loading-bar": "./lib/angular-loading-bar.js",
     "angular-route": "./lib/angular-route.js"
   },
   "dependencies": {
