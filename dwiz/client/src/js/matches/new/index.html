@@ -1,4 +1,4 @@
-<h1>File a game</h1>
+<h1>Record a match</h1>
 
 <form ng-submit="save()">
 
@@ -32,12 +32,12 @@
     </p>
 
     <p ng-if="match.score">
-      Final Result: <score score="match.score" />
+      Final result: <score score="match.score" />
     </p>
   </fieldset>
 
   <div class="buttons">
-    <input type="submit" value="Send" />
+    <input type="submit" value="Save" />
     <input type="reset" value="Reset" />
   </div>
 

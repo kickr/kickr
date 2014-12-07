@@ -1,0 +1,43 @@
+.navbar {
+
+  border-bottom: solid 1px @default-border-color;
+  line-height: 30px;
+  padding: 10px 20px;
+
+  .navbar-brand {
+    color: white;
+    background: @color-primary;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 3px;
+  }
+
+  .navbar-header,
+  .navbar-collapse {
+    display: inline-block;
+  }
+
+  .navbar-nav {
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    display: inline-block;
+
+    li {
+      display: inline-block;
+    }
+
+    a {
+      background: @color-gray1;
+      padding: 3px;
+      text-decoration: none;
+    }
+  }
+
+  .navbar-toggle {
+    display: none;
+  }
+}

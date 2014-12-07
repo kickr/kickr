@@ -60,7 +60,7 @@ module.exports = function (grunt) {
         options: {
           paths: [
             "<%= config.less %>",
-            "<%= config.bower_components %>/bootstrap/less"
+            "<%= config.bower_components %>"
           ],
           cleancss: true
         },

@@ -63,7 +63,7 @@ function NewMatchController($scope, $location, $alerts, api) {
     api.matches().create(match).then(function(match) {
       $location.path('/matches/' + match.id);
     }).catch(function(e) {
-      $alerts.error('alertChannel', 'Failed to save', 'Could not create match: ' + e.status);
+      $alerts.error('Failed to save', 'Could not create match: ' + e.status);
     });
   };
 }

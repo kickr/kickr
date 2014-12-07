@@ -1,25 +1,17 @@
-/* bootstrap */
-@import "bootstrap.less";
+@import "bootstrap/less/normalize.less";
 
-/* custom made */
-@import "variables-override.less";
+@import "_angular.less";
 
-@import "angular.less";
+@import "_variables.less";
 
-@import "layout.less";
+@import "_navbar.less";
 
-body, html {
-  height: 100%;
-}
+@import "_layout.less";
 
+@import "_theme.less";
 
-.navbar {
-  margin: 0;
+@import "_forms.less";
 
-  border-radius: 0;
-  border-width: 0 0 1px;
+@import "_alerts.less";
 
-  .container {
-    width: 100%;
-  }
-}
+@import "_utils.less";

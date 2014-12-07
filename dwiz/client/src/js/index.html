@@ -17,12 +17,15 @@
   	        <span class="icon-bar"></span>
   	        <span class="icon-bar"></span>
   	      </button>
-  	      <a class="navbar-brand" href="#">kickr</a>
+  	      <a class="navbar-brand" href="#/">kickr</a>
   	    </div>
   	    <div class="navbar-collapse collapse">
   	      <ul class="nav navbar-nav">
-  	        <li ng-class="activeClass('/list')"><a ng-href="#/matches">matches</a></li>
+  	        <li ng-class="activeClass('/matches')"><a ng-href="#/matches">matches</a></li>
   	      </ul>
+          <ul class="nav navbar-nav">
+            <li ng-class="activeClass('/matches/new')"><a ng-href="#/matches/new">+match</a></li>
+          </ul>
   	    </div>
   	  </div>
   	</div>
