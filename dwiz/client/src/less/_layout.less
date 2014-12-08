@@ -1,12 +1,20 @@
-[flex-container] {
+.flex-container(@direction) {
   display: flex;
-  flex-direction: column;
+  flex-direction: @direction;
+}
+
+.flex-fill(@flex: 1) {
+  flex: @flex;
+}
+
+[flex-container] {
+  .flex-container(column);
 }
 
 [flex-initial] {
-  flex: initial;
+  .flex-fill(initial);
 }
 
 [flex-fill] {
-  flex: 1;
+  .flex-fill(1);
 }

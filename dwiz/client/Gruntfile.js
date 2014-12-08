@@ -59,13 +59,16 @@ module.exports = function (grunt) {
       dist: {
         options: {
           paths: [
-            "<%= config.less %>",
-            "<%= config.bower_components %>"
+            '<%= config.less %>',
+            '<%= config.bower_components %>'
           ],
           cleancss: true
         },
         files: {
-          "<%= config.dist %>/css/kickr.css": "<%= config.less %>/kickr.less"
+          '<%= config.dist %>/css/kickr.css': [
+            '<%= config.less %>/kickr.less',
+            '<%= config.sources %>/**/*.less'
+          ]
         }
       }
     },
@@ -140,7 +143,7 @@ module.exports = function (grunt) {
     watch: {
       resources: {
         files: [
-          '<%= config.assets %>/img/**/*',
+          '<%= config.assets %>/images/**/*',
           '<%= config.assets %>/css/**/*',
           '<%= config.sources %>/*.html'
         ],
@@ -148,7 +151,8 @@ module.exports = function (grunt) {
       },
       less : {
         files: [
-          '<%= config.less %>/*.less'
+          '<%= config.less %>/*.less',
+          '<%= config.sources %>/**/*.less'
         ],
         tasks: [ 'less' ]
       }

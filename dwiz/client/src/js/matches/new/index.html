@@ -1,40 +1,44 @@
 <h1>Record a match</h1>
 
-<form ng-submit="save()">
+<form class="new-match-form" ng-submit="save()">
 
-  <fieldset>
-    <legend>Team A (left)</legend>
+  <div class="sides">
+    <fieldset>
+      <legend>Team A (left)</legend>
 
-    <p>
-      Offense <input autofocus="autofocus" type="text" ng-model="match.teams.team1.offense" />
-    </p>
-    <p>
-      Defense <input type="text" ng-model="match.teams.team1.defense" />
-    </p>
-  </fieldset>
+      <p>
+        Offense <input autofocus="autofocus" type="text" ng-model="match.teams.team1.offense" />
+      </p>
+      <p>
+        Defense <input type="text" ng-model="match.teams.team1.defense" />
+      </p>
+    </fieldset>
 
-  <fieldset>
-    <legend>Team B (right)</legend>
+    <fieldset>
+      <legend>Team B (right)</legend>
 
-    <p>
-      Offense <input type="text" name="match.teams.team2.offense" />
-    </p>
-    <p>
-      Defense <input type="text" name="match.teams.team2.defense" />
-    </p>
-  </fieldset>
+      <p>
+        Offense <input type="text" name="match.teams.team2.offense" />
+      </p>
+      <p>
+        Defense <input type="text" name="match.teams.team2.defense" />
+      </p>
+    </fieldset>
+  </div>
 
-  <fieldset>
-    <legend>Results</legend>
+  <div class="results">
+    <fieldset>
+      <legend>Results</legend>
 
-    <p>
-      Games <input type="text" ng-model="games" /> <small>(specify space separated as 1:3 4:5 10:3)</small>
-    </p>
+      <p>
+        Games <input type="text" ng-model="games" /> <small>(specify space separated as 1:3 4:5 10:3)</small>
+      </p>
 
-    <p ng-if="match.score">
-      Final result: <score score="match.score" />
-    </p>
-  </fieldset>
+      <p ng-if="match.score">
+        Final result: <score score="match.score"></score>
+      </p>
+    </fieldset>
+  </div>
 
   <div class="buttons">
     <input type="submit" value="Save" />
