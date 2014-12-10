@@ -1,5 +1,7 @@
 # Database settings.
 database:
+  properties:
+    hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
   # the name of your JDBC driver
   driverClass: com.mysql.jdbc.Driver
