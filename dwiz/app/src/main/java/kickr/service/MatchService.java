@@ -3,15 +3,16 @@ package kickr.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
-
 import kickr.core.model.CoreMatchData;
 import kickr.core.model.GameData;
+import kickr.core.model.PlayerData;
 import kickr.db.MatchDAO;
 import kickr.db.PlayerDAO;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
+
+import org.joda.time.DateTime;
 
 public class MatchService {
 
@@ -23,14 +24,23 @@ public class MatchService {
     this.matchDao = matchDao;
     this.playerDao = playerDao;
   }
+  
+  protected Player selectOrInsertPlayer(PlayerData playerData) {
+    Player player = playerDao.findPlayerByAlias(playerData.getAlias());
+    if (player == null) {
+      player = playerData.toPlayer();
+      playerDao.create(player);
+    }
+    return player;
+  }
 
   public void insertMatch(CoreMatchData matchData) {
     Match match = new Match();
     
-    Player defenseTeam1 = playerDao.findPlayerByAlias(matchData.getTeams().getTeam1().getDefense());
-    Player offenseTeam1 = playerDao.findPlayerByAlias(matchData.getTeams().getTeam1().getOffense());
-    Player defenseTeam2 = playerDao.findPlayerByAlias(matchData.getTeams().getTeam2().getDefense());
-    Player offenseTeam2 = playerDao.findPlayerByAlias(matchData.getTeams().getTeam2().getOffense());
+    Player offenseTeam1 = selectOrInsertPlayer(matchData.getTeams().getTeam1().getOffense());
+    Player defenseTeam1 = selectOrInsertPlayer(matchData.getTeams().getTeam1().getDefense());
+    Player offenseTeam2 = selectOrInsertPlayer(matchData.getTeams().getTeam2().getOffense());
+    Player defenseTeam2 = selectOrInsertPlayer(matchData.getTeams().getTeam2().getDefense());
     
     match.setDefenseTeam1(defenseTeam1);
     match.setOffenseTeam1(offenseTeam1);

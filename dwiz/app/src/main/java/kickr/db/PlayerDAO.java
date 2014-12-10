@@ -7,6 +7,7 @@ import java.util.List;
 import kickr.db.entity.Player;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class PlayerDAO extends AbstractDAO<Player> {
@@ -20,8 +21,12 @@ public class PlayerDAO extends AbstractDAO<Player> {
   }
   
   @SuppressWarnings("unchecked")
-  public List<Player> findPlayersMatchingName(String name) {
-    return criteria().add(Restrictions.like("name", name)).list();
+  public List<Player> findPlayersMatchingCriteria(String name, String alias) {
+    return criteria().add(
+        Restrictions.or(
+            Restrictions.like("name", name, MatchMode.ANYWHERE),
+            Restrictions.like("alias", alias, MatchMode.ANYWHERE)))
+        .list();
   }
   
   public Player findPlayerByAlias(String alias) {

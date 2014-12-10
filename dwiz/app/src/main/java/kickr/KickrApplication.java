@@ -119,11 +119,11 @@ public class KickrApplication extends Application<KickrConfiguration> {
       table.setTeam2Alias("Kaffee");
       tableDao.createTable(table);
       
-      playerDao.create(new Player("SMI", "Roman Smirnov"));
-      playerDao.create(new Player("NRE", "Nico Rehwaldt"));
-      playerDao.create(new Player("CLI", "Christian Lipphardt"));
-      playerDao.create(new Player("SÖX", "Michael Schöttes"));
-      playerDao.create(new Player("THL", "Thorben Lindhauer"));
+      playerDao.create(new Player("SMI", "Roman Smirnov", "roman@roman"));
+      playerDao.create(new Player("NRE", "Nico Rehwaldt", "nico@nico"));
+      playerDao.create(new Player("CLI", "Christian Lipphardt", "cli@cli"));
+      playerDao.create(new Player("SÖX", "Michael Schöttes", "micha@micha"));
+      playerDao.create(new Player("THL", "Thorben Lindhauer", "thorben@thorben"));
       
       session.flush();
       session.close();

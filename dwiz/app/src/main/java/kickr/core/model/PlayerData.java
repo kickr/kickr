@@ -13,6 +13,8 @@ public class PlayerData {
   
   @NotNull
   protected String alias;
+  
+  protected String email;
 
   public String getName() {
     return name;
@@ -30,6 +32,14 @@ public class PlayerData {
     this.alias = alias;
   }
   
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
   public static PlayerData fromPlayer(Player player) {
     PlayerData playerData = new PlayerData();
     
@@ -50,6 +60,6 @@ public class PlayerData {
   }
   
   public Player toPlayer() {
-    return new Player(alias, name);
+    return new Player(alias, name, email);
   }
 }

@@ -25,12 +25,22 @@ public class PlayerResource {
     this.playerDao = playerDao;
   }
   
+  /**
+   * Query conditions are disjunctive
+   */
   @GET
   @UnitOfWork
-  public List<PlayerData> getPlayers(@QueryParam("namePart") String namePart) {
-    List<Player> players = playerDao.findPlayersMatchingName(namePart);
+  public List<PlayerData> getPlayers(@QueryParam("namePart") String namePart, @QueryParam("aliasPart") String aliasPart) {
+    List<Player> players = playerDao.findPlayersMatchingCriteria(namePart, aliasPart);
     
     return PlayerData.fromPlayers(players);
+  }
+  
+  @GET
+  @UnitOfWork
+  public PlayerData getPlayer(String alias) {
+    Player player = playerDao.findPlayerByAlias(alias);
+    return PlayerData.fromPlayer(player);
   }
   
   @POST

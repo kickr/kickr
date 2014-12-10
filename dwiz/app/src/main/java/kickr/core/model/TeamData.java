@@ -5,30 +5,30 @@ import javax.validation.constraints.NotNull;
 public class TeamData {
 
   @NotNull
-  protected String offense;
+  protected PlayerData offense;
   
   @NotNull
-  protected String defense;
+  protected PlayerData defense;
   
   public TeamData() {
     
   }
   
-  public TeamData(String offense, String defense) {
+  public TeamData(PlayerData offense, PlayerData defense) {
     this.offense = offense;
     this.defense = defense;
   }
   
-  public String getOffense() {
+  public PlayerData getOffense() {
     return offense;
   }
-  public void setOffense(String offense) {
+  public void setOffense(PlayerData offense) {
     this.offense = offense;
   }
-  public String getDefense() {
+  public PlayerData getDefense() {
     return defense;
   }
-  public void setDefense(String defense) {
+  public void setDefense(PlayerData defense) {
     this.defense = defense;
   }
 }

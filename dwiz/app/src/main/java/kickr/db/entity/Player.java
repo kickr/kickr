@@ -19,13 +19,15 @@ public class Player {
   @Column(unique = true)
   protected String alias;
   
+  protected String email;
+  
   public Player() {
-    
   }
   
-  public Player(String alias, String name) {
+  public Player(String alias, String name, String email) {
     this.alias = alias;
     this.name = name;
+    this.email = email;
   }
   
   public Long getId() {
@@ -45,5 +47,11 @@ public class Player {
   }
   public void setAlias(String alias) {
     this.alias = alias;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
   }
 }

@@ -25,10 +25,10 @@ public class MatchData extends CoreMatchData {
     matchData.id = match.getId();
     
     TeamsData teamsData = new TeamsData();
-    teamsData.setTeam1(new TeamData(match.getOffenseTeam1().getAlias(), 
-        match.getDefenseTeam1().getAlias()));
-    teamsData.setTeam2(new TeamData(match.getOffenseTeam2().getAlias(), 
-        match.getDefenseTeam2().getAlias()));
+    teamsData.setTeam1(new TeamData(PlayerData.fromPlayer(match.getOffenseTeam1()), 
+        PlayerData.fromPlayer(match.getDefenseTeam1())));
+    teamsData.setTeam2(new TeamData(PlayerData.fromPlayer(match.getOffenseTeam2()), 
+        PlayerData.fromPlayer(match.getDefenseTeam2())));
     matchData.teams = teamsData;
     
     
