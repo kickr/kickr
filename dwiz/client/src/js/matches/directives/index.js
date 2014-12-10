@@ -9,7 +9,6 @@ ngModule.directive('matchSummary', function() {
     scope: {
       match: '='
     },
-    replace: true,
     template: fs.readFileSync(__dirname + '/match-summary.html', 'utf8')
   };
 });
@@ -20,7 +19,6 @@ ngModule.directive('score', function() {
     scope: {
       score: '='
     },
-    replace: true,
     template: fs.readFileSync(__dirname + '/score.html', 'utf8')
   };
 });
@@ -30,9 +28,9 @@ ngModule.directive('playerSummary', function() {
   return {
     restrict: 'E',
     scope: {
-      player: '='
+      player: '=',
+      role: '='
     },
-    replace: true,
     template: fs.readFileSync(__dirname + '/player-summary.html', 'utf8')
   };
 });

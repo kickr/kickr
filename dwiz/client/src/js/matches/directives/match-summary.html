@@ -1,32 +1,28 @@
 <div>
   <h4>
-    <a ng-href="/games/{{ game.id }}">{{ game.id }}</a>
-    ({{ game.played | date:'mediumDate' }})
+    <a ng-href="#/matches/{{ match.id }}">{{ match.id }}</a>
+    ({{ match.played | date:'mediumDate' }}) on {{ match.table.name }}
   </h4>
 
-  <div class="details">
-    <span class="team left">
-      <player-summary
-        player="player"
-        role="role"
-        ng-repeat="player in game.teams.team1" />
-    </span>
-    <span class="versus">vs.</span>
-    <span class="team right">
-      <player-summary
-        player="player"
-        role="role"
-        ng-repeat="player in game.teams.team2" />
-    </span>
-
-    <div class="result">
-      <span class="score">
-        <score score="game.score" />
-      </span>
-
-      <span class="intermediate">
-        <score score="result" ng-repeat="result in game.results" />
+  <div class="details" flex-container="row">
+    <div class="team left" flex-initial>
+      <span class="player"
+            ng-repeat="(role, player) in match.teams.team1"
+            title="{{ role }}">
+        {{ player.alias }}
       </span>
     </div>
+    <div class="versus" flex-initial>
+      <span class="score">
+        <score score="match.score" />
+      </span>
+    </div>
+    <div class="team right" flex-fill>
+      <span class="player"
+            ng-repeat="(role, player) in match.teams.team2"
+            title="{{ role }}">
+        {{ player.alias }}
+      </span>
+    </span>
   </div>
 </div>
