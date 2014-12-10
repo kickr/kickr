@@ -20,6 +20,12 @@ public class PlayerDAO extends AbstractDAO<Player> {
     persist(player);
   }
   
+  public void createPlayerIfNotExists(Player player) {
+    if (findPlayerByAlias(player.getAlias()) == null) {
+      create(player);
+    }
+  }
+  
   @SuppressWarnings("unchecked")
   public List<Player> findPlayersMatchingCriteria(String name, String alias) {
     return criteria().add(
@@ -30,7 +36,7 @@ public class PlayerDAO extends AbstractDAO<Player> {
   }
   
   public Player findPlayerByAlias(String alias) {
-    return (Player) criteria().add(Restrictions.like("alias", alias)).uniqueResult();
+    return (Player) criteria().add(Restrictions.eq("alias", alias)).uniqueResult();
   }
 
 }

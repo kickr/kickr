@@ -16,7 +16,7 @@ public class FoosballTableDAO extends AbstractDAO<FoosballTable> {
   public void createTable(FoosballTable table) {
     persist(table);
   }
-
+  
   @SuppressWarnings("unchecked")
   public List<FoosballTable> getTables(int firstResult, int maxResults) {
     return criteria().setFirstResult(firstResult).setMaxResults(maxResults).list();

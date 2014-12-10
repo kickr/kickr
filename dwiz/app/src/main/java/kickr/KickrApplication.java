@@ -16,6 +16,7 @@ import kickr.core.api.MatchResource;
 import kickr.core.api.ModelResource;
 import kickr.core.api.PlayerResource;
 import kickr.core.api.TableResource;
+import kickr.core.api.administration.DemoDataResource;
 import kickr.db.FoosballTableDAO;
 import kickr.db.MatchDAO;
 import kickr.db.ModelDAO;
@@ -29,10 +30,8 @@ import kickr.service.MatchService;
 import kickr.service.ModelService;
 
 import org.eclipse.jetty.servlet.FilterHolder;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.context.internal.ManagedSessionContext;
 
 
 public class KickrApplication extends Application<KickrConfiguration> {
@@ -90,47 +89,17 @@ public class KickrApplication extends Application<KickrConfiguration> {
     
     MatchService matchService = new MatchService(matchDao, playerDao);
     
-    initDb(sessionFactory);
-    
     environment.jersey().register(new ModelResource(modelService, modelDao));
     environment.jersey().register(new MatchResource(matchService, matchDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
+    environment.jersey().register(new DemoDataResource(tableDao, playerDao));
 
     FilterHolder corsFilter = environment.getApplicationContext()
         .addFilter("org.eclipse.jetty.servlets.CrossOriginFilter", "/", EnumSet.of(DispatcherType.REQUEST));
     
     corsFilter.setInitParameter("allowedOrigins", "*");
     corsFilter.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
-  }
-  
-  protected void initDb(SessionFactory sessionFactory) {
-    Session session = sessionFactory.openSession();
-    
-    ManagedSessionContext.bind(session);
-
-    try {
-      FoosballTableDAO tableDao = new FoosballTableDAO(sessionFactory);
-      PlayerDAO playerDao = new PlayerDAO(sessionFactory);
-      
-      FoosballTable table = new FoosballTable();
-      table.setName("camunda HQ");
-      table.setTeam1Alias("Klo");
-      table.setTeam2Alias("Kaffee");
-      tableDao.createTable(table);
-      
-      playerDao.create(new Player("SMI", "Roman Smirnov", "roman@roman"));
-      playerDao.create(new Player("NRE", "Nico Rehwaldt", "nico@nico"));
-      playerDao.create(new Player("CLI", "Christian Lipphardt", "cli@cli"));
-      playerDao.create(new Player("SÖX", "Michael Schöttes", "micha@micha"));
-      playerDao.create(new Player("THL", "Thorben Lindhauer", "thorben@thorben"));
-      
-      session.flush();
-      session.close();
-    } finally {
-      ManagedSessionContext.unbind(sessionFactory);
-    }
-    
   }
   
 }
