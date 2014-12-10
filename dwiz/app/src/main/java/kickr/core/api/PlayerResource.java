@@ -32,8 +32,8 @@ public class PlayerResource {
    */
   @GET
   @UnitOfWork
-  public List<PlayerData> getPlayers(@QueryParam("namePart") String namePart, @QueryParam("aliasPart") String aliasPart) {
-    List<Player> players = playerDao.findPlayersMatchingCriteria(namePart, aliasPart);
+  public List<PlayerData> getPlayers(@QueryParam("namePart") String namePart) {
+    List<Player> players = playerDao.findPlayersMatchingNameOrAlias(namePart);
     
     return PlayerData.fromPlayers(players);
   }

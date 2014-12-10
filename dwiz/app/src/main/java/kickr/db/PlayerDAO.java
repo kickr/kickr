@@ -27,11 +27,11 @@ public class PlayerDAO extends AbstractDAO<Player> {
   }
   
   @SuppressWarnings("unchecked")
-  public List<Player> findPlayersMatchingCriteria(String name, String alias) {
+  public List<Player> findPlayersMatchingNameOrAlias(String part) {
     return criteria().add(
         Restrictions.or(
-            Restrictions.like("name", name, MatchMode.ANYWHERE),
-            Restrictions.like("alias", alias, MatchMode.ANYWHERE)))
+            Restrictions.ilike("name", part, MatchMode.ANYWHERE),
+            Restrictions.ilike("alias", part, MatchMode.ANYWHERE)))
         .list();
   }
   
