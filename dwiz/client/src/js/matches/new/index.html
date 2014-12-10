@@ -9,10 +9,36 @@
       <legend>Team A<span ng-if="match.table"> ({{ match.table.team1Alias }})</span></legend>
 
       <p>
-        Offense <input type="text" required autofocus="autofocus" ng-model="match.teams.team1.offense" />
+        Offense
+        <span class="autocomplete">
+          <input
+            type="text"
+            required
+            autofocus="autofocus"
+            autocomplete="findPlayers(input)"
+            on-select="match.teams.team1.offense = value"
+            ng-model="completions.team1offense" />
+        </span>
+
+        <span ng-if="match.teams.team1.offense">
+          OK
+        </span>
       </p>
       <p>
-        Defense <input type="text" required ng-model="match.teams.team1.defense" />
+        Defense
+        <span class="autocomplete">
+          <input
+            type="text"
+            required
+            autofocus="autofocus"
+            autocomplete="findPlayers(input)"
+            on-select="match.teams.team1.defense = value"
+            ng-model="completions.team1defense" />
+        </span>
+
+        <span ng-if="match.teams.team1.defense">
+          OK
+        </span>
       </p>
     </fieldset>
 
@@ -20,10 +46,36 @@
       <legend>Team B<span ng-if="match.table">({{ match.table.team2Alias }})</span></legend>
 
       <p>
-        Offense <input type="text" required ng-model="match.teams.team2.offense" />
+        Offense
+        <span class="autocomplete">
+          <input
+            type="text"
+            required
+            autofocus="autofocus"
+            autocomplete="findPlayers(input)"
+            on-select="match.teams.team2.offense = value"
+            ng-model="completions.team2offense" />
+        </span>
+
+        <span ng-if="match.teams.team2.offense">
+          OK
+        </span>
       </p>
       <p>
-        Defense <input type="text" required ng-model="match.teams.team2.defense" />
+        Defense
+        <span class="autocomplete">
+          <input
+            type="text"
+            required
+            autofocus="autofocus"
+            autocomplete="findPlayers(input)"
+            on-select="match.teams.team2.defense = value"
+            ng-model="completions.team2defense" />
+        </span>
+
+        <span ng-if="match.teams.team2.defense">
+          OK
+        </span>
       </p>
     </fieldset>
   </div>

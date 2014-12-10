@@ -63,6 +63,25 @@ function NewMatchController($scope, $location, $alerts, api) {
     $scope.form.games.$setValidity('format', !!$scope.score);
   });
 
+  $scope.findPlayers = function(value) {
+    var match = /([\w]+)\s*<([^>]+)>/.exec(value);
+
+    if (match) {
+      return [
+        {
+          key: match[0],
+          value: { alias: match[1], email: match[2] }
+        }
+      ];
+    }
+
+    return api.players().find(value).then(function(results) {
+      return results.map(function(r) {
+        return { key: r.alias, value: r };
+      });
+    });
+  };
+
   $scope.save = function() {
 
     if (!$scope.form.$valid) {

@@ -28,8 +28,12 @@ function TableApi(http) {
 }
 
 function PlayerApi(http) {
+  var uri = '/api/player';
+
+  EndPoint.call(this, http, uri);
+
   this.find = function(namePart) {
-    return http.get('/api/player?namePart=' + namePart).then(unwrapResponse);
+    return http.get(uri + '?namePart=' + namePart).then(unwrapResponse);
   };
 }
 
