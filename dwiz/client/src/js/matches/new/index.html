@@ -43,7 +43,7 @@
     </fieldset>
 
     <fieldset>
-      <legend>Team B<span ng-if="match.table">({{ match.table.team2Alias }})</span></legend>
+      <legend>Team B<span ng-if="match.table"> ({{ match.table.team2Alias }})</span></legend>
 
       <p>
         Offense
@@ -99,7 +99,7 @@
       <legend>Location</legend>
 
       <p>
-        Played at {{ table.name }}
+        Played at {{ match.table.name }}
       </p>
     </fieldset>
   </div>

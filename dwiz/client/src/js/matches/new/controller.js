@@ -77,7 +77,7 @@ function NewMatchController($scope, $location, $alerts, api) {
 
     return api.players().find(value).then(function(results) {
       return results.map(function(r) {
-        return { key: r.alias, value: r };
+        return { key: r.alias + '(' + r.name + ')', value: r };
       });
     });
   };
