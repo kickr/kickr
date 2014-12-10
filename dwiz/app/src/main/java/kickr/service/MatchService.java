@@ -49,9 +49,13 @@ public class MatchService {
     match.setDate(DateTime.now().toDate());
     
     List<Game> games = new ArrayList<Game>();
-    for (GameData game : matchData.getGames()) {
-      games.add(game.toGame());
+    
+    for (int i = 0; i < matchData.getGames().size(); i++) {
+      Game game = matchData.getGames().get(i).toGame();
+      game.setGameNumber(i);
+      games.add(game);
     }
+    
     match.setGames(games);
     
     matchDao.create(match);

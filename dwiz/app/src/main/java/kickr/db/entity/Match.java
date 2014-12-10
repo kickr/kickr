@@ -6,12 +6,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
 
 @Entity
 public class Match {
@@ -45,6 +46,7 @@ public class Match {
   protected Date date;
   
   @OneToMany
+  @OrderBy("gameNumber ASC")
   protected Collection<Game> games;
 
   public Long getId() {

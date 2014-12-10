@@ -18,6 +18,12 @@ public class Game {
   @NotNull
   protected Integer scoreTeam2;
   
+  /**
+   * Determines the order of games in a match
+   */
+  @NotNull
+  protected Integer gameNumber;
+  
   public Long getId() {
     return id;
   }
@@ -35,5 +41,11 @@ public class Game {
   }
   public void setScoreTeam2(Integer scoreTeam2) {
     this.scoreTeam2 = scoreTeam2;
+  }
+  public Integer getGameNumber() {
+    return gameNumber;
+  }
+  public void setGameNumber(Integer gameNumber) {
+    this.gameNumber = gameNumber;
   }
 }
