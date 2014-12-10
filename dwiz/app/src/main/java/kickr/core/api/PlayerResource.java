@@ -5,6 +5,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -30,5 +31,11 @@ public class PlayerResource {
     List<Player> players = playerDao.findPlayersMatchingName(namePart);
     
     return PlayerData.fromPlayers(players);
+  }
+  
+  @POST
+  @UnitOfWork
+  public void createPlayer(PlayerData player) {
+    playerDao.create(player.toPlayer());
   }
 }

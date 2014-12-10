@@ -48,4 +48,8 @@ public class PlayerData {
     
     return playersData;
   }
+  
+  public Player toPlayer() {
+    return new Player(alias, name);
+  }
 }
