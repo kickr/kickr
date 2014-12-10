@@ -8,6 +8,7 @@ var ngModule = module.exports = angular.module('app', [
   angularLoadingBar.name,
   require('./components/alerts').name,
   require('./components/autocomplete').name,
+  require('./admin').name,
   require('./matches').name,
   require('./home').name
 ]);
