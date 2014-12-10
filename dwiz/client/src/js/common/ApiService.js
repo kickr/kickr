@@ -23,6 +23,10 @@ function MatchApi(http) {
   EndPoint.call(this, http, '/api/match');
 }
 
+function TableApi(http) {
+  EndPoint.call(this, http, '/api/table');
+}
+
 function PlayerApi(http) {
   this.find = function(namePart) {
     return http.get('/api/player?namePart=' + namePart).then(unwrapResponse);
@@ -32,7 +36,8 @@ function PlayerApi(http) {
 function ApiService(http) {
 
   var matches = new MatchApi(http),
-      players = new PlayerApi(http);
+      players = new PlayerApi(http),
+      tables = new TableApi(http);
 
   this.matches = function() {
     return matches;
@@ -40,6 +45,10 @@ function ApiService(http) {
 
   this.players = function() {
     return players;
+  };
+
+  this.tables = function() {
+    return tables;
   };
 }
 

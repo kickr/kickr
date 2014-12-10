@@ -8,6 +8,11 @@ function NewMatchController($scope, $location, $alerts, api) {
     games: []
   };
 
+  // fetch table
+  api.tables().list().then(function(tables) {
+    match.table = tables[0];
+  });
+
   function getScore(games) {
     var score = {
       team1: 0,
@@ -48,17 +53,21 @@ function NewMatchController($scope, $location, $alerts, api) {
   $scope.$watch('games', function(newValue) {
     try {
       match.games = parseGames(newValue);
-      match.score = getScore(match.games);
+      $scope.score = getScore(match.games);
     } catch (e) {
       // todo display error to user
       match.games = [];
-      match.score = null;
+      $scope.score = null;
     }
+
+    $scope.form.games.$setValidity('format', !!$scope.score);
   });
 
   $scope.save = function() {
 
-    console.log(match);
+    if (!$scope.form.$valid) {
+      return;
+    }
 
     api.matches().create(match).then(function(match) {
       $location.path('/matches/' + match.id);
