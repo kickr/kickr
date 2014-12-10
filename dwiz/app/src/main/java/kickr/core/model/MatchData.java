@@ -31,6 +31,7 @@ public class MatchData extends CoreMatchData {
         PlayerData.fromPlayer(match.getDefenseTeam2())));
     matchData.teams = teamsData;
     
+    matchData.setPlayed(match.getDate());
     
     Integer winsTeam1 = 0;
     Integer winsTeam2 = 0;
