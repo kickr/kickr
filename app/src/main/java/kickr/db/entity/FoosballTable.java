@@ -2,13 +2,14 @@ package kickr.db.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class FoosballTable {
   
-  @GeneratedValue
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   protected Long id;
   
   protected String name;

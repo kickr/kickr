@@ -13,22 +13,18 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 
 import kickr.core.api.MatchResource;
-import kickr.core.api.ModelResource;
 import kickr.core.api.PlayerResource;
 import kickr.core.api.TableResource;
 import kickr.core.api.administration.DemoDataResource;
 import kickr.db.FoosballTableDAO;
 import kickr.db.GameDAO;
 import kickr.db.MatchDAO;
-import kickr.db.ModelDAO;
 import kickr.db.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
-import kickr.db.entity.Model;
 import kickr.db.entity.Player;
 import kickr.service.MatchService;
-import kickr.service.ModelService;
 
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.hibernate.SessionFactory;
@@ -42,8 +38,8 @@ public class KickrApplication extends Application<KickrConfiguration> {
   }
 
   private final HibernateBundle<KickrConfiguration> hibernateBundle = 
-    new HibernateBundle<KickrConfiguration>(Model.class, FoosballTable.class, 
-        Game.class, Match.class, Player.class) {
+    new HibernateBundle<KickrConfiguration>(
+            FoosballTable.class, Game.class, Match.class, Player.class) {
       @Override
       public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
         return configuration.getDataSourceFactory();
@@ -81,9 +77,6 @@ public class KickrApplication extends Application<KickrConfiguration> {
     
     SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
     
-    final ModelDAO modelDao = new ModelDAO(sessionFactory);
-    final ModelService modelService = new ModelService();
-    
     PlayerDAO playerDao = new PlayerDAO(sessionFactory);
     MatchDAO matchDao = new MatchDAO(sessionFactory);
     GameDAO gameDao = new GameDAO(sessionFactory);
@@ -91,7 +84,6 @@ public class KickrApplication extends Application<KickrConfiguration> {
     
     MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
     
-    environment.jersey().register(new ModelResource(modelService, modelDao));
     environment.jersey().register(new MatchResource(matchService, matchDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
