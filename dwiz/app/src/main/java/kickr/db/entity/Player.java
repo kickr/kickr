@@ -1,5 +1,6 @@
 package kickr.db.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +16,12 @@ public class Player {
   protected String name;
   
   @NotNull
+  @Column(unique = true)
   protected String alias;
+  
+  public Player() {
+    
+  }
   
   public Player(String alias, String name) {
     this.alias = alias;

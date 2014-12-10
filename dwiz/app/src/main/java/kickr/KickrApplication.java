@@ -15,6 +15,7 @@ import javax.servlet.DispatcherType;
 import kickr.core.api.MatchResource;
 import kickr.core.api.ModelResource;
 import kickr.core.api.PlayerResource;
+import kickr.core.api.TableResource;
 import kickr.db.FoosballTableDAO;
 import kickr.db.MatchDAO;
 import kickr.db.ModelDAO;
@@ -85,6 +86,8 @@ public class KickrApplication extends Application<KickrConfiguration> {
     
     PlayerDAO playerDao = new PlayerDAO(sessionFactory);
     MatchDAO matchDao = new MatchDAO(sessionFactory);
+    FoosballTableDAO tableDao = new FoosballTableDAO(sessionFactory);
+    
     MatchService matchService = new MatchService(matchDao, playerDao);
     
     initDb(sessionFactory);
@@ -92,6 +95,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
     environment.jersey().register(new ModelResource(modelService, modelDao));
     environment.jersey().register(new MatchResource(matchService, matchDao));
     environment.jersey().register(new PlayerResource(playerDao));
+    environment.jersey().register(new TableResource(tableDao));
 
     FilterHolder corsFilter = environment.getApplicationContext()
         .addFilter("org.eclipse.jetty.servlets.CrossOriginFilter", "/", EnumSet.of(DispatcherType.REQUEST));

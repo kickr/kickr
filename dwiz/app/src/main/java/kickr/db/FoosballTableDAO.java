@@ -1,5 +1,7 @@
 package kickr.db;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 
 import kickr.db.entity.FoosballTable;
@@ -15,4 +17,8 @@ public class FoosballTableDAO extends AbstractDAO<FoosballTable> {
     persist(table);
   }
 
+  @SuppressWarnings("unchecked")
+  public List<FoosballTable> getTables(int firstResult, int maxResults) {
+    return criteria().setFirstResult(firstResult).setMaxResults(maxResults).list();
+  }
 }

@@ -10,6 +10,10 @@ public class TeamData {
   @NotNull
   protected String defense;
   
+  public TeamData() {
+    
+  }
+  
   public TeamData(String offense, String defense) {
     this.offense = offense;
     this.defense = defense;

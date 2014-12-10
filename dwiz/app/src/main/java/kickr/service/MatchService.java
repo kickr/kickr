@@ -3,6 +3,8 @@ package kickr.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import kickr.core.model.CoreMatchData;
 import kickr.core.model.GameData;
 import kickr.db.MatchDAO;
@@ -34,7 +36,7 @@ public class MatchService {
     match.setOffenseTeam1(offenseTeam1);
     match.setDefenseTeam2(defenseTeam2);
     match.setOffenseTeam2(offenseTeam2);
-    match.setDate(matchData.getPlayed());
+    match.setDate(DateTime.now().toDate());
     
     List<Game> games = new ArrayList<Game>();
     for (GameData game : matchData.getGames()) {
