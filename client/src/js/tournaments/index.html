@@ -1,0 +1,17 @@
+<h1>Active tournaments</h1>
+
+<div class="tournaments">
+
+  <ul>
+    <li class="tournament" ng-repeat="tournament in tournaments">
+      <tournament-summary tournament="tournament" />
+    </li>
+    <li ng-if="!tournaments.length">
+      No active tournaments
+    </li>
+  </ul>
+
+  <p class="links">
+    <a ng-href="#/tournaments/new">Create a tournament</a>
+  </p>
+</div>

@@ -9,6 +9,7 @@ var ngModule = module.exports = angular.module('app', [
   require('./components/alerts').name,
   require('./components/autocomplete').name,
   require('./admin').name,
+  require('./tournaments').name,
   require('./matches').name,
   require('./home').name
 ]);

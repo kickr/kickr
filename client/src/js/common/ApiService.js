@@ -51,12 +51,29 @@ function ScoresApi(http) {
   EndPoint.call(this, http, '/api/score');
 }
 
+function TournamentApi(http) {
+  EndPoint.call(this, http, '/api/tournament');
+}
+
+function UserApi(http) {
+
+  this.login = function(data) {
+
+  };
+
+  this.fetchStatus = function() {
+    return http.get('/api/user/status').then(unwrapResponse);
+  };
+};
+
 function ApiService(http) {
 
   var matches = new MatchApi(http),
       players = new PlayerApi(http),
       scores = new ScoresApi(http),
-      tables = new TableApi(http);
+      tables = new TableApi(http),
+      tournaments = new ScoresApi(http),
+      user = new UserApi(http);
 
   this.matches = function() {
     return matches;
@@ -72,6 +89,14 @@ function ApiService(http) {
 
   this.tables = function() {
     return tables;
+  };
+
+  this.tournaments = function() {
+    return tournaments;
+  };
+
+  this.user = function() {
+    return user;
   };
 }
 

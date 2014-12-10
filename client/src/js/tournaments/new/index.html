@@ -1,0 +1,43 @@
+<alerts></alerts>
+
+<h1>Create a new tournament</h1>
+
+<form class="new-tournament-form" ng-submit="save()">
+
+  <div>
+    <fieldset>
+      <legend>Basic Information</legend>
+
+      <p>
+        Name <input autofocus="autofocus" type="text" ng-model="tournament.name" />
+      </p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Players</legend>
+
+      <p>
+        Add a player
+        <span class="autocomplete">
+          <input type="text"
+                 autocomplete="fetchPlayers(value)"
+                 on-select="addPlayer(value)"
+                 ng-model="completions.player" />
+        </span>
+      </p>
+
+      <ul>
+        <li ng-repeat="player in tournament.invitations">
+          {{ player.name }} <span class="invite">{{ player.invite }}</span>
+          <a class="close" ng-click="removePlayer($index)">&times;</a>
+        </li>
+      </ul>
+    </fieldset>
+  </div>
+
+  <div class="buttons">
+    <input type="submit" value="Save" />
+    <input type="reset" value="Reset" />
+  </div>
+
+</form>

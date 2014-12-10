@@ -28,6 +28,14 @@
     </ul>
   </div>
 
+  <div class="feature" ng-if="status">
+    <h3>Your Status</h3>
+
+    <span ng-if="status.openTournaments">
+      You are currently part in some open tournaments.
+    </span>
+  </div>
+
   <div class="feature" ng-if="matches">
     <h3>Last Matches</h3>
 
