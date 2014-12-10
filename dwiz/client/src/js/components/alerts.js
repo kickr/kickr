@@ -44,7 +44,7 @@ ngModule.directive('alerts', ['$rootScope', '$timeout', function($rootScope, $ti
         scope._alerts.splice(index, 1);
       };
 
-      $rootScope.$on(alertChannel, function(event, data) {
+      scope.$on(alertChannel, function(event, data) {
         var timeout = data.timeout || attrs.timeout;
         scope._alerts.push(data);
 
