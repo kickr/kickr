@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. $OPENSHIFT_REPO_DIR/.openshift/env.sh
+
+sed -i 's!@OPENSHIFT_DATA_DIR@!'"$OPENSHIFT_DATA_DIR"'!g' $OPENSHIFT_REPO_DIR/.openshift/settings.xml
+
+cd $OPENSHIFT_REPO_DIR/app
+mvn -s $OPENSHIFT_REPO_DIR/.openshift/settings.xml -P openshift -q package

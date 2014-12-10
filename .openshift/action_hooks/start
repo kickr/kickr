@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. $OPENSHIFT_REPO_DIR/.openshift/env.sh
+
+cd $OPENSHIFT_REPO_DIR/app/
+nohup java -jar target/backend-0.0.1.jar server kickr.openshift.yml > ${OPENSHIFT_DIY_LOG_DIR}/kickr.log 2>&1 &

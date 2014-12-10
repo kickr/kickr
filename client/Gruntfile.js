@@ -161,6 +161,10 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', 'karma:single');
   grunt.registerTask('build', [ 'less', 'browserify:app', 'copy' ]);
+  grunt.registerTask('release', function() {
+    grunt.config.merge({config : { dist: '../app/src/main/resources/web/' }});
+    grunt.task.run(['test', 'build']);
+  });
   grunt.registerTask('auto-build', [
     'build',
     'browserify:watch',

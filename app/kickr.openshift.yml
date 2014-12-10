@@ -2,25 +2,27 @@
 database:
 
   # the name of your JDBC driver
-  driverClass: org.h2.Driver
+  driverClass: com.mysql.jdbc.Driver
 
   # the username
-  user: sa
+  user: @OPENSHIFT_MYSQL_DB_USERNAME@
 
   # the password
-  password: sa
+  password: @OPENSHIFT_MYSQL_DB_PASSWORD@
 
   # the JDBC URL
-  url: jdbc:h2:./target/test
+  url: jdbc:mysql://@OPENSHIFT_MYSQL_DB_HOST@:@OPENSHIFT_MYSQL_DB_PORT@/app
 
 server:
   rootPath: /api/*
   applicationConnectors:
     - type: http
-      port: 9280
+      bindHost: @OPENSHIFT_DIY_IP@
+      port: @OPENSHIFT_DIY_PORT@
   adminConnectors:
     - type: http
-      port: 9281
+      bindHost: @OPENSHIFT_DIY_IP@
+      port: 8281
 
 logging:
 
