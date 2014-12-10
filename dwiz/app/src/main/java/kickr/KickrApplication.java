@@ -18,6 +18,7 @@ import kickr.core.api.PlayerResource;
 import kickr.core.api.TableResource;
 import kickr.core.api.administration.DemoDataResource;
 import kickr.db.FoosballTableDAO;
+import kickr.db.GameDAO;
 import kickr.db.MatchDAO;
 import kickr.db.ModelDAO;
 import kickr.db.PlayerDAO;
@@ -85,9 +86,10 @@ public class KickrApplication extends Application<KickrConfiguration> {
     
     PlayerDAO playerDao = new PlayerDAO(sessionFactory);
     MatchDAO matchDao = new MatchDAO(sessionFactory);
+    GameDAO gameDao = new GameDAO(sessionFactory);
     FoosballTableDAO tableDao = new FoosballTableDAO(sessionFactory);
     
-    MatchService matchService = new MatchService(matchDao, playerDao);
+    MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
     
     environment.jersey().register(new ModelResource(modelService, modelDao));
     environment.jersey().register(new MatchResource(matchService, matchDao));

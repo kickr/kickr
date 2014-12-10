@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 
 import kickr.db.entity.FoosballTable;
 import io.dropwizard.hibernate.AbstractDAO;
+import javax.persistence.NoResultException;
 
 public class FoosballTableDAO extends AbstractDAO<FoosballTable> {
 
@@ -20,5 +21,15 @@ public class FoosballTableDAO extends AbstractDAO<FoosballTable> {
   @SuppressWarnings("unchecked")
   public List<FoosballTable> getTables(int firstResult, int maxResults) {
     return criteria().setFirstResult(firstResult).setMaxResults(maxResults).list();
+  }
+
+  public FoosballTable findTableById(Long id) {
+    FoosballTable table = get(id);
+    
+    if (table == null) {
+      throw new NoResultException("Table not found");
+    }
+    
+    return table;
   }
 }
