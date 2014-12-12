@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -18,7 +20,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "kickr_match")
-public class Match {
+@NamedQueries({
+  @NamedQuery(
+    name = "Match.list",
+    query = "SELECT m FROM Match m WHERE m.removed = false ORDER BY m.date DESC")
+})
+public class Match extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,7 +58,7 @@ public class Match {
   @OneToMany
   @OrderBy("gameNumber ASC")
   protected Collection<Game> games;
-
+  
   public Long getId() {
     return id;
   }

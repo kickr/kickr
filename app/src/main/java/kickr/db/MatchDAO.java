@@ -5,8 +5,10 @@ import io.dropwizard.hibernate.AbstractDAO;
 import java.util.List;
 
 import kickr.db.entity.Match;
+import org.hibernate.Criteria;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 
 public class MatchDAO extends AbstractDAO<Match> {
 
@@ -24,7 +26,14 @@ public class MatchDAO extends AbstractDAO<Match> {
   
   @SuppressWarnings("unchecked")
   public List<Match> getMatches(int firstResult, int maxResults) {
-    return criteria().setFirstResult(firstResult).setMaxResults(maxResults).list();
+    return namedQuery("Match.list")
+        .setFirstResult(firstResult)
+        .setMaxResults(maxResults)
+        .list();
   }
 
+  public void removeMatch(Long id) {
+    Match match = get(id);
+    match.setRemoved(true);
+  }
 }

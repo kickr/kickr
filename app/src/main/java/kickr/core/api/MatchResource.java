@@ -5,6 +5,8 @@ import io.dropwizard.hibernate.UnitOfWork;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,7 +23,7 @@ import kickr.service.MatchService;
 
 @Path("/match")
 @Produces(MediaType.APPLICATION_JSON)
-public class MatchResource {
+public class MatchResource extends BaseResource {
 
   protected MatchDAO matchDao;
   protected MatchService matchService;
@@ -33,8 +35,12 @@ public class MatchResource {
   
   @GET
   @UnitOfWork
-  public List<MatchData> getMatches(@QueryParam("firstResult") int firstResult, 
-      @QueryParam("maxResults") int maxResults) {
+  public List<MatchData> getMatches(
+      @QueryParam("firstResult") @DefaultValue("0") int firstResult, 
+      @QueryParam("maxResults") @DefaultValue("10") int maxResults) {
+    
+    assertValidPagination(firstResult, maxResults);
+    
     List<Match> matches = matchDao.getMatches(firstResult, maxResults);
     
     return MatchData.fromMatches(matches);
@@ -54,5 +60,12 @@ public class MatchResource {
     Match match = matchDao.findMatchById(id);
     
     return MatchData.fromMatch(match);
+  }
+  
+  @DELETE
+  @Path("{id}")
+  @UnitOfWork
+  public void removeMatch(@PathParam("id") Long id) {
+    matchDao.removeMatch(id);
   }
 }
