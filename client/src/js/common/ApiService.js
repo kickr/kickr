@@ -1,3 +1,5 @@
+var PAGE_SIZE = 5;
+
 function unwrapResponse(result) {
   return result.data;
 }
@@ -8,14 +10,22 @@ function EndPoint(http, uri) {
     return http.post(uri, data).then(unwrapResponse);
   };
 
-  this.list = function(page) {
-    var query = (page !== undefined ? '?page=' + page : '');
+  this.list = function(page, pageSize) {
+    page = page || 0;
+    pageSize = pageSize || PAGE_SIZE;
 
-    return http.get(uri + query).then(unwrapResponse);
+    var firstResult = page * pageSize,
+        maxResults = firstResult + pageSize;
+
+    return http.get(uri + '?firstResult=' + firstResult + '&maxResults=' + maxResults).then(unwrapResponse);
   };
 
   this.get = function(id) {
     return http.get(uri + '/' + id).then(unwrapResponse);
+  };
+
+  this.remove = function(data) {
+    return http.delete(uri + '/' + data.id).then(unwrapResponse);
   };
 }
 

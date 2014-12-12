@@ -1,6 +1,6 @@
 function HomeController($scope, api) {
 
-  api.matches().list().then(function(matches) {
+  api.matches().list(0, 5).then(function(matches) {
     $scope.matches = matches;
   });
 }

@@ -77,7 +77,7 @@ function NewMatchController($scope, $location, $alerts, api) {
 
     return api.players().find(value).then(function(results) {
       return results.map(function(r) {
-        return { key: r.alias + '(' + r.name + ')', value: r };
+        return { key: r.alias + (r.name ? '(' + r.name + ')' : ''), value: r };
       });
     });
   };
@@ -88,8 +88,8 @@ function NewMatchController($scope, $location, $alerts, api) {
       return;
     }
 
-    api.matches().create(match).then(function(match) {
-      $location.path('/matches/' + match.id);
+    api.matches().create(match).then(function() {
+      $location.path('/matches');
     }).catch(function(e) {
       $alerts.error('Failed to save', 'Could not create match: ' + e.status);
     });

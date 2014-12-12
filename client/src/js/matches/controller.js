@@ -1,10 +1,16 @@
-function MatchesController($scope, api) {
+function MatchesController($scope, $alerts, api) {
 
-  api.matches().list().then(function(matches) {
-    $scope.matches = matches;
-  });
+  $scope.page = 0;
+
+  function reload() {
+    api.matches().list($scope.page, 10).then(function(matches) {
+      $scope.matches = matches;
+    });
+  }
+
+  reload();
 }
 
-MatchesController.$inject = [ '$scope', 'api' ];
+MatchesController.$inject = [ '$scope', '$alerts', 'api' ];
 
 module.exports = MatchesController;

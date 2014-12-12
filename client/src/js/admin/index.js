@@ -14,7 +14,7 @@ function AdminController($scope, $http, $alerts) {
   };
 }
 
-AdminController.$inject = [ '$scope', '$http' ];
+AdminController.$inject = [ '$scope', '$http', '$alerts' ];
 
 ngModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/admin', {
