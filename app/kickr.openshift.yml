@@ -13,7 +13,7 @@ database:
   password: @OPENSHIFT_MYSQL_DB_PASSWORD@
 
   # the JDBC URL
-  url: jdbc:mysql://@OPENSHIFT_MYSQL_DB_HOST@:@OPENSHIFT_MYSQL_DB_PORT@/app
+  url: jdbc:mysql://@OPENSHIFT_MYSQL_DB_HOST@:@OPENSHIFT_MYSQL_DB_PORT@/@OPENSHIFT_APP_NAME@
 
 server:
   rootPath: /api/*

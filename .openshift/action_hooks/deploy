@@ -6,6 +6,7 @@ cd $OPENSHIFT_REPO_DIR/app
 
 sed -i 's!@OPENSHIFT_DIY_IP@!'"$OPENSHIFT_DIY_IP"'!g' kickr.openshift.yml
 sed -i 's!@OPENSHIFT_DIY_PORT@!'"$OPENSHIFT_DIY_PORT"'!g' kickr.openshift.yml
+sed -i 's!@OPENSHIFT_APP_NAME@!'"$OPENSHIFT_APP_NAME"'!g' kickr.openshift.yml
 sed -i 's!@OPENSHIFT_MYSQL_DB_USERNAME@!'"$OPENSHIFT_MYSQL_DB_USERNAME"'!g' kickr.openshift.yml
 sed -i 's!@OPENSHIFT_MYSQL_DB_PASSWORD@!'"$OPENSHIFT_MYSQL_DB_PASSWORD"'!g' kickr.openshift.yml
 sed -i 's!@OPENSHIFT_MYSQL_DB_HOST@!'"$OPENSHIFT_MYSQL_DB_HOST"'!g' kickr.openshift.yml
