@@ -3,8 +3,9 @@ package kickr;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.flyway.FlywayBundle;
+import io.dropwizard.flyway.FlywayFactory;
 import io.dropwizard.hibernate.HibernateBundle;
-import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -51,8 +52,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
   // instance
   
   private HibernateBundle<KickrConfiguration> hibernateBundle;
-  private MigrationsBundle<KickrConfiguration> migrationsBundle;
-  
+
   
   @Override
   public String getName() {
@@ -70,18 +70,22 @@ public class KickrApplication extends Application<KickrConfiguration> {
       }
     };
     
-    migrationsBundle = new MigrationsBundle<KickrConfiguration>() {
+    bootstrap.addBundle(new AssetsBundle("/web", "/", "index.html"));
+
+    bootstrap.addBundle(hibernateBundle);
+    
+    bootstrap.addBundle(new FlywayBundle<KickrConfiguration>() {
+      
       @Override
       public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
         return configuration.getDataSourceFactory();
       }
-    };
 
-    
-    bootstrap.addBundle(new AssetsBundle("/web", "/", "index.html"));
-
-    bootstrap.addBundle(migrationsBundle);
-    bootstrap.addBundle(hibernateBundle);
+      @Override
+      public FlywayFactory getFlywayFactory(KickrConfiguration configuration) {
+        return configuration.getFlywayFactory();
+      }
+    });
   }
 
   @Override

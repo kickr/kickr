@@ -5,6 +5,8 @@ This is the repository backend that provides the actual repository services as w
 
 ## Overview
 
+> Before you start, add a `kickr.development.yml` file that contains your development database.
+
 The application is tested, packaged and (optionally) run via maven.
 
 ```

@@ -14,10 +14,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <dropwizard.version>0.8.0-rc1</dropwizard.version>
+    <dropwizard.flyway.version>0.7.0-1</dropwizard.flyway.version>
     <jetty.version>9.2.4.v20141103</jetty.version>
 
     <exec.mainClass>kickr.KickrApplication</exec.mainClass>
-    <exec.args>server kickr.yml</exec.args>
+    <exec.args>server kickr.development.yml</exec.args>
   </properties>
 
   <dependencies>
@@ -53,14 +54,27 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>io.dropwizard</groupId>
-      <artifactId>dropwizard-migrations</artifactId>
-      <version>${dropwizard.version}</version>
+      <groupId>io.dropwizard.modules</groupId>
+      <artifactId>dropwizard-flyway</artifactId>
+      <version>${dropwizard.flyway.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>io.dropwizard</groupId>
+          <artifactId>dropwizard-db</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+    <!-- testing db -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.4.178</version>
+    </dependency>
+    <!-- production db -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>
@@ -75,19 +89,6 @@
       <type>jar</type>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>openshift</id>
-      <dependencies>
-        <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <version>5.1.6</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 
   <build>
     <plugins>

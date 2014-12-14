@@ -56,6 +56,8 @@ public class Match extends BaseEntity {
 
   protected boolean rated = false;
   
+  protected boolean removed = false;
+  
   @OneToMany
   @OrderBy("gameNumber ASC")
   protected List<Game> games;
@@ -76,6 +78,14 @@ public class Match extends BaseEntity {
 
   public void setTeam2(Team team2) {
     this.team2 = team2;
+  }
+
+  public boolean isRemoved() {
+    return removed;
+  }
+
+  public void setRemoved(boolean removed) {
+    this.removed = removed;
   }
 
   public FoosballTable getTable() {

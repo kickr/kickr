@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author nikku
  */
 @Entity
+@Table(name = "kickr_score")
 @NamedQueries({
   @NamedQuery(name="Score.byPlayer", query="SELECT s FROM Score s JOIN FETCH s.player p WHERE p = :player")
 })

@@ -6,7 +6,7 @@ database:
   url: jdbc:h2:./target/repository
   properties:
     hibernate.hbm2ddl.auto: update
-    hibernate.ejb.naming_strategy: org.hibernate.cfg.DefaultComponentSafeNamingStrategy
+    hibernate.ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
 server:
   rootPath: /api/*
@@ -24,7 +24,7 @@ logging:
 
   # specific levels
   loggers:
-    de.nixis.bpmn.repository: DEBUG
+    kickr: INFO
     org.hibernate.SQL: ALL
 
   appenders:

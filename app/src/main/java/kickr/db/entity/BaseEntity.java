@@ -26,8 +26,6 @@ public class BaseEntity implements Serializable {
   @Temporal(TemporalType.TIMESTAMP)
   protected Date created;
   
-  protected boolean removed = false;
-  
   public Long getId() {
     return id;
   }
@@ -38,14 +36,6 @@ public class BaseEntity implements Serializable {
   
   public Date getCreated() {
     return created;
-  }
-
-  public boolean isRemoved() {
-    return removed;
-  }
-
-  public void setRemoved(boolean removed) {
-    this.removed = removed;
   }
 
   @Override
