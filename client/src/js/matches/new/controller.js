@@ -88,6 +88,15 @@ function NewMatchController($scope, $location, $alerts, api) {
       return;
     }
 
+    var teams = $scope.match.teams;
+
+    // must specify at least offense for both teams
+    if (!teams.team1.offense ||
+        !teams.team2.offense) {
+
+      return;
+    }
+
     api.matches().create(match).then(function() {
       $location.path('/matches');
     }).catch(function(e) {
