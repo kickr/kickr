@@ -20,6 +20,13 @@ public class RatingService {
   
   private static final Logger LOG = LoggerFactory.getLogger(RatingService.class);
   
+  private static final int TIE_POINTS = 5;
+  private static final int LOOSE_POINTS = -5;
+  private static final int WIN_POINTS = 10;
+
+  private static final double SINGLE_FACTOR = 0.3;
+  
+  
   private final MatchDAO matchDao;
   private final ScoreDAO scoreDao;
 
@@ -44,15 +51,15 @@ public class RatingService {
 
         switch (results.getResultType()) {
           case TEAM1_WON:
-            team1Points = 10;
-            team2Points = -2;
+            team1Points = WIN_POINTS;
+            team2Points = LOOSE_POINTS;
             break;
           case TEAM2_WON: 
-            team1Points = -2;
-            team2Points = 10;
+            team1Points = LOOSE_POINTS;
+            team2Points = WIN_POINTS;
             break;
           default: 
-            team1Points = team2Points = 3;
+            team1Points = team2Points = TIE_POINTS;
             break;
         }
 
@@ -70,7 +77,7 @@ public class RatingService {
       throw t;
     }
   }
-
+  
  
   public void addTeamPoints(Match match, Team team, int points) {
     
@@ -91,9 +98,9 @@ public class RatingService {
     
     if (single) {
       if (points < 0) {
-        points /= 2;
+        points *= (1 - SINGLE_FACTOR);
       } else {
-        points *= 1.5;
+        points *= (1 + SINGLE_FACTOR);
       }
     }
     
