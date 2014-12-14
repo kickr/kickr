@@ -1,5 +1,8 @@
 package kickr.core.model;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 import kickr.db.entity.Game;
@@ -28,6 +31,14 @@ public class GameData {
     this.team2 = team2;
   }
   
+  public Game toGame() {
+    Game game = new Game();
+    game.setScoreTeam1(team1);
+    game.setScoreTeam2(team2);
+    return game;
+  }
+  
+  
   public static GameData fromGame(Game game) {
     GameData gameData = new GameData();
     
@@ -36,11 +47,8 @@ public class GameData {
     
     return gameData;
   }
-  
-  public Game toGame() {
-    Game game = new Game();
-    game.setScoreTeam1(team1);
-    game.setScoreTeam2(team2);
-    return game;
+
+  public static List<GameData> fromGames(Collection<Game> games) {
+    return games.stream().map(GameData::fromGame).collect(Collectors.toList());
   }
 }

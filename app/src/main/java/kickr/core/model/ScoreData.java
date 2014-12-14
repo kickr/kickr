@@ -1,20 +1,46 @@
 package kickr.core.model;
 
-public class ScoreData {
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import kickr.db.entity.Score;
 
-  protected Integer team1;
-  protected Integer team2;
+/**
+ *
+ * @author nikku
+ */
+public class ScoreData {
   
-  public Integer getTeam1() {
-    return team1;
+  private PlayerData player;
+  private int value;
+  private Date lastUpdated;
+
+  public ScoreData(PlayerData player, int value, Date lastUpdated) {
+    
+    this.player = player;
+    this.value = value;
+    this.lastUpdated = lastUpdated;
   }
-  public void setTeam1(Integer team1) {
-    this.team1 = team1;
+  
+  public static ScoreData fromScore(Score score) {
+    return new ScoreData(PlayerData.fromPlayer(score.getPlayer()), score.getValue(), score.getLastUpdated());
   }
-  public Integer getTeam2() {
-    return team2;
+  
+  public static List<ScoreData> fromScores(List<Score> scores) {
+    return scores.stream()
+              .map(ScoreData::fromScore)
+              .collect(Collectors.toList());
   }
-  public void setTeam2(Integer team2) {
-    this.team2 = team2;
+
+  public PlayerData getPlayer() {
+    return player;
+  }
+
+  public int getValue() {
+    return value;
+  }
+  
+  public Date getLastUpdated() {
+    return lastUpdated;
   }
 }

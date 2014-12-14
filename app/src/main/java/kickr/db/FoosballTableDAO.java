@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 
 import kickr.db.entity.FoosballTable;
 import io.dropwizard.hibernate.AbstractDAO;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 public class FoosballTableDAO extends AbstractDAO<FoosballTable> {

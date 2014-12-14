@@ -1,3 +1,5 @@
+<alerts></alerts>
+
 <div class="matches">
 
   <div class="main">
@@ -12,10 +14,23 @@
     </pre>
   </div>
 
-  <div class="feature">
+  <div class="feature" ng-if="scores">
+    <h3>Leader Board</h3>
+
+    <ul class="bare">
+      <li class="scores" ng-repeat="score in scores">
+        #{{$index + 1}} {{ score.player.alias }}
+      </li>
+      <li ng-if="!scores.length">
+        No players on the board yet.
+      </li>
+    </ul>
+  </div>
+
+  <div class="feature" ng-if="matches">
     <h3>Last Matches</h3>
 
-    <ul>
+    <ul class="bare">
       <li class="match" ng-repeat="match in matches">
         <match-summary match="match"></match-summary>
       </li>

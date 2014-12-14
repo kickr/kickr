@@ -1,12 +1,13 @@
 package kickr.db.entity;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.Embedded;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,81 +23,59 @@ import javax.validation.constraints.NotNull;
 @Table(name = "kickr_match")
 @NamedQueries({
   @NamedQuery(
-    name = "Match.list",
-    query = "SELECT m FROM Match m WHERE m.removed = false ORDER BY m.date DESC")
+    name = "Match.getAll",
+    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL ORDER BY m.played DESC"),
+  @NamedQuery(
+    name = "Match.getUnrated",
+    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL AND m.rated = false")
 })
 public class Match extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  protected Long id;
-
   @NotNull
-  @ManyToOne
-  protected Player defenseTeam1;
+  @Embedded
+  @AssociationOverrides({
+    @AssociationOverride(name="offense", joinColumns = @JoinColumn(name="team1_offense_id")),
+    @AssociationOverride(name="defense", joinColumns = @JoinColumn(name="team1_defense_id"))
+  })
+  protected Team team1;
   
   @NotNull
-  @ManyToOne
-  protected Player offenseTeam1;
-
-  @NotNull
-  @ManyToOne
-  protected Player defenseTeam2;
-
-  @NotNull
-  @ManyToOne
-  protected Player offenseTeam2;
+  @Embedded
+  @AssociationOverrides({
+    @AssociationOverride(name="offense", joinColumns = @JoinColumn(name="team2_offense_id")),
+    @AssociationOverride(name="defense", joinColumns = @JoinColumn(name="team2_defense_id"))
+  })
+  protected Team team2;
 
   @NotNull
   @ManyToOne
   protected FoosballTable table;
-
-  @NotNull
+  
   @Temporal(TemporalType.TIMESTAMP)
-  protected Date date;
+  protected Date played;
+
+  protected boolean rated = false;
   
   @OneToMany
   @OrderBy("gameNumber ASC")
-  protected Collection<Game> games;
-  
-  public Long getId() {
-    return id;
+  protected List<Game> games;
+
+  public Match() { }
+
+  public Team getTeam1() {
+    return team1;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setTeam1(Team team1) {
+    this.team1 = team1;
   }
 
-  public Player getDefenseTeam1() {
-    return defenseTeam1;
+  public Team getTeam2() {
+    return team2;
   }
 
-  public void setDefenseTeam1(Player defenseTeam1) {
-    this.defenseTeam1 = defenseTeam1;
-  }
-
-  public Player getOffenseTeam1() {
-    return offenseTeam1;
-  }
-
-  public void setOffenseTeam1(Player offenseTeam1) {
-    this.offenseTeam1 = offenseTeam1;
-  }
-
-  public Player getDefenseTeam2() {
-    return defenseTeam2;
-  }
-
-  public void setDefenseTeam2(Player defenseTeam2) {
-    this.defenseTeam2 = defenseTeam2;
-  }
-
-  public Player getOffenseTeam2() {
-    return offenseTeam2;
-  }
-
-  public void setOffenseTeam2(Player offenseTeam2) {
-    this.offenseTeam2 = offenseTeam2;
+  public void setTeam2(Team team2) {
+    this.team2 = team2;
   }
 
   public FoosballTable getTable() {
@@ -107,19 +86,27 @@ public class Match extends BaseEntity {
     this.table = table;
   }
 
-  public Date getDate() {
-    return date;
+  public void setPlayed(Date played) {
+    this.played = played;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public Date getPlayed() {
+    return played;
   }
 
-  public Collection<Game> getGames() {
+  public List<Game> getGames() {
     return games;
   }
 
-  public void setGames(Collection<Game> games) {
+  public boolean isRated() {
+    return rated;
+  }
+
+  public void setRated(boolean rated) {
+    this.rated = rated;
+  }
+
+  public void setGames(List<Game> games) {
     this.games = games;
   }
 }

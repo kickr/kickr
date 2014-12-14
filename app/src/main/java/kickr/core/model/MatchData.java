@@ -1,55 +1,81 @@
 package kickr.core.model;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
-import kickr.db.entity.Game;
 import kickr.db.entity.Match;
+import kickr.util.MatchResults;
 
 public class MatchData extends CoreMatchData {
 
   @NotNull
   protected Long id;
   
+  private boolean rated;
+  
+  private boolean removed;
+  
+  private Date created;
+  
   public Long getId() {
     return id;
   }
+  
   public void setId(Long id) {
     this.id = id;
   }
+
+  public boolean isRated() {
+    return rated;
+  }
+
+  public void setRated(boolean rated) {
+    this.rated = rated;
+  }
+
+  public boolean isRemoved() {
+    return removed;
+  }
+
+  public void setRemoved(boolean removed) {
+    this.removed = removed;
+  }
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
+  }
   
   public static MatchData fromMatch(Match match) {
+    
     MatchData matchData = new MatchData();
     matchData.id = match.getId();
     
     TeamsData teamsData = new TeamsData();
-    teamsData.setTeam1(new TeamData(PlayerData.fromPlayer(match.getOffenseTeam1()), 
-        PlayerData.fromPlayer(match.getDefenseTeam1())));
-    teamsData.setTeam2(new TeamData(PlayerData.fromPlayer(match.getOffenseTeam2()), 
-        PlayerData.fromPlayer(match.getDefenseTeam2())));
+    teamsData.setTeam1(TeamData.fromTeam(match.getTeam1()));
+    teamsData.setTeam2(TeamData.fromTeam(match.getTeam2()));
+
     matchData.teams = teamsData;
     
-    matchData.setPlayed(match.getDate());
+    matchData.setCreated(match.getCreated());
+    matchData.setPlayed(match.getPlayed());
+    matchData.setRated(match.isRated());
+    matchData.setRemoved(match.isRemoved());
     
-    Integer winsTeam1 = 0;
-    Integer winsTeam2 = 0;
-    List<GameData> gamesData = new ArrayList<GameData>();
-    for (Game game : match.getGames()) {
-      gamesData.add(GameData.fromGame(game));
-      
-      if (game.getScoreTeam1() > game.getScoreTeam2()) {
-        winsTeam1++;
-      } else {
-        winsTeam2++;
-      }
-    }
-    matchData.games = gamesData;
+    MatchResults results = MatchResults.compute(match);
     
-    ScoreData scoreData = new ScoreData();
-    scoreData.setTeam1(winsTeam1);
-    scoreData.setTeam2(winsTeam2);
+    ResultData scoreData = new ResultData();
+    scoreData.setTeam1(results.getTeam1Score());
+    scoreData.setTeam2(results.getTeam2Score());
+    
+    matchData.games = GameData.fromGames(match.getGames());
+    
     matchData.score = scoreData;
     
     matchData.table = TableData.fromTable(match.getTable());
@@ -58,12 +84,6 @@ public class MatchData extends CoreMatchData {
   }
   
   public static List<MatchData> fromMatches(List<Match> matches) {
-    List<MatchData> matchesData = new ArrayList<>();
-    
-    for (Match match : matches) {
-      matchesData.add(fromMatch(match));
-    }
-    
-    return matchesData;
+    return matches.stream().map(MatchData::fromMatch).collect(Collectors.toList());
   }
 }

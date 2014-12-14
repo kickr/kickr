@@ -8,24 +8,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "kickr_table")
-public class FoosballTable {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  protected Long id;
+public class FoosballTable extends BaseEntity {
   
   protected String name;
   
   protected String team1Alias;
   protected String team2Alias;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;

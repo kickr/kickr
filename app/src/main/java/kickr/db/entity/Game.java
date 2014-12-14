@@ -9,12 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "kickr_game")
-public class Game {
+public class Game extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  protected Long id;
-  
   @NotNull
   protected Integer scoreTeam1;
 
@@ -27,27 +23,26 @@ public class Game {
   @NotNull
   protected Integer gameNumber;
   
-  public Long getId() {
-    return id;
-  }
-  public void setId(Long id) {
-    this.id = id;
-  }
   public Integer getScoreTeam1() {
     return scoreTeam1;
   }
+
   public void setScoreTeam1(Integer scoreTeam1) {
     this.scoreTeam1 = scoreTeam1;
   }
+  
   public Integer getScoreTeam2() {
     return scoreTeam2;
   }
+  
   public void setScoreTeam2(Integer scoreTeam2) {
     this.scoreTeam2 = scoreTeam2;
   }
+  
   public Integer getGameNumber() {
     return gameNumber;
   }
+  
   public void setGameNumber(Integer gameNumber) {
     this.gameNumber = gameNumber;
   }

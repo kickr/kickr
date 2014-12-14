@@ -1,19 +1,12 @@
-# Database settings.
+# database settings
 database:
+  driverClass: com.mysql.jdbc.Driver
+  user: @OPENSHIFT_MYSQL_DB_USERNAME@
+  password: @OPENSHIFT_MYSQL_DB_PASSWORD@
+  url: jdbc:mysql://@OPENSHIFT_MYSQL_DB_HOST@:@OPENSHIFT_MYSQL_DB_PORT@/@OPENSHIFT_APP_NAME@
   properties:
     hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
-  # the name of your JDBC driver
-  driverClass: com.mysql.jdbc.Driver
-
-  # the username
-  user: @OPENSHIFT_MYSQL_DB_USERNAME@
-
-  # the password
-  password: @OPENSHIFT_MYSQL_DB_PASSWORD@
-
-  # the JDBC URL
-  url: jdbc:mysql://@OPENSHIFT_MYSQL_DB_HOST@:@OPENSHIFT_MYSQL_DB_PORT@/@OPENSHIFT_APP_NAME@
+    hibernate.ejb.naming_strategy: org.hibernate.cfg.DefaultComponentSafeNamingStrategy
 
 server:
   rootPath: /api/*

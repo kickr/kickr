@@ -47,10 +47,15 @@ function PlayerApi(http) {
   };
 }
 
+function ScoresApi(http) {
+  EndPoint.call(this, http, '/api/score');
+}
+
 function ApiService(http) {
 
   var matches = new MatchApi(http),
       players = new PlayerApi(http),
+      scores = new ScoresApi(http),
       tables = new TableApi(http);
 
   this.matches = function() {
@@ -59,6 +64,10 @@ function ApiService(http) {
 
   this.players = function() {
     return players;
+  };
+
+  this.scores = function() {
+    return scores;
   };
 
   this.tables = function() {

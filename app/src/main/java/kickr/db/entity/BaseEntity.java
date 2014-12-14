@@ -1,8 +1,15 @@
 package kickr.db.entity;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import java.util.Date;
+import java.util.Objects;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -10,8 +17,28 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseEntity implements Serializable {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  protected Long id;
+    
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
+  protected Date created;
   
   protected boolean removed = false;
+  
+  public Long getId() {
+    return id;
+  }
+
+  public BaseEntity() {
+    this.created = new Date();
+  }
+  
+  public Date getCreated() {
+    return created;
+  }
 
   public boolean isRemoved() {
     return removed;
@@ -19,5 +46,25 @@ public class BaseEntity implements Serializable {
 
   public void setRemoved(boolean removed) {
     this.removed = removed;
-  }  
+  }
+
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : -1;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    
+    final BaseEntity other = (BaseEntity) obj;
+
+    return Objects.equals(this.id, other.id);
+  }
 }

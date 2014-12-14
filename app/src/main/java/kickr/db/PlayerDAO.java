@@ -3,6 +3,7 @@ package kickr.db;
 import io.dropwizard.hibernate.AbstractDAO;
 
 import java.util.List;
+import javax.inject.Inject;
 
 import kickr.db.entity.Player;
 

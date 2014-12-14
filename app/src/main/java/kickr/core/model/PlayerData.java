@@ -41,6 +41,11 @@ public class PlayerData {
   }
 
   public static PlayerData fromPlayer(Player player) {
+    
+    if (player == null) {
+      return null;
+    }
+    
     PlayerData playerData = new PlayerData();
     
     playerData.setAlias(player.getAlias());

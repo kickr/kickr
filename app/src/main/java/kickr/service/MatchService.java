@@ -1,11 +1,13 @@
 package kickr.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import kickr.core.model.CoreMatchData;
 import kickr.core.model.PlayerData;
 import kickr.core.model.TableData;
+import kickr.core.model.TeamData;
 import kickr.db.FoosballTableDAO;
 import kickr.db.GameDAO;
 import kickr.db.MatchDAO;
@@ -14,17 +16,16 @@ import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
+import kickr.db.entity.Team;
 
-import org.joda.time.DateTime;
 
 public class MatchService {
 
-  
   protected MatchDAO matchDao;
   protected PlayerDAO playerDao;
   protected FoosballTableDAO tableDao;
   protected GameDAO gameDao;
-  
+
   public MatchService(MatchDAO matchDao, GameDAO gameDao, PlayerDAO playerDao, FoosballTableDAO tableDao) {
     this.matchDao = matchDao;
     this.gameDao = gameDao;
@@ -48,19 +49,27 @@ public class MatchService {
   public void insertMatch(CoreMatchData matchData) {
     Match match = new Match();
     
-    Player offenseTeam1 = selectOrInsertPlayer(matchData.getTeams().getTeam1().getOffense());
-    Player defenseTeam1 = selectOrInsertPlayer(matchData.getTeams().getTeam1().getDefense());
-    Player offenseTeam2 = selectOrInsertPlayer(matchData.getTeams().getTeam2().getOffense());
-    Player defenseTeam2 = selectOrInsertPlayer(matchData.getTeams().getTeam2().getDefense());
-    
-    match.setDefenseTeam1(defenseTeam1);
-    match.setOffenseTeam1(offenseTeam1);
-    match.setDefenseTeam2(defenseTeam2);
-    match.setOffenseTeam2(offenseTeam2);
-    match.setDate(DateTime.now().toDate());
-    
+    // assign table
     match.setTable(selectTable(matchData.getTable()));
 
+    // assign teams
+    TeamData team1Data = matchData.getTeams().getTeam1();
+    
+    Player offenseTeam1 = selectOrInsertPlayer(team1Data.getOffense());
+    Team team1 = new Team(offenseTeam1, team1Data.getDefense() != null ? selectOrInsertPlayer(team1Data.getDefense()) : offenseTeam1);
+
+    TeamData team2Data = matchData.getTeams().getTeam2();
+    
+    Player offenseTeam2 = selectOrInsertPlayer(team2Data.getOffense());
+    Team team2 = new Team(offenseTeam2, team2Data.getDefense() != null ? selectOrInsertPlayer(team2Data.getDefense()) : offenseTeam2);
+
+    match.setTeam1(team1);
+    match.setTeam2(team2);
+    
+    // assign played date
+    match.setPlayed(new Date());
+    
+    // create games
     List<Game> games = new ArrayList<>();
     
     for (int i = 0; i < matchData.getGames().size(); i++) {

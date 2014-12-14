@@ -3,6 +3,7 @@ package kickr.core.api;
 import io.dropwizard.hibernate.UnitOfWork;
 
 import java.util.List;
+import javax.inject.Inject;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import kickr.db.entity.Player;
 public class PlayerResource {
 
   protected PlayerDAO playerDao;
-  
+
   public PlayerResource(PlayerDAO playerDao) {
     this.playerDao = playerDao;
   }

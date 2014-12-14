@@ -26,6 +26,7 @@ import kickr.service.MatchService;
 public class MatchResource extends BaseResource {
 
   protected MatchDAO matchDao;
+
   protected MatchService matchService;
   
   public MatchResource(MatchService matchService, MatchDAO matchDao) {

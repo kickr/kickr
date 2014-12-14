@@ -12,6 +12,14 @@ function AdminController($scope, $http, $alerts) {
       $alerts.info('Ainnnt gonna create demo data', 'Problems ' + e.status);
     });
   };
+
+  $scope.updateRatings = function() {
+    $http.post('/api/admin/scoreboard/update').then(function() {
+      $alerts.info('Ratings updated', 'YUP');
+    }).catch(function(e) {
+      $alerts.info('Ainnnt gonna update that stuff', 'Problems ' + e.status);
+    });
+  };
 }
 
 AdminController.$inject = [ '$scope', '$http', '$alerts' ];

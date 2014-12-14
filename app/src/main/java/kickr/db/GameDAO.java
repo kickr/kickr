@@ -1,6 +1,7 @@
 package kickr.db;
 
 import io.dropwizard.hibernate.AbstractDAO;
+import javax.inject.Inject;
 
 import kickr.db.entity.Game;
 
