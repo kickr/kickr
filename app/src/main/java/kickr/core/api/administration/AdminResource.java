@@ -10,6 +10,9 @@ import kickr.db.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Player;
 import kickr.service.RatingService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 @Path("admin")
 public class AdminResource {
@@ -19,11 +22,15 @@ public class AdminResource {
   
   private final RatingService ratingService;
   
-  public AdminResource(RatingService ratingService, FoosballTableDAO tableDao, PlayerDAO playerDao) {
+  private final SessionFactory sessionFactory;
+  
+  public AdminResource(RatingService ratingService, FoosballTableDAO tableDao, PlayerDAO playerDao, SessionFactory sessionFactory) {
     this.ratingService = ratingService;
     
     this.tableDao = tableDao;
     this.playerDao = playerDao;
+    
+    this.sessionFactory = sessionFactory;
   }
   
   @POST
@@ -48,5 +55,16 @@ public class AdminResource {
   @UnitOfWork
   public void updateScoreBoard() {
     ratingService.calculateNewRatings();
+  }
+  
+  @POST
+  @Path("scoreboard/reset")
+  @UnitOfWork
+  public void resetScoreBoard() {
+    Session session = sessionFactory.getCurrentSession();
+    
+    session.createQuery("UPDATE Score s SET s.value = 0").executeUpdate();
+    session.createQuery("DELETE FROM ScoreChange c").executeUpdate();
+    session.createQuery("Update Match m SET m.rated = false").executeUpdate();
   }
 }

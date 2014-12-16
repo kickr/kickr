@@ -20,6 +20,14 @@ function AdminController($scope, $http, $alerts) {
       $alerts.info('Ainnnt gonna update that stuff', 'Problems ' + e.status);
     });
   };
+
+  $scope.resetRatings = function() {
+    $http.post('/api/admin/scoreboard/reset').then(function() {
+      $alerts.info('Ratings reset', 'YUP');
+    }).catch(function(e) {
+      $alerts.info('Ainnnt gonna reset that stuff', 'Problems ' + e.status);
+    });
+  };
 }
 
 AdminController.$inject = [ '$scope', '$http', '$alerts' ];

@@ -123,7 +123,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
     environment.jersey().register(new ScoreResource(scoreDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
-    environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao));
+    environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao, sessionFactory));
     
     // servlet filters
     
