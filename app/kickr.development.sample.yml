@@ -1,0 +1,37 @@
+# database settings
+database:
+  driverClass: com.mysql.jdbc.Driver
+  user: __USER__
+  password: __PASSWORD__
+  url: jdbc:mysql://127.0.0.1:3306/__DATABASE_NAME__
+  properties:
+    hibernate.hbm2ddl.auto: update
+    hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate.ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+
+rating:
+  delay: 0
+
+server:
+  rootPath: /api/*
+  applicationConnectors:
+    - type: http
+      port: 8280
+  adminConnectors:
+    - type: http
+      port: 8281
+
+logging:
+
+  # default level can be { OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL }
+  level: INFO
+
+  # specific levels
+  loggers:
+    kickr: INFO
+
+    org.hibernate.tool.hbm2ddl: DEBUG
+    org.hibernate.SQL: ALL
+
+  appenders:
+    - type: console
