@@ -1,4 +1,4 @@
-package kickr;
+package kickr.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
@@ -21,11 +21,20 @@ public class KickrConfiguration extends Configuration {
   @JsonProperty("flyway")
   private FlywayFactory flywayFactory = new FlywayFactory();
   
+  @Valid
+  @NotNull
+  @JsonProperty("rating")
+  private RatingConfiguration ratingConfiguraton = new RatingConfiguration();
+  
   public DataSourceFactory getDataSourceFactory() {
     return database;
   }
 
   public FlywayFactory getFlywayFactory() {
     return flywayFactory;
+  }
+
+  public RatingConfiguration getRatingConfiguration() {
+    return ratingConfiguraton;
   }
 }

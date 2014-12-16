@@ -1,6 +1,6 @@
 package com.example.helloworld.cli;
 
-import kickr.KickrConfiguration;
+import kickr.config.KickrConfiguration;
 import io.dropwizard.cli.ConfiguredCommand;
 import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.impl.Arguments;

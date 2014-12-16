@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 
 import kickr.db.entity.Match;
-import kickr.util.MatchResults;
+import kickr.util.MatchResult;
+import kickr.util.Side;
 
 public class MatchData extends CoreMatchData {
 
@@ -68,11 +69,11 @@ public class MatchData extends CoreMatchData {
     matchData.setRated(match.isRated());
     matchData.setRemoved(match.isRemoved());
     
-    MatchResults results = MatchResults.compute(match);
+    MatchResult results = MatchResult.compute(match);
     
     ResultData scoreData = new ResultData();
-    scoreData.setTeam1(results.getTeam1Score());
-    scoreData.setTeam2(results.getTeam2Score());
+    scoreData.setTeam1(results.getWins(Side.TEAM1));
+    scoreData.setTeam2(results.getWins(Side.TEAM2));
     
     matchData.games = GameData.fromGames(match.getGames());
     

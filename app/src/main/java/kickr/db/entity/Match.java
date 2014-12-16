@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import kickr.util.Side;
 
 
 @Entity
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotNull;
     query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL ORDER BY m.played DESC"),
   @NamedQuery(
     name = "Match.getUnrated",
-    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL AND m.rated = false")
+    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL AND m.played < :played AND m.rated = false")
 })
 public class Match extends BaseEntity {
 
@@ -118,5 +119,13 @@ public class Match extends BaseEntity {
 
   public void setGames(List<Game> games) {
     this.games = games;
+  }
+  
+  public Team getTeam(Side side) {
+    if (side == Side.TEAM1) {
+      return team1;
+    } else {
+      return team2;
+    }
   }
 }

@@ -26,12 +26,12 @@ public class BaseEntity implements Serializable {
   @Temporal(TemporalType.TIMESTAMP)
   protected Date created;
   
-  public Long getId() {
-    return id;
-  }
-
   public BaseEntity() {
     this.created = new Date();
+  }
+  
+  public Long getId() {
+    return id;
   }
   
   public Date getCreated() {

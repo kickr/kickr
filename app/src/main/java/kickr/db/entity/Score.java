@@ -1,10 +1,13 @@
 package kickr.db.entity;
 
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +27,9 @@ public class Score extends BaseEntity {
   @ManyToOne
   private Player player;
 
+  @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "score")
+  private List<ScoreChange> changes;
+  
   @Temporal(TemporalType.TIMESTAMP)
   private Date lastUpdated;
   
@@ -36,10 +42,6 @@ public class Score extends BaseEntity {
     this.player = player;
     this.lastUpdated = new Date();
     this.value = value;
-  }
-
-  public Long getId() {
-    return id;
   }
 
   public Player getPlayer() {

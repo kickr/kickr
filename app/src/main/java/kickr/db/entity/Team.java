@@ -34,4 +34,8 @@ public class Team implements Serializable {
   public Player getDefense() {
     return defense;
   }
+  
+  public boolean isSingle() {
+    return offense.equals(defense);
+  }
 }

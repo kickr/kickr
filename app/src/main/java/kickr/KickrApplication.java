@@ -1,5 +1,6 @@
 package kickr;
 
+import kickr.config.KickrConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
@@ -29,6 +30,7 @@ import kickr.db.entity.Game;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
 import kickr.db.entity.Score;
+import kickr.db.entity.ScoreChange;
 import kickr.service.MatchService;
 import kickr.service.RatingService;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -62,7 +64,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
   @Override
   public void initialize(Bootstrap<KickrConfiguration> bootstrap) {
     hibernateBundle = new HibernateBundle<KickrConfiguration>(
-        FoosballTable.class, Game.class, Match.class, Player.class, Score.class) {
+        FoosballTable.class, Game.class, Match.class, Player.class, Score.class, ScoreChange.class) {
 
       @Override
       public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
@@ -103,7 +105,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
     WithTransaction transactional = new WithTransaction(sessionFactory);
     
     MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
-    RatingService ratingService = new RatingService(matchDao, scoreDao);
+    RatingService ratingService = new RatingService(matchDao, scoreDao, configuration.getRatingConfiguration());
 
     
     // schedule update of ratings

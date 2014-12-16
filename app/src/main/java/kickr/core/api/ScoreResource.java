@@ -8,6 +8,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import kickr.core.model.ScoreData;
 import kickr.db.ScoreDAO;
+import kickr.db.entity.Score;
+import kickr.db.entity.ScoreWithChanges;
 
 /**
  *
@@ -30,6 +32,8 @@ public class ScoreResource extends BaseResource {
     
     assertValidPagination(firstResult, maxResults);
     
-    return ScoreData.fromScores(scoreDao.getAll(firstResult, maxResults));
+    List<ScoreWithChanges> scores = scoreDao.getAll(firstResult, maxResults);
+    
+    return ScoreData.fromScores(scores);
   }
 }
