@@ -17,9 +17,10 @@
   <div class="feature" ng-if="scores">
     <h3>Leader Board</h3>
 
-    <ul class="bare">
+    <ul class="basic-list">
       <li class="scores" ng-repeat="score in scores">
-        #{{$index + 1}} {{ score.player.alias }}
+        #{{$index + 1}} <strong>{{ score.player.alias }}</strong>
+        <span title="changes last 5 days">({{ score.added > 0 ? '+' : '' }}{{ score.added }})</span>
       </li>
       <li ng-if="!scores.length">
         No players on the board yet.
@@ -30,7 +31,7 @@
   <div class="feature" ng-if="matches">
     <h3>Last Matches</h3>
 
-    <ul class="bare">
+    <ul class="basic-list">
       <li class="match" ng-repeat="match in matches">
         <match-summary match="match"></match-summary>
       </li>
