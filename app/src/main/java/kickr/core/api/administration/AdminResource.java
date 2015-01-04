@@ -1,6 +1,7 @@
 package kickr.core.api.administration;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import javax.annotation.security.RolesAllowed;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -9,12 +10,14 @@ import kickr.db.FoosballTableDAO;
 import kickr.db.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Player;
+import kickr.db.entity.user.User;
 import kickr.service.RatingService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.context.internal.ManagedSessionContext;
+import support.security.annotation.Auth;
 
 @Path("admin")
+@RolesAllowed("admin")
 public class AdminResource {
 
   protected FoosballTableDAO tableDao;
@@ -36,7 +39,8 @@ public class AdminResource {
   @POST
   @Path("demo")
   @UnitOfWork
-  public void createDemoData() {
+  public void createDemoData(@Auth User user) {
+
     FoosballTable table = new FoosballTable();
     table.setName("camunda HQ");
     table.setTeam1Alias("Klo");

@@ -15,7 +15,7 @@ import kickr.db.entity.ScoreWithChanges;
  *
  * @author nikku
  */
-@Path("/score")
+@Path("score")
 public class ScoreResource extends BaseResource {
   
   private final ScoreDAO scoreDao;

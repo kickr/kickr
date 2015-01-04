@@ -1,6 +1,8 @@
 var angular = require('angular');
-var NavbarController = require('./Controller');
+var NavbarController = require('./controller');
 
-var ngModule = module.exports = angular.module('navbar', []);
+var ngModule = module.exports = angular.module('navbar', [
+  require('./directives').name
+]);
 
 ngModule.controller('NavbarController', NavbarController);

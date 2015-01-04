@@ -15,7 +15,7 @@ import kickr.core.model.TableData;
 import kickr.db.FoosballTableDAO;
 import kickr.db.entity.FoosballTable;
 
-@Path("/table")
+@Path("table")
 @Produces(MediaType.APPLICATION_JSON)
 public class TableResource {
 

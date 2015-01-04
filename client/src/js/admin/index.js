@@ -34,6 +34,7 @@ AdminController.$inject = [ '$scope', '$http', '$alerts' ];
 
 ngModule.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/admin', {
+    requiredPermissions: 6,
     controller: AdminController,
     template: fs.readFileSync(__dirname + '/index.html', 'utf8')
   });

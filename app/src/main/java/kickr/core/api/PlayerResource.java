@@ -3,9 +3,7 @@ package kickr.core.api;
 import io.dropwizard.hibernate.UnitOfWork;
 
 import java.util.List;
-import javax.inject.Inject;
-
-import javax.ws.rs.Consumes;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,7 +16,7 @@ import kickr.core.model.PlayerData;
 import kickr.db.PlayerDAO;
 import kickr.db.entity.Player;
 
-@Path("/player")
+@Path("player")
 @Produces(MediaType.APPLICATION_JSON)
 public class PlayerResource {
 
@@ -30,6 +28,9 @@ public class PlayerResource {
   
   /**
    * Query conditions are disjunctive
+   * 
+   * @param namePart
+   * @return
    */
   @GET
   @UnitOfWork
@@ -48,8 +49,8 @@ public class PlayerResource {
   }
   
   @POST
+  @RolesAllowed("user")
   @UnitOfWork
-  @Consumes(MediaType.APPLICATION_JSON)
   public void createPlayer(PlayerData player) {
     playerDao.create(player.toPlayer());
   }

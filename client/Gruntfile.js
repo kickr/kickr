@@ -39,10 +39,10 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     config: {
+      assets: 'src/assets',
       sources: 'src/js',
       less: 'src/less',
       dist: '../app/target/classes/web',
-      assets: 'assets',
       tests: 'test',
       bower_components: 'bower_components'
     },
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
             dest: '<%= config.dist %>'
           },
 
-          // assets
+          //
           {
             expand: true,
             cwd: '<%= config.assets %>',

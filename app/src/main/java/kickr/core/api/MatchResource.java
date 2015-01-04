@@ -3,8 +3,8 @@ package kickr.core.api;
 import io.dropwizard.hibernate.UnitOfWork;
 
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -19,7 +19,9 @@ import kickr.core.model.CoreMatchData;
 import kickr.core.model.MatchData;
 import kickr.db.MatchDAO;
 import kickr.db.entity.Match;
+import kickr.db.entity.user.User;
 import kickr.service.MatchService;
+import support.security.annotation.Auth;
 
 @Path("/match")
 @Produces(MediaType.APPLICATION_JSON)
@@ -48,10 +50,10 @@ public class MatchResource extends BaseResource {
   }
   
   @POST
-  @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed("user")
   @UnitOfWork
-  public void create(CoreMatchData createMatchData) {
-    matchService.insertMatch(createMatchData);
+  public void create(@Auth User user, CoreMatchData createMatchData) {
+    matchService.insertMatch(createMatchData, user);
   }
   
   @GET
@@ -65,6 +67,7 @@ public class MatchResource extends BaseResource {
   
   @DELETE
   @Path("{id}")
+  @RolesAllowed("user")
   @UnitOfWork
   public void removeMatch(@PathParam("id") Long id) {
     matchDao.removeMatch(id);

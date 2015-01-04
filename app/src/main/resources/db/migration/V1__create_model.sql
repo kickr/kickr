@@ -44,25 +44,25 @@ CREATE TABLE kickr_match (
   team2_defense_id bigint(20) DEFAULT NULL,
   team2_offense_id bigint(20) DEFAULT NULL,
   PRIMARY KEY (id),
-  KEY FK_table_id (table_id),
-  KEY FK_team1_defense_id (team1_defense_id),
-  KEY FK_team1_offense_id (team1_offense_id),
-  KEY FK_team2_defense_id (team2_defense_id),
-  KEY FK_team2_offense_id (team2_offense_id),
-  CONSTRAINT FK_table_id FOREIGN KEY (table_id) REFERENCES kickr_table (id),
-  CONSTRAINT FK_team2_offense_id FOREIGN KEY (team2_offense_id) REFERENCES kickr_player (id),
-  CONSTRAINT FK_team2_defense_id FOREIGN KEY (team2_defense_id) REFERENCES kickr_player (id),
-  CONSTRAINT FK_team1_offense_id FOREIGN KEY (team1_offense_id) REFERENCES kickr_player (id),
-  CONSTRAINT FK_team1_defense_id FOREIGN KEY (team1_defense_id) REFERENCES kickr_player (id)
+  KEY FK_kickr_match_table_id (table_id),
+  KEY FK_kickr_match_team1_defense_id (team1_defense_id),
+  KEY FK_kickr_match_team1_offense_id (team1_offense_id),
+  KEY FK_kickr_match_team2_defense_id (team2_defense_id),
+  KEY FK_kickr_match_team2_offense_id (team2_offense_id),
+  CONSTRAINT FK_kickr_match_table_id FOREIGN KEY (table_id) REFERENCES kickr_table (id),
+  CONSTRAINT FK_kickr_match_team2_offense_id FOREIGN KEY (team2_offense_id) REFERENCES kickr_player (id),
+  CONSTRAINT FK_kickr_match_team2_defense_id FOREIGN KEY (team2_defense_id) REFERENCES kickr_player (id),
+  CONSTRAINT FK_kickr_match_team1_offense_id FOREIGN KEY (team1_offense_id) REFERENCES kickr_player (id),
+  CONSTRAINT FK_kickr_match_team1_defense_id FOREIGN KEY (team1_defense_id) REFERENCES kickr_player (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE kickr_match_kickr_game (
   kickr_match_id bigint(20) NOT NULL,
   games_id bigint(20) NOT NULL,
   UNIQUE KEY games_id_unique (games_id),
-  KEY FK_kickr_match_id (kickr_match_id),
-  CONSTRAINT FK_kickr_match_id FOREIGN KEY (kickr_match_id) REFERENCES kickr_match (id),
-  CONSTRAINT FK_games_id FOREIGN KEY (games_id) REFERENCES kickr_game (id)
+  KEY FK_kickr_match_kickr_game_kickr_match_id (kickr_match_id),
+  CONSTRAINT FK_kickr_match_kickr_game_kickr_match_id FOREIGN KEY (kickr_match_id) REFERENCES kickr_match (id),
+  CONSTRAINT FK_kickr_match_kickr_game_games_id FOREIGN KEY (games_id) REFERENCES kickr_game (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE kickr_score (

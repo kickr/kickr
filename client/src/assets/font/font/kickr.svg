@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="kickr" horiz-adv-x="1000" >
+<font-face font-family="kickr" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="login" unicode="&#xe800;" d="m800 800q42 0 71-29t29-71l0-700q0-40-29-70t-71-30l-450 0q-40 0-69 30t-29 70l0 100 98 0 0-100 450 0 0 700-450 0 0-150-98 0 0 150q0 42 29 71t69 29l450 0z m-350-670l0 120-450 0 0 150 450 0 0 120 200-194z" horiz-adv-x="900" />
+<glyph glyph-name="logout" unicode="&#xe801;" d="m502 0l0 100 98 0 0-100q0-40-29-70t-71-30l-400 0q-40 0-70 30t-30 70l0 700q0 42 30 71t70 29l400 0q42 0 71-29t29-71l0-150-98 0 0 150-402 0 0-700 402 0z m398 326l-198-196 0 120-450 0 0 150 450 0 0 120z" horiz-adv-x="900" />
+</font>
+</defs>
+</svg>

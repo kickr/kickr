@@ -26,7 +26,8 @@
     "fs": false,
     "angular": "./lib/angular.js",
     "angular-loading-bar": "./lib/angular-loading-bar.js",
-    "angular-route": "./lib/angular-route.js"
+    "angular-route": "./lib/angular-route.js",
+    "angular-cookies": "./lib/angular-cookies.js"
   },
   "dependencies": {
     "jquery": "^2.1.1"

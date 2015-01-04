@@ -5,11 +5,11 @@ function NavbarController(scope, location) {
     scope.currentLocation = location.path();
   });
 
-  scope.goto = function (newLocation) {
+  scope.goto = function(newLocation) {
     location.path(newLocation);
   };
 
-  scope.activeClass = function (locationName) {
+  scope.activeClass = function(locationName) {
     return scope.currentLocation.indexOf(locationName) != -1 ? ['active'] : [];
   };
 }

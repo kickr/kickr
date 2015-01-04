@@ -1,0 +1,11 @@
+<li ng-if="currentUser.name">
+  <a href class="light" ng-click="logout()" title="Logout">
+    {{ currentUser.name }} <span class="icon-logout"></span>
+  </a>
+</ul>
+
+<li ng-if="!currentUser.name">
+  <a href class="light" ng-click="login()" title="Login">
+    login <span class="icon-login"></span>
+  </a>
+</li>

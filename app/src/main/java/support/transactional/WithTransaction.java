@@ -1,9 +1,8 @@
-package support;
+package support.transactional;
 
-import org.hibernate.FlushMode;
+import java.util.concurrent.Callable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.context.internal.ManagedSessionContext;
 
 /**
@@ -17,24 +16,37 @@ public class WithTransaction {
   public WithTransaction(SessionFactory sessionFactory) {
     this.sessionFactory = sessionFactory;
   }
-  
+
   public void run(Runnable runnable) {
+    get(() -> {
+      runnable.run();
+      return null;
+    });
+  }
+
+  public <T> T get(Callable<T> callable) {
     Session session = sessionFactory.openSession();
     
     try {
       ManagedSessionContext.bind(session);
       session.beginTransaction();
       
-      runnable.run();
+      T result = callable.call();
 
       session.getTransaction().commit();
+      
+      return result;
     } catch (Throwable th) {
       
       if (session.getTransaction() != null) {
         session.getTransaction().rollback();
       }
       
-      throw th;
+      if (th instanceof RuntimeException) {
+        throw (RuntimeException) th;
+      }
+
+      throw new RuntimeException(th);
     } finally {
       session.close();
 
