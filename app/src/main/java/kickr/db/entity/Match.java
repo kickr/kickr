@@ -12,11 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import kickr.db.entity.user.User;
 import kickr.util.Side;
 
 
@@ -60,8 +60,12 @@ public class Match extends BaseEntity {
   protected boolean removed = false;
   
   @OneToMany
-  @OrderBy("gameNumber ASC")
+  @JoinColumn(name = "match_id")
   protected List<Game> games;
+
+  @ManyToOne
+  @JoinColumn(name = "creator_id")
+  private User creator;
 
   public Match() { }
 
@@ -91,6 +95,14 @@ public class Match extends BaseEntity {
 
   public FoosballTable getTable() {
     return table;
+  }
+
+  public User getCreator() {
+    return creator;
+  }
+
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
   public void setTable(FoosballTable table) {
