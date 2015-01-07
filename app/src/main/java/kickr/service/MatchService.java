@@ -17,6 +17,7 @@ import kickr.db.entity.Game;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
 import kickr.db.entity.Team;
+import kickr.db.entity.user.User;
 
 
 public class MatchService {
@@ -46,11 +47,14 @@ public class MatchService {
     return player;
   }
 
-  public void insertMatch(CoreMatchData matchData) {
+  public void insertMatch(CoreMatchData matchData, User creator) {
     Match match = new Match();
     
     // assign table
     match.setTable(selectTable(matchData.getTable()));
+
+    // creator
+    match.setCreator(creator);
 
     // assign teams
     TeamData team1Data = matchData.getTeams().getTeam1();
@@ -84,4 +88,5 @@ public class MatchService {
     
     matchDao.create(match);
   }
+
 }
