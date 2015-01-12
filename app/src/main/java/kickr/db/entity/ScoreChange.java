@@ -47,6 +47,8 @@ public class ScoreChange extends BaseEntity {
     this.player = player;
     this.match = match;
     this.score = score;
+    
+    this.created = match.getPlayed();
   }
 
   public int getValue() {
