@@ -1,9 +1,12 @@
 package kickr.db;
 
+import kickr.db.entity.PlayerStatistics;
 import kickr.db.entity.Score;
 import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +38,42 @@ public class ScoreDAO extends AbstractDAO<Score> {
     return score;
   }
 
-  public List<ScoreWithChanges> getAll(int firstResult, int maxResults) {
+  public List<PlayerStatistics> getStatistics(int firstResult, int maxResults) {
+
+    Date latestDate = Date.from(Instant.now().minus(Period.ofDays(7)));
+
+    List<Object[]> results = (List<Object[]>) currentSession()
+        .createQuery("SELECT p, SUM(c.value) FROM ScoreChange c JOIN c.player p WHERE c.created > :latestDate GROUP BY p.id, c.match.id")
+        .setDate("latestDate", latestDate)
+        .list();
+
+    Map<Player, List<Object[]>> gameValues = results.stream().collect(Collectors.groupingBy(r -> (Player) r[0]));
+
+    List<PlayerStatistics> playerStatistics = new ArrayList<>();
+
+    gameValues.forEach((player, rows) -> {
+
+      long games = rows.size();
+      long score =  0;
+
+      for (Object[] r: rows) {
+        score += (Long) r[1];
+      }
+
+      playerStatistics.add(new PlayerStatistics(player, score, games));
+    });
+
+    return playerStatistics.stream().sorted((s1, s2) -> {
+      double v1 = (0.0 + s1.getScore()) / s1.getGames() + 0.01 * s1.getGames();
+      double v2 = (0.0 + s2.getScore()) / s2.getGames() + 0.01 * s2.getGames();
+
+      return -1 * Double.compare(v1, v2);
+    }).skip(firstResult)
+      .limit(maxResults)
+      .collect(Collectors.toList());
+  }
+
+  public List<ScoreWithChanges> getScoresWithChanges(int firstResult, int maxResults) {
     
     List<Score> scores = list(currentSession()
                             .createQuery("SELECT s FROM Score s JOIN FETCH s.player ORDER BY s.value DESC")
@@ -45,8 +83,9 @@ public class ScoreDAO extends AbstractDAO<Score> {
     if (scores.isEmpty()) {
       return Collections.emptyList();
     }
+
     
-    Date latestDate = Date.from(Instant.now().minus(5, ChronoUnit.DAYS));
+    Date latestDate = Date.from(Instant.now().minus(Period.ofDays(7)));
     
     List<ScoreChange> changes = currentSession()
                                    .createQuery("SELECT c FROM ScoreChange c JOIN FETCH c.match JOIN FETCH c.score WHERE c.created > :latestDate AND c.score IN :scores")

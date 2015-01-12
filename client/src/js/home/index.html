@@ -12,18 +12,36 @@
     </pre>
   </div>
 
-  <div class="feature" ng-if="scores">
-    <h3>Leader Board</h3>
+  <div class="leaderboard" ng-if="leaderBoard" flex-container="row">
 
-    <ul class="basic-list">
-      <li class="scores" ng-repeat="score in scores">
-        #{{$index + 1}} <strong>{{ score.player.alias }}</strong>
-        <span title="changes last 5 days">({{ score.added > 0 ? '+' : '' }}{{ score.added }})</span>
-      </li>
-      <li ng-if="!scores.length">
-        No players on the board yet.
-      </li>
-    </ul>
+    <div class="feature" flex-fill>
+      <h3>Leader Board</h3>
+
+      <ul class="basic-list">
+        <li class="scores" ng-repeat="score in leaderBoard.scores">
+          #{{$index + 1}} <strong>{{ score.player.alias }}</strong>
+          <span title="changes last 7 days">({{ score.added > 0 ? '+' : '' }}{{ score.added }})</span>
+        </li>
+        <li ng-if="!leaderBoard.scores.length">
+          No players on the board yet.
+        </li>
+      </ul>
+    </div>
+
+    <div class="feature" flex-fill>
+      <h3>Average Performance</h3>
+
+      <ul class="basic-list">
+        <li class="scores" ng-repeat="statistic in leaderBoard.performance">
+          #{{$index + 1}} <strong>{{ statistic.player.alias }}</strong>
+          <span title="average points last 7 days">{{ statistic.average }}</span>
+          <span title="confidence in this result">({{ statistic.confidence }})</span>
+        </li>
+        <li ng-if="!leaderBoard.performance.length">
+          No statistics yet.
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="feature" ng-if="status">

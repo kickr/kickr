@@ -1,3 +1,4 @@
+var _ = require('lodash');
 
 function HomeController($scope, $alerts, api) {
 
@@ -5,8 +6,14 @@ function HomeController($scope, $alerts, api) {
     $scope.matches = matches;
   });
 
-  api.scores().list(0, 5).then(function(scores) {
-    $scope.scores = scores;
+  api.scores().get().then(function(leaderBoard) {
+    $scope.leaderBoard = leaderBoard;
+
+    _.forEach(leaderBoard.performance, function(p) {
+      p.average = Math.round((p.score + 0.0) / p.games);
+      p.confidence = Math.round((1 - 1 / Math.sqrt(p.games * 2)) * 100) / 100;
+    });
+
   });
 }
 

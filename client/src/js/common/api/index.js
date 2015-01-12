@@ -1,16 +1,17 @@
-var BaseEndPoint = require('./simple-end-point');
+var SimpleEndPoint = require('./simple-end-point'),
+    BaseEndPoint = require('./end-point');
 
 
 function MatchApi(http, uri) {
-  BaseEndPoint.call(this, http, uri);
+  SimpleEndPoint.call(this, http, uri);
 }
 
 function TableApi(http, uri) {
-  BaseEndPoint.call(this, http, uri);
+  SimpleEndPoint.call(this, http, uri);
 }
 
 function PlayerApi(http, uri) {
-  BaseEndPoint.call(this, http, uri);
+  SimpleEndPoint.call(this, http, uri);
 
   this.find = function(namePart) {
     return http.get(uri + '?namePart=' + namePart).then(this.unwrapResponse);
@@ -19,10 +20,10 @@ function PlayerApi(http, uri) {
 
 function ScoresApi(http, uri) {
   BaseEndPoint.call(this, http, uri);
-}
 
-function TournamentApi(http, uri) {
-  BaseEndPoint.call(this, http, uri);
+  this.get = function() {
+    return http.get(uri).then(this.unwrapResponse);
+  };
 }
 
 function UserApi(http, uri) {
@@ -30,7 +31,7 @@ function UserApi(http, uri) {
   this.fetchStatus = function() {
     return http.get(uri + '/status').then(this.unwrapResponse);
   };
-};
+}
 
 
 function Api(http) {
