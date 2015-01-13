@@ -29,13 +29,13 @@
     </div>
 
     <div class="feature" flex-fill>
-      <h3>Average Performance</h3>
+      <h3>Performance Index</h3>
 
       <ul class="basic-list">
         <li class="scores" ng-repeat="statistic in leaderBoard.performance">
           #{{$index + 1}} <strong>{{ statistic.player.alias }}</strong>
-          <span title="average points last 7 days">{{ statistic.average }}</span>
-          <span title="confidence in this result">({{ statistic.confidence }})</span>
+          <span title="performance last 7 days">{{ statistic.average * statistic.confidence * 10 }}</span>
+          <span title="(performance: {{ statistic.average }}, confidence: {{ statistic.confidence }})">*</span>
         </li>
         <li ng-if="!leaderBoard.performance.length">
           No statistics yet.
