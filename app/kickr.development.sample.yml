@@ -8,6 +8,8 @@ database:
     hibernate.hbm2ddl.auto: update
     hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate.ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+    javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
 
 rating:
   delay: 0

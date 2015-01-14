@@ -14,6 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <dropwizard.version>0.8.0-rc1</dropwizard.version>
+    <hibernate.version>4.3.7.Final</hibernate.version>
     <dropwizard.flyway.version>0.7.0-1</dropwizard.flyway.version>
     <jetty.version>9.2.4.v20141103</jetty.version>
 
@@ -36,6 +37,17 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-assets</artifactId>
       <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.dropwizard</groupId>

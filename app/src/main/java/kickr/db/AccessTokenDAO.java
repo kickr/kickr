@@ -3,6 +3,7 @@ package kickr.db;
 import io.dropwizard.hibernate.AbstractDAO;
 import kickr.db.entity.user.AccessToken;
 import kickr.db.entity.user.User;
+import org.hibernate.CacheMode;
 import org.hibernate.SessionFactory;
 
 /**
@@ -29,6 +30,7 @@ public class AccessTokenDAO extends AbstractDAO<AccessToken> {
       currentSession()
         .getNamedQuery("AccessToken.byValue")
         .setParameter("value", tokenValue)
+        .setCacheable(true)
         .uniqueResult();
   }
 
