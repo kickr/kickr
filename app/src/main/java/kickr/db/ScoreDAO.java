@@ -64,10 +64,7 @@ public class ScoreDAO extends AbstractDAO<Score> {
     });
 
     return playerStatistics.stream().sorted((s1, s2) -> {
-      double v1 = (0.0 + s1.getScore()) / s1.getGames() + 0.01 * s1.getGames();
-      double v2 = (0.0 + s2.getScore()) / s2.getGames() + 0.01 * s2.getGames();
-
-      return -1 * Double.compare(v1, v2);
+      return -1 * Double.compare(s1.getRating(), s2.getRating());
     }).skip(firstResult)
       .limit(maxResults)
       .collect(Collectors.toList());

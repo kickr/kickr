@@ -8,12 +8,6 @@ function HomeController($scope, $alerts, api) {
 
   api.scores().get().then(function(leaderBoard) {
     $scope.leaderBoard = leaderBoard;
-
-    _.forEach(leaderBoard.performance, function(p) {
-      p.average = Math.round((0.0 + p.score) / p.games);
-      p.confidence = Math.round((1 - 1 / Math.sqrt(p.games * 2)) * 100) / 100;
-    });
-
   });
 }
 

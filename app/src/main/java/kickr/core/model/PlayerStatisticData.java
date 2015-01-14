@@ -12,15 +12,23 @@ public class PlayerStatisticData {
 
   private PlayerData player;
 
-  private long score;
+  private long totalScore;
   private long games;
+  private double average;
+  private double confidence;
+  private double rating;
 
   public PlayerStatisticData() {}
 
-  public PlayerStatisticData(long score, long games, PlayerData player) {
-    this.player = player;
-    this.score = score;
+  public PlayerStatisticData(long totalScore, long games, double average, double confidence, double rating, PlayerData player) {
+    this.totalScore = totalScore;
     this.games = games;
+
+    this.average = average;
+    this.confidence = confidence;
+    this.rating = rating;
+
+    this.player = player;
   }
 
   public PlayerData getPlayer() {
@@ -31,10 +39,22 @@ public class PlayerStatisticData {
     return games;
   }
 
-  public long getScore() {
-    return score;
+  public long getTotalScore() {
+    return totalScore;
   }
-  
+
+  public double getAverage() {
+    return average;
+  }
+
+  public double getConfidence() {
+    return confidence;
+  }
+
+  public double getRating() {
+    return rating;
+  }
+
   
   // helpers
   
@@ -43,6 +63,12 @@ public class PlayerStatisticData {
   }
   
   public static PlayerStatisticData fromStatistic(PlayerStatistics change) {
-    return new PlayerStatisticData(change.getScore(), change.getGames(), PlayerData.fromPlayer(change.getPlayer()));
+    return new PlayerStatisticData(
+        change.getTotalScore(),
+        change.getGames(),
+        change.getAverage(),
+        change.getConfidence(),
+        change.getRating(),
+        PlayerData.fromPlayer(change.getPlayer()));
   }
 }
