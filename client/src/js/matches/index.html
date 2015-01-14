@@ -3,7 +3,7 @@
 <div class="matches">
 
   <ul class="basic-list">
-    <li class="match" ng-repeat="match in matches">
+    <li class="match" ng-class="{ rated: match.rated, removed: match.removed }" ng-repeat="match in matches">
       <match-summary match="match" />
     </li>
     <li ng-if="!matches.length">

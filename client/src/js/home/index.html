@@ -52,11 +52,11 @@
     </span>
   </div>
 
-  <div class="feature" ng-if="matches">
+  <div class="feature matches" ng-if="matches">
     <h3>Last Matches</h3>
 
     <ul class="basic-list">
-      <li class="match" ng-repeat="match in matches">
+      <li class="match" ng-class="{ rated: match.rated, removed: match.removed }" ng-repeat="match in matches">
         <match-summary match="match"></match-summary>
       </li>
       <li ng-if="!matches.length">
