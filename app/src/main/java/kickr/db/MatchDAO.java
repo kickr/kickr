@@ -3,7 +3,6 @@ package kickr.db;
 import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import java.util.List;
@@ -34,9 +33,13 @@ public class MatchDAO extends AbstractDAO<Match> {
 
   public void removeMatch(Long id) {
     Match match = get(id);
+    removeMatch(match);
+  }
+
+  public void removeMatch(Match match) {
     match.setRemoved(true);
   }
-  
+
   public List<Match> getUnratedMatches(Duration delay) {
     Date played = Date.from(Instant.now().minus(delay));
     

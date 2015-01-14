@@ -11,9 +11,11 @@ function MatchController($scope, $alerts, $routeParams, $location, $timeout, api
     var match = $scope.match;
 
     api.matches().remove(match).then(function() {
-      $timeout(function() {
-        $alerts.info('Match removed', 'Match with id ' + match.id + ' was removed');
-      }, 500);
+      $alerts.info({
+        title: 'Match removed',
+        message: 'Match with id ' + match.id + ' was removed',
+        ttl: 1
+      });
 
       $location.path('/matches');
     });

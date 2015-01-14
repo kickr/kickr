@@ -13,7 +13,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import kickr.core.model.CoreMatchData;
 import kickr.core.model.MatchData;
@@ -69,7 +71,14 @@ public class MatchResource extends BaseResource {
   @Path("{id}")
   @RolesAllowed("user")
   @UnitOfWork
-  public void removeMatch(@PathParam("id") Long id) {
-    matchDao.removeMatch(id);
+  public void removeMatch(@Auth User user, @PathParam("id") Long id) {
+
+    Match match = matchDao.findMatchById(id);
+
+    if (match.isRated() && !user.hasRole("admin")) {
+      throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE).entity("Already rated").build());
+    }
+
+    matchDao.removeMatch(match);
   }
 }
