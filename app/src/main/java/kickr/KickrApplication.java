@@ -53,8 +53,8 @@ import support.security.auth.AuthFactory;
 
 public class KickrApplication extends Application<KickrConfiguration> {
 
-  private static final int ONE_MINUTE = 1000 * 60 * 15;
   private static final int ONE_SECOND = 1000;
+  private static final int FIVETEEN_MINUTES = ONE_SECOND * 60 * 15;
 
   // static
   
@@ -141,7 +141,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
       transactional.run(() -> {
         ratingService.calculateNewRatings();
       });
-    }, ONE_SECOND, ONE_MINUTE, TimeUnit.MILLISECONDS);
+    }, ONE_SECOND, FIVETEEN_MINUTES, TimeUnit.MILLISECONDS);
 
 
     // user management
