@@ -6,7 +6,6 @@ import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Instant;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +72,7 @@ public class ScoreDAO extends AbstractDAO<Score> {
   public List<ScoreWithChanges> getScoresWithChanges(int firstResult, int maxResults) {
     
     List<Score> scores = list(currentSession()
-                            .createQuery("SELECT s FROM Score s JOIN FETCH s.player ORDER BY s.value DESC")
+                            .createQuery("SELECT s FROM Score s ORDER BY s.value DESC")
                             .setFirstResult(firstResult)
                             .setMaxResults(maxResults));
    
@@ -85,7 +84,12 @@ public class ScoreDAO extends AbstractDAO<Score> {
     Date latestDate = Date.from(Instant.now().minus(Period.ofDays(7)));
     
     List<ScoreChange> changes = currentSession()
-                                   .createQuery("SELECT c FROM ScoreChange c JOIN FETCH c.match JOIN FETCH c.score WHERE c.created > :latestDate AND c.score IN :scores")
+                                   .createQuery(
+                                      "SELECT c FROM ScoreChange c " +
+                                        "JOIN FETCH c.match " +
+                                        "JOIN FETCH c.score " +
+                                        "JOIN FETCH c.score.player " +
+                                      "WHERE c.created > :latestDate AND c.score IN :scores")
                                    .setDate("latestDate", latestDate)
                                    .setParameterList("scores", scores)
                                    .list();
@@ -102,4 +106,3 @@ public class ScoreDAO extends AbstractDAO<Score> {
     currentSession().persist(update);
   }
 }
-

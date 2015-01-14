@@ -25,10 +25,16 @@ import kickr.util.Side;
 @NamedQueries({
   @NamedQuery(
     name = "Match.getAll",
-    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL ORDER BY m.played DESC"),
+    query = "SELECT m FROM Match m " + 
+              "LEFT JOIN FETCH m.team1.offense " +
+              "LEFT JOIN FETCH m.team1.defense " +
+              "LEFT JOIN FETCH m.team2.offense " +
+              "LEFT JOIN FETCH m.team2.defense " +
+              "JOIN FETCH m.table " + 
+            "WHERE m.played IS NOT NULL ORDER BY m.played DESC"),
   @NamedQuery(
     name = "Match.getUnrated",
-    query = "SELECT m FROM Match m WHERE m.removed = false AND m.played IS NOT NULL AND m.played < :played AND m.rated = false")
+    query = "SELECT m FROM Match m WHERE m.removed = false AND m.rated = false AND m.played IS NOT NULL AND m.played < :played")
 })
 public class Match extends BaseEntity {
 
