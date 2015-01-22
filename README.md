@@ -19,6 +19,14 @@ Install the required client dependencies via
 (cd client && bower install && npm install)
 ```
 
+### Migrate Database
+
+You can use the `db migrate` task provided by the kickr application itself to upgrade your database schema to the latest version.
+
+```
+(cd app && mvn package && java -jar target/backend-0.0.1.jar db migrate kickr.development.yml)
+```
+
 ### Run
 
 Run the backend:
