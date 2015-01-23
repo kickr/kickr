@@ -13,6 +13,7 @@ var ngModule = module.exports = angular.module('app', [
   require('./components/autocomplete').name,
   require('./navbar').name,
   require('./admin').name,
+  require('./tournaments').name,
   require('./login').name,
   require('./tournaments').name,
   require('./matches').name,

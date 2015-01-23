@@ -18,6 +18,11 @@ function PlayerApi(http, uri) {
   };
 }
 
+function TournamentApi(http, uri) {
+  SimpleEndPoint.call(this, http, uri);
+}
+
+
 function ScoresApi(http, uri) {
   BaseEndPoint.call(this, http, uri);
 
@@ -46,7 +51,7 @@ function Api(http) {
       players = this.create(PlayerApi, 'player'),
       scores = this.create(ScoresApi, 'score'),
       tables = this.create(TableApi, 'table'),
-      tournaments = this.create(ScoresApi, 'tournament'),
+      tournaments = this.create(TournamentApi, 'tournament'),
       user = this.create(UserApi, 'user');
 
   this.matches = function() {
@@ -71,6 +76,10 @@ function Api(http) {
 
   this.user = function() {
     return user;
+  };
+
+  this.tournaments = function() {
+    return tournaments;
   };
 }
 
