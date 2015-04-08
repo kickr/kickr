@@ -9,6 +9,10 @@
       <p>
         Name <input autofocus="autofocus" type="text" ng-model="tournament.name" />
       </p>
+
+      <p>
+        Match Days <input type="text" ng-model="tournament.matchDayCount" />
+      </p>
     </fieldset>
 
     <fieldset>
@@ -16,11 +20,19 @@
 
       <p>
         Add a player
+
         <span class="autocomplete">
-          <input type="text"
-                 autocomplete="fetchPlayers(value)"
-                 on-select="addPlayer(value)"
-                 ng-model="completions.player" />
+          <input
+            type="text"
+            required
+            autofocus="autofocus"
+            autocomplete="findPlayers(input)"
+            on-select="addPlayer(value)"
+            ng-model="newPlayer" />
+        </span>
+
+        <span ng-if="match.teams.team1.offense">
+          OK
         </span>
       </p>
 

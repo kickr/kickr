@@ -9,13 +9,22 @@ function NewTournamentController($scope, $location, $alerts, api) {
     player: ''
   };
 
-  $scope.fetchPlayers = function(value) {
-    return [
-      { key: 'Nico Rehwaldt', value: { id: 'NICO', name: 'Nico Rehwaldt' } },
-      { key: 'Class', value: { id: 'NICO1', name: 'Nico Rehwaldt 121^' } },
-      { key: 'Micha Schö', value: { id: 'MICHA1', name: 'Micha Schöttes' } }
-    ].filter(function(e) {
-      return e.key.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+  $scope.findPlayers = function(value) {
+    var match = /([\w]+)\s*<([^>]+)>/.exec(value);
+
+    if (match) {
+      return [
+        {
+          key: match[0],
+          value: { alias: match[1], email: match[2] }
+        }
+      ];
+    }
+
+    return api.players().find(value).then(function(results) {
+      return results.map(function(r) {
+        return { key: r.alias + (r.name ? '(' + r.name + ')' : ''), value: r };
+      });
     });
   };
 
@@ -28,6 +37,8 @@ function NewTournamentController($scope, $location, $alerts, api) {
 
     tournament.invitations.push(player);
     $scope.completions.player = '';
+
+    $scope.newPlayer = null;
   };
 
   $scope.save = function() {
