@@ -50,6 +50,8 @@ function Authentication($window, $cookies, $rootScope, $route, $http, $q) {
 
     accessToken.set(user.token || accessToken.get());
 
+    __loading = null;
+
     return user;
   }
 
@@ -57,11 +59,11 @@ function Authentication($window, $cookies, $rootScope, $route, $http, $q) {
 
   this.load = function() {
 
-    var token = accessToken.get();
-
     if (__loading) {
       return __loading;
     }
+
+    var token = accessToken.get();
 
     if (!token) {
       return $q.reject(new Error('no session'));
@@ -71,8 +73,9 @@ function Authentication($window, $cookies, $rootScope, $route, $http, $q) {
       return $q.when($rootScope.currentUser);
     }
 
-    __loading = $http.get('/api/auth?token=' + token).then(updateCredentials, clearAndReject).then(function(e) {
-      __loading = null;
+    __loading = $http.get('/api/auth?token=' + token)
+                     .then(updateCredentials, clearAndReject).then(function(e) {
+
       return e;
     });
 
@@ -80,8 +83,10 @@ function Authentication($window, $cookies, $rootScope, $route, $http, $q) {
   };
 
   this.login = function(name, password) {
-    return $http.post('/api/auth', { name: name, password: password })
-              .then(updateCredentials, clearAndReject);
+    __loading = $http.post('/api/auth', { name: name, password: password })
+                         .then(updateCredentials, clearAndReject);
+
+    return __loading;
   };
 
   this.logout = function() {
