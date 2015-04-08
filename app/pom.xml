@@ -13,10 +13,10 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <dropwizard.version>0.8.0-rc1</dropwizard.version>
+    <dropwizard.version>0.8.1</dropwizard.version>
     <hibernate.version>4.3.7.Final</hibernate.version>
-    <dropwizard.flyway.version>0.7.0-1</dropwizard.flyway.version>
-    <jetty.version>9.2.4.v20141103</jetty.version>
+    <dropwizard.flyway.version>0.8.0-2</dropwizard.flyway.version>
+    <jetty.version>9.2.9.v20150224</jetty.version>
 
     <exec.mainClass>kickr.KickrApplication</exec.mainClass>
     <exec.args>server kickr.development.yml</exec.args>
@@ -55,8 +55,8 @@
       <version>${dropwizard.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>io.dropwizard</groupId>
-          <artifactId>dropwizard-db</artifactId>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-core</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -94,6 +94,12 @@
       <artifactId>dropwizard-testing</artifactId>
       <version>${dropwizard.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
