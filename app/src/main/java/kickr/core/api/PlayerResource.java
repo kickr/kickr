@@ -7,7 +7,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -33,19 +32,12 @@ public class PlayerResource {
    * @return
    */
   @GET
+  @RolesAllowed("user")
   @UnitOfWork
   public List<PlayerData> getPlayers(@QueryParam("namePart") String namePart) {
     List<Player> players = playerDao.findPlayersMatchingNameOrAlias(namePart);
     
     return PlayerData.fromPlayers(players);
-  }
-  
-  @GET
-  @Path("{alias}")
-  @UnitOfWork
-  public PlayerData getPlayer(@PathParam("alias") String alias) {
-    Player player = playerDao.findPlayerByAlias(alias);
-    return PlayerData.fromPlayer(player);
   }
   
   @POST
