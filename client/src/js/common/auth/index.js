@@ -25,7 +25,7 @@ ngModule.run([ 'authentication', function(authentication) {
 }]);
 
 
-ngModule.run([ '$rootScope', 'authentication', function($rootScope, authentication) {
+ngModule.run([ '$rootScope', function($rootScope) {
 
   $rootScope.$on('$routeChangeStart', function(e, nextRoute) {
 
@@ -40,11 +40,11 @@ ngModule.run([ '$rootScope', 'authentication', function($rootScope, authenticati
       }
 
       if (!resolve.$currentUser) {
-        resolve.$currentUser = [ 'authentication', '$q', '$location', '$alerts', function(authentication, $q, $location, $alerts) {
+        resolve.$currentUser = [
+          'authentication', '$q', '$location', '$alerts',
+          function(authentication, $q, $location, $alerts) {
 
           function checkPermissions(currentUser) {
-
-            console.log(currentUser);
 
             if ((currentUser.permissions & requiredPermissions) !== requiredPermissions) {
 
