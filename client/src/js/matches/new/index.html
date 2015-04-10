@@ -8,15 +8,14 @@
 
       <p>
         Offense
-        <span class="autocomplete">
-          <input
-            type="text"
-            required
-            autofocus="autofocus"
-            autocomplete="findPlayers(input)"
-            on-select="match.teams.team1.offense = value"
-            ng-model="completions.team1offense" />
-        </span>
+
+        <input
+          type="text"
+          required
+          autofocus
+          autocomplete="findPlayers(input)"
+          autocomplete-select="match.teams.team1.offense = value"
+          ng-model="completions.team1offense" />
 
         <span ng-if="match.teams.team1.offense">
           OK
@@ -24,14 +23,13 @@
       </p>
       <p>
         Defense
-        <span class="autocomplete">
-          <input
-            type="text"
-            autofocus="autofocus"
-            autocomplete="findPlayers(input)"
-            on-select="match.teams.team1.defense = value"
-            ng-model="completions.team1defense" />
-        </span>
+
+        <input
+          type="text"
+          autofocus
+          autocomplete="findPlayers(input)"
+          autocomplete-select="match.teams.team1.defense = value"
+          ng-model="completions.team1defense" />
 
         <span ng-if="match.teams.team1.defense">
           OK
@@ -44,15 +42,13 @@
 
       <p>
         Offense
-        <span class="autocomplete">
-          <input
-            type="text"
-            required
-            autofocus="autofocus"
-            autocomplete="findPlayers(input)"
-            on-select="match.teams.team2.offense = value"
-            ng-model="completions.team2offense" />
-        </span>
+        <input
+          type="text"
+          required
+          autofocus
+          autocomplete="findPlayers(input)"
+          autocomplete-select="match.teams.team2.offense = value"
+          ng-model="completions.team2offense" />
 
         <span ng-if="match.teams.team2.offense">
           OK
@@ -60,14 +56,12 @@
       </p>
       <p>
         Defense
-        <span class="autocomplete">
-          <input
-            type="text"
-            autofocus="autofocus"
-            autocomplete="findPlayers(input)"
-            on-select="match.teams.team2.defense = value"
-            ng-model="completions.team2defense" />
-        </span>
+        <input
+          type="text"
+          autofocus
+          autocomplete="findPlayers(input)"
+          autocomplete-select="match.teams.team2.defense = value"
+          ng-model="completions.team2defense" />
 
         <span ng-if="match.teams.team2.defense">
           OK
