@@ -51,8 +51,10 @@ ngModule.directive('autocomplete', [ '$compile', '$q', '$timeout', function($com
     },
     link: function(scope, inputElement, attrs, ngModel) {
 
-      var completionParent = inputElement.wrap('<span class="autocomplete">'),
-          completionBox = $compile(angular.element(template).insertAfter(inputElement))(scope);
+      // wrap input with autocomplete
+      inputElement.wrap('<span class="autocomplete">');
+
+      var completionBox = $compile(angular.element(template).insertAfter(inputElement))(scope);
 
       scope.__completions = [];
       scope.__idx = -1;
@@ -152,7 +154,6 @@ ngModule.directive('autocomplete', [ '$compile', '$q', '$timeout', function($com
 
       scope.$on('$destroy', function() {
         completionBox.remove();
-        completionParent.parent().appendChild(inputElement);
       });
     }
   };
