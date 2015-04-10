@@ -19,7 +19,7 @@ import javax.ws.rs.ext.Provider;
  * @author nikku
  */
 @Provider
-@Priority(Priorities.AUTHORIZATION)
+@Priority(Priorities.AUTHENTICATION)
 public class SecurityContextInitializer<P extends Principal> implements ContainerRequestFilter {
 
   @Inject
