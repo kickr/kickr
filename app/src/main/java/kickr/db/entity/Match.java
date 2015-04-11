@@ -30,7 +30,8 @@ import kickr.util.Side;
               "LEFT JOIN FETCH m.team1.defense " +
               "LEFT JOIN FETCH m.team2.offense " +
               "LEFT JOIN FETCH m.team2.defense " +
-              "JOIN FETCH m.table " + 
+              "JOIN FETCH m.table " +
+              "LEFT JOIN FETCH m.creator " +
             "WHERE m.played IS NOT NULL ORDER BY m.played DESC"),
   @NamedQuery(
     name = "Match.getUnrated",
@@ -58,13 +59,16 @@ public class Match extends BaseEntity {
   @ManyToOne
   protected FoosballTable table;
   
+  @Embedded
+  protected MatchResult result;
+
   @Temporal(TemporalType.TIMESTAMP)
   protected Date played;
 
   protected boolean rated = false;
   
   protected boolean removed = false;
-  
+
   @OneToMany
   @JoinColumn(name = "match_id")
   protected List<Game> games;
@@ -145,5 +149,13 @@ public class Match extends BaseEntity {
     } else {
       return team2;
     }
+  }
+
+  public void setResult(MatchResult result) {
+    this.result = result;
+  }
+
+  public MatchResult getResult() {
+    return result;
   }
 }

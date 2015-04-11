@@ -13,7 +13,7 @@ public class CoreMatchData {
   @NotNull
   protected List<GameData> games;
   
-  protected ResultData score;
+  protected MatchResultData result;
   
   protected Date played;
   
@@ -28,12 +28,12 @@ public class CoreMatchData {
     this.teams = teams;
   }
   
-  public ResultData getScore() {
-    return score;
+  public MatchResultData getResult() {
+    return result;
   }
   
-  public void setScore(ResultData score) {
-    this.score = score;
+  public void setResult(MatchResultData score) {
+    this.result = score;
   }
   
   public List<GameData> getGames() {

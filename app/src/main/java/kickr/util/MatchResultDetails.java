@@ -11,7 +11,7 @@ import static kickr.util.Side.*;
  *
  * @author nikku
  */
-public class MatchResult {
+public class MatchResultDetails {
   
   private static final int CLOSE_DIFFERENCE = 2;
   
@@ -32,7 +32,7 @@ public class MatchResult {
   
   private int ties = 0;
   
-  public MatchResult(Match match) {
+  public MatchResultDetails(Match match) {
     this.match = match;
     
     this.wins = new EnumMap<>(Side.class);
@@ -127,14 +127,13 @@ public class MatchResult {
     stomps.merge(side, 1, Integer::sum);
   }
   
-  
   // static helpers 
 
-  public static MatchResult compute(Match match) {
-    MatchResult matchResults = new MatchResult(match);
+  public static MatchResultDetails compute(Match match) {
+    MatchResultDetails matchResultDetails = new MatchResultDetails(match);
     
-    match.getGames().stream().forEach(matchResults::add);
+    match.getGames().stream().forEach(matchResultDetails::add);
     
-    return matchResults;
+    return matchResultDetails;
   }
 }

@@ -17,6 +17,7 @@
     <hibernate.version>4.3.7.Final</hibernate.version>
     <dropwizard.flyway.version>0.8.0-2</dropwizard.flyway.version>
     <jetty.version>9.2.9.v20150224</jetty.version>
+    <junit.version>4.12</junit.version>
 
     <exec.mainClass>kickr.KickrApplication</exec.mainClass>
     <exec.args>server kickr.development.yml</exec.args>
@@ -106,6 +107,12 @@
       <artifactId>jetty-servlets</artifactId>
       <version>${jetty.version}</version>
       <type>jar</type>
+    </dependency>
+    <!-- testing -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
     </dependency>
   </dependencies>
 

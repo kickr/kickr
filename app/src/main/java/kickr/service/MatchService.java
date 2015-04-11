@@ -15,9 +15,12 @@ import kickr.db.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
+import kickr.db.entity.MatchResult;
 import kickr.db.entity.Player;
 import kickr.db.entity.Team;
 import kickr.db.entity.user.User;
+import kickr.util.MatchResultDetails;
+import kickr.util.Side;
 
 
 public class MatchService {
@@ -75,15 +78,19 @@ public class MatchService {
     
     // create games
     List<Game> games = new ArrayList<>();
-    
+
     for (int i = 0; i < matchData.getGames().size(); i++) {
       Game game = matchData.getGames().get(i).toGame();
       game.setGameNumber(i);
       games.add(game);
-      
+
       gameDao.create(game);
     }
-    
+
+    MatchResultDetails resultDetails = MatchResultDetails.compute(match);
+
+    match.setResult(MatchResult.create(resultDetails));
+
     match.setGames(games);
     
     matchDao.create(match);

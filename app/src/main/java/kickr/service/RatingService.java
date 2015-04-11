@@ -11,7 +11,7 @@ import kickr.db.entity.Score;
 import kickr.db.entity.ScoreChange;
 import kickr.db.entity.ScoreType;
 import kickr.db.entity.Team;
-import kickr.util.MatchResult;
+import kickr.util.MatchResultDetails;
 import kickr.util.ScoreUpdates;
 import kickr.util.Side;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class RatingService {
     
     try {
       unratedMatches.stream()
-          .map(MatchResult::compute)
+          .map(MatchResultDetails::compute)
           .map(this::createChanges)
           .flatMap(changes -> changes.stream())
           .forEach(change -> {
@@ -58,7 +58,7 @@ public class RatingService {
     }
   }
  
-  public List<ScoreChange> createChanges(MatchResult result) {
+  public List<ScoreChange> createChanges(MatchResultDetails result) {
     
     Match match = result.getMatch();
 
