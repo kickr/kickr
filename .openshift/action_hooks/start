@@ -4,8 +4,8 @@
 
 cd $OPENSHIFT_REPO_DIR/app/
 
-# migrate to latest database version
+echo "Check if schema migration is necessary"
 java -jar target/backend-0.0.1.jar db migrate kickr.openshift.yml
 
-# start server in background
+echo "Starting server"
 nohup java -jar target/backend-0.0.1.jar server kickr.openshift.yml > ${OPENSHIFT_DIY_LOG_DIR}/kickr.log 2>&1 &
