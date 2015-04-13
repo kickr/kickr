@@ -16,5 +16,5 @@ public abstract class SecurityContextFactory<P extends Principal> {
    * @param request
    * @return
    */
-  protected abstract TypedSecurityContext<P> createSecurityContext(HttpServletRequest request);
+  public abstract TypedSecurityContext<P> createSecurityContext(HttpServletRequest request);
 }

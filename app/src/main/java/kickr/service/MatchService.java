@@ -20,7 +20,6 @@ import kickr.db.entity.Player;
 import kickr.db.entity.Team;
 import kickr.db.entity.user.User;
 import kickr.util.MatchResultDetails;
-import kickr.util.Side;
 
 
 public class MatchService {
@@ -50,7 +49,7 @@ public class MatchService {
     return player;
   }
 
-  public void insertMatch(CoreMatchData matchData, User creator) {
+  public Match insertMatch(CoreMatchData matchData, User creator) {
     Match match = new Match();
     
     // assign table
@@ -87,13 +86,15 @@ public class MatchService {
       gameDao.create(game);
     }
 
+    match.setGames(games);
+
     MatchResultDetails resultDetails = MatchResultDetails.compute(match);
 
     match.setResult(MatchResult.create(resultDetails));
 
-    match.setGames(games);
-    
     matchDao.create(match);
+    
+    return match;
   }
 
 }

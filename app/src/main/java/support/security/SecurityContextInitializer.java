@@ -23,7 +23,7 @@ import javax.ws.rs.ext.Provider;
 public class SecurityContextInitializer<P extends Principal> implements ContainerRequestFilter {
 
   @Inject
-  private HttpServletRequest request;
+  private javax.inject.Provider<HttpServletRequest> requestProvider;
 
   private final SecurityContextFactory securityContextFactory;
 
@@ -35,7 +35,7 @@ public class SecurityContextInitializer<P extends Principal> implements Containe
   public void filter(ContainerRequestContext requestContext) throws IOException {
 
     try {
-      SecurityContext securityContext = securityContextFactory.createSecurityContext(request);
+      SecurityContext securityContext = securityContextFactory.createSecurityContext(requestProvider.get());
       requestContext.setSecurityContext(securityContext);
     } catch (WebApplicationException ex) {
       requestContext.abortWith(ex.getResponse());

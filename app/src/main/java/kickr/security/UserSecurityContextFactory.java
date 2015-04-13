@@ -40,7 +40,7 @@ public class UserSecurityContextFactory extends SecurityContextFactory<User> {
   }
 
   @Override
-  protected TypedSecurityContext<User> createSecurityContext(HttpServletRequest request) {
+  public TypedSecurityContext<User> createSecurityContext(HttpServletRequest request) {
 
     if (request == null) {
       return null;
