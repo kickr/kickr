@@ -42,9 +42,9 @@ module.exports = function (grunt) {
       assets: 'src/assets',
       sources: 'src/js',
       less: 'src/less',
-      dist: '../app/target/classes/web',
       tests: 'test',
-      bower_components: 'bower_components'
+      bower_components: 'bower_components',
+      dist: '../app/target/classes/web'
     },
 
     jshint: {
@@ -141,6 +141,12 @@ module.exports = function (grunt) {
     },
 
     watch: {
+      app_rebuild: {
+        files: [
+          '../app/target/classes/banner.txt'
+        ],
+        tasks: [ 'build' ]
+      },
       resources: {
         files: [
           '<%= config.assets %>/images/**/*',
@@ -160,11 +166,19 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', 'karma:single');
-  grunt.registerTask('build', [ 'less', 'browserify:app', 'copy' ]);
+
   grunt.registerTask('release', function() {
-    grunt.config.merge({config : { dist: '../app/src/main/resources/web/' }});
-    grunt.task.run(['test', 'build']);
+    grunt.config.merge({
+      config : {
+        dist: '../app/src/main/resources/web/'
+      }
+    });
+
+    grunt.task.run([ 'test', 'build' ]);
   });
+
+  grunt.registerTask('build', [ 'less', 'browserify:app', 'copy' ]);
+
   grunt.registerTask('auto-build', [
     'build',
     'browserify:watch',
