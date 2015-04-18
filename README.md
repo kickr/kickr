@@ -4,41 +4,23 @@ A kicker (áka table soccer) result tracker application.
 
 ![Screenshot](https://raw.githubusercontent.com/kickr/kickr/master/resources/screenshot.png)
 
+[See it running](https://app-kickr.rhcloud.com).
 
-## Development
 
-### Setup
+## Features
 
-Create a file `app/kickr.development.yml` based on the provided sample configuration.
+* Log table soccer games (up to 2 vs. 2 players)
+* Generate statistics
 
-You will need MySQL / MariaDB to resemble the official development setup. Set it up and add it to the configuration.
 
-Install the required client dependencies via
+## Technology Stack
 
-```
-(cd client && bower install && npm install)
-```
+This application uses [dropwizard](http://www.dropwizard.io/) as a technology stack for the back-end. It builds on top of Hibernate for object relational mapping and Jersey for the REST api.
 
-### Migrate Database
+The front-end stack consists of an AngularJS application that is being bundled for the browser using browserify. It uses less for CSS processing.
 
-You can use the `db migrate` task provided by the kickr application itself to upgrade your database schema to the latest version.
 
-```
-(cd app && mvn package && java -jar target/backend-0.0.1.jar db migrate kickr.development.yml)
-```
+## Resources
 
-### Run
-
-Run the backend:
-
-```
-(cd app && mvn clean compile exec:java)
-```
-
-Add the client:
-
-```
-(cd client && grunt auto-build)
-```
-
-Open [http://localhost:8280](http://localhost:8280) to inspect the website.
+* [How to contribute](https://github.com/kickr/kickr/blob/master/CONTRIBUTING.md)
+* [Issues](https://github.com/kickr/kickr/issues)
