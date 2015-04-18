@@ -82,15 +82,15 @@ function Authentication($window, $cookies, $rootScope, $route, $http, $q) {
     return __loading;
   };
 
-  this.login = function(name, password) {
-    __loading = $http.post('/api/auth', { name: name, password: password })
+  this.login = function(name, password, rememberMe) {
+    __loading = $http.post('/api/auth', { name: name, password: password, rememberMe: rememberMe })
                          .then(updateCredentials, clearAndReject);
 
     return __loading;
   };
 
   this.logout = function() {
-    return $http.delete('/api/auth').then(clear).then(reload);
+    return $http.delete('/api/auth?token=' + accessToken.get()).then(clear).then(reload);
   };
 
   this.userChange = function() {

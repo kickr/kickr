@@ -1,6 +1,6 @@
 <h1>Login to kickr</h1>
 
-<form name="form" ng-submit="login(name, password)">
+<form name="form" ng-submit="login(name, password, rememberMe)">
 
   <fieldset>
 
@@ -17,6 +17,14 @@
              required
              placeholder="Password"
              ng-model="password" />
+    </p>
+
+    <p>
+      <label>
+        <input type="checkbox"
+               ng-model="rememberMe" />
+        Remember Me
+      </label>
     </p>
 
     <p>

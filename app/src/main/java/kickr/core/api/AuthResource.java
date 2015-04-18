@@ -43,10 +43,10 @@ public class AuthResource extends BaseResource {
 
   @POST
   @UnitOfWork
-  public UserData login(LoginData loginData) {
+  public UserData create(LoginData loginData) {
 
     try {
-      AccessToken token = authenticationService.authenticate(loginData.getName(), loginData.getPassword(), true);
+      AccessToken token = authenticationService.authenticate(loginData.getName(), loginData.getPassword(), !loginData.getRememberMe());
       User user = token.getUser();
 
       return new UserData(user.getName(), user.getPermissions(), token.getValue());
@@ -57,8 +57,8 @@ public class AuthResource extends BaseResource {
 
   @DELETE
   @UnitOfWork
-  public void logout(@Auth User user) {
-    authenticationService.unauthenticate(user);
+  public void delete(@Auth User user, @QueryParam("token") String token) {
+    authenticationService.unauthenticate(user, token);
   }
 
   private WebApplicationException unauthorized(AuthenticationException ex) {

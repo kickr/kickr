@@ -10,6 +10,8 @@ public class LoginData {
 
   private String password;
 
+  private boolean rememberMe = false;
+
   public LoginData() { }
 
   public String getName() {
@@ -26,5 +28,13 @@ public class LoginData {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setRememberMe(Boolean rememberMe) {
+    this.rememberMe = rememberMe;
+  }
+
+  public Boolean getRememberMe() {
+    return rememberMe;
   }
 }

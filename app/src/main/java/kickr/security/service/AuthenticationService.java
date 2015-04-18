@@ -40,7 +40,7 @@ public class AuthenticationService {
       if (validUntil == null || validUntil.after(new Date())) {
 
         if (validUntil != null) {
-          updateValidity(accessToken);
+          limitValidity(accessToken);
         }
 
         return accessToken.getUser();
@@ -71,7 +71,7 @@ public class AuthenticationService {
     AccessToken accessToken = new AccessToken(sessionToken, user);
     
     if (limited) {
-      updateValidity(accessToken);
+      limitValidity(accessToken);
     }
 
     accessTokenDao.create(accessToken);
@@ -83,11 +83,15 @@ public class AuthenticationService {
     return new AuthenticationException("Failed to authenticate");
   }
 
-  public void unauthenticate(User user) {
-    accessTokenDao.removeByUser(user);
+  public void unauthenticate(User user, String token) {
+    if (token == null) {
+      accessTokenDao.removeByUser(user);
+    } else {
+      accessTokenDao.removeByToken(user, token);
+    }
   }
 
-  private void updateValidity(AccessToken accessToken) {
+  private void limitValidity(AccessToken accessToken) {
     accessToken.setValidUntil(Date.from(Instant.now().plus(SESSION_DURATION)));
   }
 }

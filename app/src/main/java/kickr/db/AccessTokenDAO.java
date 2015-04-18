@@ -40,4 +40,12 @@ public class AccessTokenDAO extends AbstractDAO<AccessToken> {
                .setParameter("user", user)
                .executeUpdate();
   }
+
+  public int removeByToken(User user, String token) {
+    return currentSession()
+             .createQuery("DELETE FROM AccessToken a WHERE a.user = :user AND a.value = :token")
+               .setParameter("user", user)
+               .setParameter("token", token)
+               .executeUpdate();
+  }
 }

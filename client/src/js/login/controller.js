@@ -1,6 +1,6 @@
 function LoginController($scope, $alerts, $location, authentication) {
 
-  $scope.login = function(name, password) {
+  $scope.login = function(name, password, rememberMe) {
 
     if ($scope.working) {
       return;
@@ -8,7 +8,7 @@ function LoginController($scope, $alerts, $location, authentication) {
 
     $scope.working = true;
 
-    authentication.login(name, password).then(function(e) {
+    authentication.login(name, password, rememberMe).then(function(e) {
       $alerts.info({ title: 'Login successful', timeout: 8000, ttl: 1 });
       $location.path('/').replace();
     }).catch(function(e) {
