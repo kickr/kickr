@@ -12,7 +12,7 @@ database:
     javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
 
 server:
-  rootPath: /api/*
+  rootPath: /*
   applicationConnectors:
     - type: http
       bindHost: @OPENSHIFT_DIY_IP@

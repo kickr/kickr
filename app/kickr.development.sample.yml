@@ -15,7 +15,7 @@ rating:
   delay: 0
 
 server:
-  rootPath: /api/*
+  rootPath: /*
   applicationConnectors:
     - type: http
       port: 8280

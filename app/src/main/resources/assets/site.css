@@ -1,0 +1,47 @@
+/* code */
+pre {
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1em;
+  overflow: hidden;
+}
+
+/* main */
+.main.container {
+  padding-top: 6em;
+}
+
+/* header */
+.ui.menu .item>img:not(.ui) {
+  width: 4em;
+}
+
+/* footer */
+footer .ui.divider {
+  margin-top: 3em;
+  margin-bottom: 1.5em;
+}
+
+
+/* loader */
+.ui.basic.loading.segment,
+.ui.basic.loaded.segment {
+  padding: 0.2em;
+}
+
+.highscore.table,
+.matches.table {
+  font-family: "Courier New", Courier, monospace;
+}
+
+.matches.table .unrated,
+.matches.table .removed {
+  opacity: 0.7;
+}
+
+.matches.table .removed {
+  text-decoration: line-through;
+}
+
+.login.grid .column {
+  max-width: 450px;
+}

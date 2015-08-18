@@ -1,5 +1,6 @@
 package kickr.core.api;
 
+import kickr.web.api.MatchResource;
 import static io.dropwizard.testing.FixtureHelpers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;

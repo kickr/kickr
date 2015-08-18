@@ -13,9 +13,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <dropwizard.version>0.8.1</dropwizard.version>
-    <hibernate.version>4.3.7.Final</hibernate.version>
+    <dropwizard.version>0.8.2</dropwizard.version>
     <dropwizard.flyway.version>0.8.0-2</dropwizard.flyway.version>
+    <hibernate.version>4.3.7.Final</hibernate.version>
     <jetty.version>9.2.9.v20150224</jetty.version>
     <junit.version>4.12</junit.version>
 
@@ -71,6 +71,28 @@
           <artifactId>dropwizard-db</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <!-- 12 factor app, yea! -->
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-views-freemarker</artifactId>
+      <version>${dropwizard.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.freemarker</groupId>
+          <artifactId>freemarker</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.23</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-forms</artifactId>
+      <version>${dropwizard.version}</version>
     </dependency>
     <!-- password handling -->
     <dependency>

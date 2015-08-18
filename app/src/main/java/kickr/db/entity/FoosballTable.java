@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Table(name = "kickr_table")
 public class FoosballTable extends BaseEntity {
   
-  protected String name;
+  protected String andererName;
   
   protected String team1Alias;
   protected String team2Alias;
@@ -15,15 +15,15 @@ public class FoosballTable extends BaseEntity {
   public FoosballTable() { }
 
   public FoosballTable(String name) {
-    this.name = name;
+    this.andererName = name;
   }
 
   public String getName() {
-    return name;
+    return andererName;
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.andererName = name;
   }
 
   public String getTeam1Alias() {

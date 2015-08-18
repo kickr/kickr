@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import kickr.core.model.CoreMatchData;
-import kickr.core.model.PlayerData;
-import kickr.core.model.TableData;
-import kickr.core.model.TeamData;
+import kickr.web.model.match.CoreMatchData;
+import kickr.web.model.PlayerData;
+import kickr.web.model.TableData;
+import kickr.web.model.TeamData;
 import kickr.db.FoosballTableDAO;
 import kickr.db.GameDAO;
 import kickr.db.MatchDAO;

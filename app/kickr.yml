@@ -9,7 +9,7 @@ database:
     hibernate.ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
 server:
-  rootPath: /api/*
+  rootPath: /*
   applicationConnectors:
     - type: http
       port: 8280

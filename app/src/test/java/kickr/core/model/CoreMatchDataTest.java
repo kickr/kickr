@@ -1,5 +1,7 @@
 package kickr.core.model;
 
+import kickr.web.model.match.CoreMatchData;
+import kickr.web.model.TeamsData;
 import static io.dropwizard.testing.FixtureHelpers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import io.dropwizard.jackson.Jackson;

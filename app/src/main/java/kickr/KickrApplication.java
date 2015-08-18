@@ -7,21 +7,29 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.flyway.FlywayBundle;
 import io.dropwizard.flyway.FlywayFactory;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
+import io.dropwizard.views.ViewRenderer;
+import support.views.FreemarkerViewRenderer;
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.DispatcherType;
 import kickr.cli.SetupCommand;
-import kickr.core.api.AuthResource;
-import kickr.core.api.MatchResource;
-import kickr.core.api.PlayerResource;
-import kickr.core.api.ScoreResource;
-import kickr.core.api.TableResource;
-import kickr.core.api.administration.AdminResource;
+import kickr.web.UnauthorizedErrorHandler;
+import kickr.web.api.UserResource;
+import kickr.web.api.MatchResource;
+import kickr.web.api.PlayerResource;
+import kickr.web.api.RootResource;
+import kickr.web.api.ScoreResource;
+import kickr.web.api.TableResource;
+import kickr.web.api.administration.AdminResource;
 import kickr.db.FoosballTableDAO;
 import kickr.db.GameDAO;
 import kickr.db.MatchDAO;
@@ -41,6 +49,7 @@ import kickr.security.service.AuthenticationService;
 import kickr.security.service.CredentialsService;
 import kickr.service.MatchService;
 import kickr.service.RatingService;
+import kickr.web.CharsetResponseFilter;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
@@ -50,24 +59,23 @@ import support.security.SecurityContextInitializer;
 import support.security.auth.AuthFactory;
 
 
-
 public class KickrApplication extends Application<KickrConfiguration> {
 
   private static final int ONE_SECOND = 1000;
   private static final int FIVETEEN_MINUTES = ONE_SECOND * 60 * 15;
 
   // static
-  
+
   public static void main(String[] args) throws Exception {
     new KickrApplication().run(args);
   }
-  
-  
+
+
   // instance
-  
+
   private HibernateBundle<KickrConfiguration> hibernateBundle;
 
-  
+
   @Override
   public String getName() {
     return "kickr";
@@ -90,13 +98,19 @@ public class KickrApplication extends Application<KickrConfiguration> {
         return configuration.getDataSourceFactory();
       }
     };
-    
-    bootstrap.addBundle(new AssetsBundle("/web", "/", "index.html"));
+
+    bootstrap.addBundle(new MultiPartBundle());
+
+    List<ViewRenderer> viewRenderers = Arrays.asList(new FreemarkerViewRenderer());
+
+    bootstrap.addBundle(new ViewBundle<KickrConfiguration>(viewRenderers) { });
+
+    bootstrap.addBundle(new AssetsBundle("/assets", "/assets"));
 
     bootstrap.addBundle(hibernateBundle);
 
     bootstrap.addBundle(new FlywayBundle<KickrConfiguration>() {
-      
+
       @Override
       public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
         return configuration.getDataSourceFactory();
@@ -107,7 +121,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
         return configuration.getFlywayFactory();
       }
     });
-  
+
     bootstrap.addCommand(new SetupCommand());
   }
 
@@ -115,9 +129,9 @@ public class KickrApplication extends Application<KickrConfiguration> {
   public void run(KickrConfiguration configuration, Environment environment) throws Exception {
     ScheduledExecutorService scheduledExecutorService = environment.lifecycle()
         .scheduledExecutorService("scheduled-pool-%d").build();
-    
+
     SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
-    
+
     PlayerDAO playerDao = new PlayerDAO(sessionFactory);
     MatchDAO matchDao = new MatchDAO(sessionFactory);
     GameDAO gameDao = new GameDAO(sessionFactory);
@@ -125,18 +139,18 @@ public class KickrApplication extends Application<KickrConfiguration> {
     FoosballTableDAO tableDao = new FoosballTableDAO(sessionFactory);
     AccessTokenDAO accessTokenDao = new AccessTokenDAO(sessionFactory);
     UserDAO userDao = new UserDAO(sessionFactory);
-    
+
     WithTransaction transactional = new WithTransaction(sessionFactory);
 
     MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
     CredentialsService credentialsService = new CredentialsService();
     AuthenticationService authenticationService = new AuthenticationService(credentialsService, userDao, accessTokenDao);
-    
+
     RatingService ratingService = new RatingService(matchDao, scoreDao, configuration.getRatingConfiguration());
 
-    
+
     // schedule update of ratings
-    
+
     scheduledExecutorService.scheduleWithFixedDelay(() -> {
       transactional.run(() -> {
         ratingService.calculateNewRatings();
@@ -153,21 +167,26 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     environment.jersey().register(AuthFactory.binder(new AuthFactory<>(User.class)));
 
-    environment.jersey().register(new AuthResource(authenticationService));
+    environment.jersey().register(new UserResource(authenticationService));
 
     // resources
+
+    environment.jersey().register(new UnauthorizedErrorHandler());
+    environment.jersey().register(new CharsetResponseFilter());
+
+    environment.jersey().register(new RootResource());
 
     environment.jersey().register(new MatchResource(matchService, matchDao));
     environment.jersey().register(new ScoreResource(scoreDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
     environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao, sessionFactory));
-    
+
     // cross origin requests
-    
+
     FilterHolder corsFilter = environment.getApplicationContext()
         .addFilter("org.eclipse.jetty.servlets.CrossOriginFilter", "/", EnumSet.of(DispatcherType.REQUEST));
-    
+
     corsFilter.setInitParameter("allowedOrigins", "*");
     corsFilter.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
   }
