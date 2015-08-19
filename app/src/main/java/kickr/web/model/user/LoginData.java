@@ -1,16 +1,22 @@
 package kickr.web.model.user;
 
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+
 /**
  *
  * @author nikku
  */
 public class LoginData {
 
+  @FormParam("name")
   private String name;
 
+  @FormParam("password")
   private String password;
 
-  private boolean rememberMe = false;
+  @FormParam("rememberMe") @DefaultValue("false")
+  private boolean rememberMe;
 
   public LoginData() { }
 
@@ -18,20 +24,8 @@ public class LoginData {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public String getPassword() {
     return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public void setRememberMe(Boolean rememberMe) {
-    this.rememberMe = rememberMe;
   }
 
   public Boolean getRememberMe() {

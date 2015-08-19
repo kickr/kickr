@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.DispatcherType;
 import kickr.cli.SetupCommand;
-import kickr.web.UnauthorizedErrorHandler;
+import kickr.web.NotAuthorizedErrorHandler;
 import kickr.web.api.UserResource;
 import kickr.web.api.MatchResource;
 import kickr.web.api.PlayerResource;
@@ -50,6 +50,7 @@ import kickr.security.service.CredentialsService;
 import kickr.service.MatchService;
 import kickr.service.RatingService;
 import kickr.web.CharsetResponseFilter;
+import kickr.web.NotFoundErrorHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
@@ -101,9 +102,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     bootstrap.addBundle(new MultiPartBundle());
 
-    List<ViewRenderer> viewRenderers = Arrays.asList(new FreemarkerViewRenderer());
-
-    bootstrap.addBundle(new ViewBundle<KickrConfiguration>(viewRenderers) { });
+    bootstrap.addBundle(new ViewBundle<KickrConfiguration>() { });
 
     bootstrap.addBundle(new AssetsBundle("/assets", "/assets"));
 
@@ -171,7 +170,9 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     // resources
 
-    environment.jersey().register(new UnauthorizedErrorHandler());
+    environment.jersey().register(new NotAuthorizedErrorHandler());
+    environment.jersey().register(new NotFoundErrorHandler());
+    
     environment.jersey().register(new CharsetResponseFilter());
 
     environment.jersey().register(new RootResource());

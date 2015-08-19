@@ -21,17 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view.error;
+package kickr.web;
 
-import io.dropwizard.views.View;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+import kickr.web.view.error.NotFoundView;
 
 /**
  *
  * @author nikku
  */
-public class NotAuthorizedView extends View {
+@Provider
+public class NotFoundErrorHandler implements ExceptionMapper<NotFoundException> {
 
-  public NotAuthorizedView() {
-    super("not_authorized.ftl");
+  @Override
+  public Response toResponse(NotFoundException exception) {
+    Response originalResponse = exception.getResponse();
+
+    return Response.fromResponse(originalResponse).entity(new NotFoundView()).build();
   }
 }

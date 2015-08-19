@@ -1,21 +1,23 @@
 package kickr.web.api;
 
-import kickr.web.BaseResource;
 import io.dropwizard.hibernate.UnitOfWork;
-import javax.ws.rs.DELETE;
-import kickr.web.model.user.LoginData;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-import kickr.web.model.user.UserData;
 import kickr.db.entity.user.AccessToken;
 import kickr.db.entity.user.User;
 import kickr.security.service.AuthenticationService;
 import kickr.web.BaseResource;
-import kickr.web.view.LoginView;
+import kickr.web.view.user.LoginView;
+import kickr.web.view.user.SignupView;
 import support.security.AuthenticationException;
 import support.security.annotation.Auth;
 
@@ -35,9 +37,9 @@ public class UserResource extends BaseResource {
   @GET
   @Path("login")
   @UnitOfWork
-  public LoginView get(@QueryParam("token") String token) {
+  public LoginView loginForm(@QueryParam("redirectTo") String redirectTo) {
     
-    return new LoginView();
+    return new LoginView().redirectTo(redirectTo);
 
     /*
     try {
@@ -51,15 +53,37 @@ public class UserResource extends BaseResource {
   @POST
   @Path("login")
   @UnitOfWork
-  public UserData create(LoginData loginData) {
+  public Response login(
+      @QueryParam("redirectTo") String redirectTo,
+      MultivaluedMap<String, String> loginData) {
+
+    String name = loginData.getFirst("name");
+    String password = loginData.getFirst("password");
+    Boolean rememberMe = Boolean.parseBoolean(loginData.getFirst("rememberMe"));
+
+    if (redirectTo == null || redirectTo.isEmpty()) {
+      redirectTo = "/?hello=1";
+    }
 
     try {
-      AccessToken token = authenticationService.authenticate(loginData.getName(), loginData.getPassword(), !loginData.getRememberMe());
-      User user = token.getUser();
+      AccessToken token = authenticationService.authenticate(name, password, !rememberMe);
 
-      return new UserData(user.getName(), user.getPermissions(), token.getValue());
+      Date validUntil = token.getValidUntil();
+
+      long maxAge = 365 * 24 * 60 * 60; // one year;
+      if (validUntil != null) {
+        maxAge = Instant.now().until(validUntil.toInstant(), ChronoUnit.SECONDS);
+      }
+      
+      NewCookie loginCookie = new NewCookie("__token", token.getValue(), "/", null, null, (int) maxAge, false, true);
+      
+      return redirect(redirectTo).cookie(loginCookie).build();
+
     } catch (AuthenticationException ex) {
-      throw unauthorized(ex);
+
+      LoginView loginView = populateView(new LoginView().redirectTo(redirectTo).addError("Invalid credentials"));
+
+      return unauthorized().entity(loginView).build();
     }
   }
 
@@ -70,11 +94,9 @@ public class UserResource extends BaseResource {
     authenticationService.unauthenticate(user, token);
   }
 
-  private WebApplicationException unauthorized(AuthenticationException ex) {
-    return new WebApplicationException("Authentication failed",
-      Response
-        .status(Response.Status.UNAUTHORIZED)
-        .entity("authentication failed")
-        .build());
+  @GET
+  @Path("signup")
+  public SignupView signupForm() {
+    return new SignupView();
   }
 }

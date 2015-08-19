@@ -42,6 +42,12 @@ footer .ui.divider {
   text-decoration: line-through;
 }
 
-.login.grid .column {
-  max-width: 450px;
+@media(min-width: 768px) {
+  .login.grid {
+    margin: 3em auto 6em auto;
+  }
+
+  .login.grid .column {
+    max-width: 450px;
+  }
 }

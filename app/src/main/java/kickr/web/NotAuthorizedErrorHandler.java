@@ -23,23 +23,31 @@
  */
 package kickr.web;
 
+import java.net.URI;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import kickr.web.view.error.NotAuthorizedView;
 
 /**
  *
  * @author nikku
  */
 @Provider
-public class UnauthorizedErrorHandler implements ExceptionMapper<NotAuthorizedException> {
+public class NotAuthorizedErrorHandler implements ExceptionMapper<NotAuthorizedException> {
+
+  @Context
+  UriInfo uriInfo;
 
   @Override
   public Response toResponse(NotAuthorizedException exception) {
-    Response originalResponse = exception.getResponse();
+    URI uri = UriBuilder.fromUri(uriInfo.getPath(true) + uriInfo.relativize(uriInfo.getRequestUri()).toString()).build();
 
-    return Response.fromResponse(originalResponse).entity(new NotAuthorizedView()).build();
+    URI build = uriInfo.getAbsolutePathBuilder().path("/user/login").queryParam("redirectTo", "/" + uri.toString()).build();
+
+    return Response.temporaryRedirect(uriInfo.relativize(build)).build();
   }
 }

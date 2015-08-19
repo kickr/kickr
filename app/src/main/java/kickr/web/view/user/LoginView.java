@@ -21,17 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.view.user;
 
-import io.dropwizard.views.View;
+import kickr.web.view.BaseView;
 
 /**
  *
  * @author nikku
  */
-public class LoginView extends View {
+public class LoginView extends BaseView<LoginView> {
+
+  private String redirectUri;
 
   public LoginView() {
-    super("login.ftl");
+    super(LoginView.class, "login.ftl");
+  }
+
+  public String getRedirectUri() {
+    return redirectUri;
+  }
+
+  public LoginView redirectTo(String redirectUri) {
+    this.redirectUri = redirectUri;
+    return this;
   }
 }

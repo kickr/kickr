@@ -1,18 +1,21 @@
-<#include "*/header.ftl">
-
 <div class="ui middle aligned center aligned login grid">
   <div class="column">
     <h3 class="ui header">
-      <div class="content">
-        Log-in to Kckr
-      </div>
+      Login to kickr
     </h3>
-    <form class="ui large form" action="/user/login" method="post">
+    <form class="ui form ${(errors?size > 0)?string('error', '')}" action="/user/login<#if redirectUri??>?redirectTo=${redirectUri}</#if>" method="post">
+
+      <div class="ui error message">
+        <#list errors as error>
+          <p>${error.content}</p>
+        </#list>
+      </div>
+
       <div class="ui segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="email" placeholder="E-mail address">
+            <input type="text" name="email" placeholder="E-mail address" autofocus>
           </div>
         </div>
         <div class="field">
@@ -21,17 +24,13 @@
             <input type="password" name="password" placeholder="Password">
           </div>
         </div>
-        <div class="ui fluid large submit button">Login</div>
+        <input type="submit" class="ui fluid large blue submit button" value="Login" />
       </div>
-
-      <div class="ui error message"></div>
 
     </form>
 
     <div class="ui message">
-      New to us? <a href="/user/signup">Sign Up</a>
+      No account yet? <a href="/user/signup">Sign up</a> instead.
     </div>
   </div>
 </div>
-
-<#include "*/footer.ftl">
