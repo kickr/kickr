@@ -1,13 +1,14 @@
-<#-- @ftlvariable name="" type="kickr.web.view.LatestMatchesView" -->
+<#import 'match_macros.ftl' as match>
 
-<#import 'match.ftl' as match>
+<h5 class="ui header">
+  <a href="/match">Latest Matches</a>
+
+  <a class="ui tiny label" href="/match/new">+</a>
+</h5>
 
 <div class="ui one column grid">
   <div class="column">
-    <h5 class="ui top attached header">
-      Latest Matches
-    </h5>
-    <div class="ui basic bottom attached segment">
+    <div class="ui top attached segment">
       <table class="ui very basic compact matches table">
         <tbody>
           <#list matches as m>
@@ -19,11 +20,6 @@
           </#list>
         </tbody>
       </table>
-
-      <p class="right aligned">
-        <a href="/matches">Show All</a> or
-        <a href="/matches/new">File new Match</a>
-      </p>
     </div>
   </div>
 </div>

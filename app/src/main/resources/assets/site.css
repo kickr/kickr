@@ -51,3 +51,27 @@ footer .ui.divider {
     max-width: 450px;
   }
 }
+
+
+/* form */
+
+.ui.form .section.divider {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.ui.form .grid {
+  margin-bottom: 0.5em;
+}
+
+.ui.form .note {
+  padding: .67861429em 1em;
+  display: inline-block;
+  color: #666;
+}
+
+@media only screen and (max-width: 767px) {
+  .ui.form .ui[class*="very relaxed"].grid {
+    margin: -1rem;
+  }
+}

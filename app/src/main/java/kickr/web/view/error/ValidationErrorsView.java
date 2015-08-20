@@ -21,15 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.view.error;
+
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import kickr.web.view.BaseView;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class ValidationErrorsView extends BaseView<ValidationErrorsView> {
 
-  public IndexView() {
-    super(IndexView.class, "index.ftl");
+  private Set<ConstraintViolation<?>> violations;
+
+  public ValidationErrorsView() {
+    super(ValidationErrorsView.class, "validation_errors.ftl");
   }
 
+  public ValidationErrorsView withErrors(Set<ConstraintViolation<?>> violations) {
+    this.violations = violations;
+    return this;
+  }
+
+  public Set<ConstraintViolation<?>> getViolations() {
+    return violations;
+  }
 }

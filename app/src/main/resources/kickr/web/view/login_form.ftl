@@ -1,9 +1,9 @@
 <div class="ui middle aligned center aligned login grid">
   <div class="column">
     <h3 class="ui header">
-      Login to kickr
+      Log in to kckr
     </h3>
-    <form class="ui form ${(errors?size > 0)?string('error', '')}" action="/user/login<#if redirectUri??>?redirectTo=${redirectUri}</#if>" method="post">
+    <form class="ui form ${(errors?size > 0)?string('error', '')}" action="/login" method="post">
 
       <div class="ui error message">
         <#list errors as error>
@@ -15,7 +15,7 @@
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="email" placeholder="E-mail address" autofocus>
+            <input type="text" name="name" placeholder="Username" autofocus>
           </div>
         </div>
         <div class="field">
@@ -25,6 +25,9 @@
           </div>
         </div>
         <input type="submit" class="ui fluid large blue submit button" value="Login" />
+        <#if redirectUri??>
+          <input type="hidden" name="redirectTo" value="${redirectUri}">
+        </#if>
       </div>
 
     </form>

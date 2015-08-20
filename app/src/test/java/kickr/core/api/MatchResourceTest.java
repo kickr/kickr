@@ -22,7 +22,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import static org.mockito.Mockito.*;
 import static kickr.security.Constants.*;
-import org.mockito.Matchers;
 import support.security.SecurityContextFactory;
 import support.security.SecurityContextInitializer;
 import support.security.auth.AuthFactory;
@@ -74,7 +73,7 @@ public class MatchResourceTest {
     Entity<String> matchDataEntity = Entity.entity(matchDataJSON, MediaType.APPLICATION_JSON);
 
     // when
-    Response response = resources.client().target("/match")
+    Response response = resources.client().target("/matches")
                                           .request()
                                           .post(matchDataEntity);
 

@@ -21,27 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package support.form;
 
-import io.dropwizard.views.View;
-import java.util.List;
-import kickr.web.model.match.MatchData;
+import static java.lang.annotation.ElementType.PARAMETER;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Target;
 
 /**
+ * An annotation that marks an element as being eligable for
+ * automatic parsing from form data.
  *
  * @author nikku
  */
-public class LatestMatchesView extends View {
-  
-  private List<MatchData> matches;
-
-  public LatestMatchesView(List<MatchData> matches) {
-    super("matches_latest.ftl");
-    this.matches = matches;
-  }
-
-  public List<MatchData> getMatches() {
-    return matches;
-  }
+@Target(PARAMETER)
+@Retention(RUNTIME)
+public @interface FormData {
 
 }

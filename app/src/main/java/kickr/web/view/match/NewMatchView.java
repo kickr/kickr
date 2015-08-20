@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view.user;
+package kickr.web.view.match;
 
 import kickr.web.view.BaseView;
 
@@ -29,20 +29,9 @@ import kickr.web.view.BaseView;
  *
  * @author nikku
  */
-public class LoginView extends BaseView<LoginView> {
+public class NewMatchView extends BaseView<NewMatchView> {
 
-  private String redirectUri;
-
-  public LoginView() {
-    super(LoginView.class, "login.ftl");
-  }
-
-  public String getRedirectUri() {
-    return redirectUri;
-  }
-
-  public LoginView redirectTo(String redirectUri) {
-    this.redirectUri = redirectUri;
-    return this;
+  public NewMatchView() {
+    super(NewMatchView.class, "new.ftl");
   }
 }

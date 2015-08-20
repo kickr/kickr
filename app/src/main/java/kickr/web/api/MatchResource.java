@@ -1,33 +1,35 @@
 package kickr.web.api;
 
-import kickr.web.view.NewMatchView;
-import kickr.web.view.MatchesView;
-import kickr.web.model.match.CoreMatchData;
+import kickr.web.view.match.NewMatchView;
+import kickr.web.view.match.MatchesView;
 import kickr.web.model.match.MatchData;
 import io.dropwizard.hibernate.UnitOfWork;
 
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotAcceptableException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 
 import kickr.db.MatchDAO;
 import kickr.db.entity.Match;
 import kickr.db.entity.user.User;
 import kickr.service.MatchService;
 import kickr.web.BaseResource;
-import kickr.web.view.LatestMatchesView;
+import kickr.web.form.CreateMatchForm;
+import kickr.web.view.match.LatestMatchesView;
+import support.form.FormData;
 import support.security.annotation.Auth;
 
-@Path("/matches")
+@Path("match")
 public class MatchResource extends BaseResource {
 
   protected MatchDAO matchDao;
@@ -51,33 +53,32 @@ public class MatchResource extends BaseResource {
 
     List<Match> matches = matchDao.getMatches(firstResult, maxResults);
 
-    return new MatchesView(MatchData.fromMatches(matches));
+    return createView(MatchesView.class).withMatches(MatchData.fromMatches(matches));
   }
-
 
   @GET
   @Path("latest")
   @UnitOfWork
   public LatestMatchesView listLatest() {
-
     List<Match> matches = matchDao.getMatches(0, 5);
 
-    return new LatestMatchesView(MatchData.fromMatches(matches));
+    return createView(LatestMatchesView.class).withMatches(MatchData.fromMatches(matches));
   }
-
 
   @GET
   @RolesAllowed("user")
   @Path("new")
-  public NewMatchView newMatch() {
-    return new NewMatchView();
+  public NewMatchView newForm() {
+    return createView(NewMatchView.class);
   }
 
   @POST
+  @Path("new")
   @RolesAllowed("user")
   @UnitOfWork
-  public void create(@Auth User user, CoreMatchData createMatchData) {
-    matchService.insertMatch(createMatchData, user);
+  public void createFromForm(@Auth User user, @Valid @FormData CreateMatchForm createMatchData) {
+    System.out.println(createMatchData);
+    // matchService.insertMatch(createMatchData, user);
   }
 
   @GET
@@ -99,9 +100,10 @@ public class MatchResource extends BaseResource {
     Match match = matchDao.findMatchById(id);
 
     if (match.isRated() && !user.hasRole("admin")) {
-      throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE).entity("Already rated").build());
+      throw new NotAcceptableException("already rated");
     }
 
     matchDao.removeMatch(match);
   }
+
 }

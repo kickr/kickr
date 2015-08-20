@@ -1,11 +1,14 @@
 <#-- @ftlvariable name="" type="kickr.web.view.ScoreLeaderboardView" -->
 
 <div class="ui two column grid">
+
   <div class="column">
-    <h5 class="ui top attached header">
+
+    <h5 class="ui header">
       Global Leader Board
     </h5>
-    <div class="ui basic bottom attached segment">
+
+    <div class="ui top attached segment">
       <table class="ui very basic compact highscore table">
         <tbody>
           <#list data.scores as score>
@@ -25,12 +28,16 @@
         </tbody>
       </table>
     </div>
+
   </div>
+
   <div class="column">
-    <h5 class="ui top attached header">
+
+    <h5 class="ui header">
       Player Performance
     </h5>
-    <div class="ui basic bottom attached segment">
+
+    <div class="ui top attached segment">
       <table class="ui very basic compact highscore table">
         <tbody>
           <#list data.performance as p>
@@ -50,5 +57,6 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </div>

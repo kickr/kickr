@@ -28,7 +28,7 @@ public class CoreMatchDataTest {
     TeamsData teamsData = matchData.getTeams();
 
     // then
-    assertThat(matchData.games).hasSize(2);
+    assertThat(matchData.getGames()).hasSize(2);
     
     assertThat(matchData.getResult()).isNull();
 

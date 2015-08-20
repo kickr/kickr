@@ -21,15 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.view.match;
+
+import java.util.List;
+import kickr.web.model.match.MatchData;
+import kickr.web.view.BaseView;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class LatestMatchesView extends BaseView<LatestMatchesView> {
+  
+  private List<MatchData> matches;
 
-  public IndexView() {
-    super(IndexView.class, "index.ftl");
+  public LatestMatchesView() {
+    super(LatestMatchesView.class, "latest.ftl");
+  }
+
+  public LatestMatchesView withMatches(List<MatchData> matches) {
+    this.matches = matches;
+    return this;
+  }
+
+  public List<MatchData> getMatches() {
+    return matches;
   }
 
 }

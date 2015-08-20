@@ -2,6 +2,17 @@
 
 $(function() {
 
+  function applyDirectives() {
+    $('[data-fetch]').each(function() {
+
+      var $el = $(this);
+
+      $el.load($el.attr('data-fetch'), function() {
+        $el.removeClass('loading').addClass('loaded');
+      });
+    });
+  }
+
   NProgress.configure({ showSpinner: false });
 
   var ajaxStart = NProgress.start.bind(NProgress),
@@ -13,16 +24,12 @@ $(function() {
 
   $(document).pjax('a', '#content');
 
-  $(document).on('pjax:start', ajaxStart);
-  $(document).on('pjax:end', ajaxStop);
+  $(document).on('pjax:send', ajaxStart);
+  $(document).on('pjax:complete', ajaxStop);
 
-  $('[data-fetch]').each(function() {
+  $(document).on('pjax:end', applyDirectives);
 
-    var $el = $(this);
 
-    $el.load($el.attr('data-fetch'), function() {
-      $el.removeClass('loading').addClass('loaded');
-    });
-  });
-
+  // initialize (!)
+  applyDirectives();
 });

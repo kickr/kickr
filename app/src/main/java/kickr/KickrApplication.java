@@ -12,11 +12,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
-import io.dropwizard.views.ViewRenderer;
-import support.views.FreemarkerViewRenderer;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -50,10 +46,12 @@ import kickr.security.service.CredentialsService;
 import kickr.service.MatchService;
 import kickr.service.RatingService;
 import kickr.web.CharsetResponseFilter;
+import kickr.web.ConstraintViolationExceptionHandler;
 import kickr.web.NotFoundErrorHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
+import support.form.FormDataMessageBodyReader;
 import support.transactional.WithTransaction;
 import support.security.SecurityContextFactory;
 import support.security.SecurityContextInitializer;
@@ -166,22 +164,26 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     environment.jersey().register(AuthFactory.binder(new AuthFactory<>(User.class)));
 
-    environment.jersey().register(new UserResource(authenticationService));
 
     // resources
 
     environment.jersey().register(new NotAuthorizedErrorHandler());
     environment.jersey().register(new NotFoundErrorHandler());
+    environment.jersey().register(new ConstraintViolationExceptionHandler());
     
     environment.jersey().register(new CharsetResponseFilter());
 
-    environment.jersey().register(new RootResource());
+    environment.jersey().register(new RootResource(authenticationService));
 
     environment.jersey().register(new MatchResource(matchService, matchDao));
     environment.jersey().register(new ScoreResource(scoreDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
     environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao, sessionFactory));
+    
+    environment.jersey().register(new FormDataMessageBodyReader(environment.getValidator()));
+
+    environment.jersey().register(new UserResource());
 
     // cross origin requests
 

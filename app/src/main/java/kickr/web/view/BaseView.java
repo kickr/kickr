@@ -35,7 +35,7 @@ import kickr.db.entity.user.User;
  * @author nikku
  * @param <T>
  */
-public class BaseView<T extends View> extends View {
+public class BaseView<T extends BaseView> extends View {
 
   public static class Message {
 
@@ -70,8 +70,10 @@ public class BaseView<T extends View> extends View {
   @JsonIgnore
   private List<Message> errors = new ArrayList<>();
 
-  private boolean isPjax = false;
-  
+  @JsonIgnore
+  protected boolean layout = true;
+
+
   public BaseView(Class<T> view, String template) {
     super(template, Charsets.UTF_8);
   }
@@ -112,7 +114,15 @@ public class BaseView<T extends View> extends View {
   
   public T withUser(User user) {
     this.user = user;
+    return (T) this;
+  }
 
+  public boolean isLayout() {
+    return layout;
+  }
+
+  public T useLayout(boolean layout) {
+    this.layout = layout;
     return (T) this;
   }
 }

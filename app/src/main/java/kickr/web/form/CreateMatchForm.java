@@ -21,15 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.form;
+
+import java.util.Date;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class CreateMatchForm {
 
-  public IndexView() {
-    super(IndexView.class, "index.ftl");
+  public static class Team {
+
+    @NotBlank
+    public String offense;
+
+    @NotBlank
+    public String defense;
   }
 
+  @Valid
+  public Team team1;
+
+  @Valid
+  public Team team2;
+
+  @NotBlank
+  @Pattern(regexp = "\\s*([\\d]+:[\\d]+\\s*)+")
+  public String matches;
+  
+  public Date played;
+
+  @Override
+  public String toString() {
+    return team1.offense + "," + team1.defense +
+              " vs " +
+           team2.offense + "," + team2.defense + ";" +
+              " played at " + played + ";" +
+              " matches: " + matches;
+  }
 }

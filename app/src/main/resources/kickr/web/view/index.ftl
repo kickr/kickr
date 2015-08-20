@@ -5,17 +5,17 @@
     <pre>
           da great. jup
 
-    ██╗  ██╗██╗ ██████╗██╗  ██╗██████╗
-    ██║ ██╔╝██║██╔════╝██║ ██╔╝██╔══██╗
-    █████╔╝ ██║██║     █████╔╝ ██████╔╝
-    ██╔═██╗ ██║██║     ██╔═██╗ ██╔══██╗
-    ██║  ██╗██║╚██████╗██║  ██╗██║  ██║
-    ╚═╝  ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝</pre>
+    ██╗  ██╗ ██████╗██╗  ██╗██████╗
+    ██║ ██╔╝██╔════╝██║ ██╔╝██╔══██╗
+    █████╔╝ ██║     █████╔╝ ██████╔╝
+    ██╔═██╗ ██║     ██╔═██╗ ██╔══██╗
+    ██║  ██╗╚██████╗██║  ██╗██║  ██║
+    ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝</pre>
   </div>
 
   <div class="column">
-    <div class="ui basic loading segment" data-fetch="/matches/latest">
-      <#include "matches_latest_dummy.ftl">
+    <div class="ui basic loading segment" data-fetch="/match/latest">
+      <#include "match/latest_dummy.ftl">
     </div>
   </div>
 </div>

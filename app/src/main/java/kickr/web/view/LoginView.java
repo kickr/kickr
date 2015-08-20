@@ -23,25 +23,24 @@
  */
 package kickr.web.view;
 
-import io.dropwizard.views.View;
-import java.util.List;
-import kickr.web.model.match.MatchData;
-
 /**
  *
  * @author nikku
  */
-public class MatchesView extends View {
-  
-  private List<MatchData> matches;
+public class LoginView extends BaseView<LoginView> {
 
-  public MatchesView(List<MatchData> matches) {
-    super("matches.ftl");
-    this.matches = matches;
+  private String redirectUri;
+
+  public LoginView() {
+    super(LoginView.class, "login.ftl");
   }
 
-  public List<MatchData> getMatches() {
-    return matches;
+  public String getRedirectUri() {
+    return redirectUri;
   }
 
+  public LoginView redirectTo(String redirectUri) {
+    this.redirectUri = redirectUri;
+    return this;
+  }
 }

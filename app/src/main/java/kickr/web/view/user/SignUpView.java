@@ -21,15 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.view.user;
+
+import kickr.web.view.BaseView;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class SignUpView extends BaseView<SignUpView> {
 
-  public IndexView() {
-    super(IndexView.class, "index.ftl");
+  public SignUpView() {
+    super(SignUpView.class, "signup.ftl");
   }
-
 }

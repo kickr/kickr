@@ -21,17 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view.user;
-
-import io.dropwizard.views.View;
+package kickr.web.form;
 
 /**
  *
  * @author nikku
  */
-public class SignupView extends View {
+public class LoginForm {
+  
+  public boolean rememberMe = false;
 
-  public SignupView() {
-    super("signup.ftl");
-  }
+  public String password;
+
+  public String name;
+  
+  public String redirectTo;
 }

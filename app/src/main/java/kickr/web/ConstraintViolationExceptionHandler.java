@@ -21,15 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web;
+
+import javax.annotation.Priority;
+import javax.validation.ConstraintViolationException;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+import kickr.web.view.error.ValidationErrorsView;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+@Provider
+@Produces("text/html")
+@Priority(2000)
+public class ConstraintViolationExceptionHandler implements ExceptionMapper<ConstraintViolationException> {
 
-  public IndexView() {
-    super(IndexView.class, "index.ftl");
+  @Override
+  public Response toResponse(ConstraintViolationException exception) {
+    ValidationErrorsView validationErrorsView = new ValidationErrorsView().withErrors(exception.getConstraintViolations());
+
+    return Response.status(Response.Status.BAD_REQUEST).entity(validationErrorsView).build();
   }
 
 }

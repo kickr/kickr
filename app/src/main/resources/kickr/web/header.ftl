@@ -1,4 +1,4 @@
-
+<#if layout>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,17 +22,24 @@
       <a class="header item" href="/">
         <img class="logo" src="/assets/images/logo.png">
       </a>
-      <a class="item" href="/matches">Matches</a>
-      <a class="item" href="/matches/new">
-        + Match
-      </a>
+      <a class="item" href="/match">Matches</a>
+      <div class="item">
+        <a class="ui green compact button" href="/match/new">+Match</a>
+      </div>
       <div class="right menu">
-        <a class="item" href="/user/login">
-          <div class="ui primary button">Login</div>
-        </a>
+        <#if user??>
+          <form class="item" method="post" action="/logout">
+            <input type="submit" class="ui button" value="Logout">
+          </form>
+        <#else>
+          <a class="item" href="/login">
+            <div class="ui primary button">Login</div>
+          </a>
+        </#if>
       </div>
     </div>
   </div>
 
   <div class="ui main container" id="content">
     <!-- ... -->
+</#if>

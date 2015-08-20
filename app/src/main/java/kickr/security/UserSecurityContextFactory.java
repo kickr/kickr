@@ -1,8 +1,10 @@
 package kickr.security;
 
+import java.util.stream.Stream;
+import javax.servlet.http.Cookie;
 import kickr.security.service.AuthenticationService;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import kickr.db.entity.user.User;
@@ -46,33 +48,52 @@ public class UserSecurityContextFactory extends SecurityContextFactory<User> {
       return null;
     }
 
-    User principal = null;
+    String address = request.getRemoteAddr();
+    boolean secure = request.isSecure();
 
-    TokenCredentials token = extractAccessToken(request);
+    String headerToken = extractHeaderToken(request);
 
-    // if token is provided, we must be able to authenticate
-    if (token != null) {
+    if (headerToken != null) {
+      // if header token is provided,
+      // we must be able to authenticate
+      TokenCredentials headerCredentials = new TokenCredentials(headerToken, address);
       try {
-        principal = authenticate(token);
+        // create context based on header token auth
+        return createContext(secure, SCHEME, authenticate(headerCredentials));
       } catch (AuthenticationException ex) {
-        
-        LOGGER.warn("Failed to authenticate <" + token + ">");
+
+        LOGGER.warn("failed to authenticate <" + headerCredentials + ">");
 
         // indicate authentication failure
-        throw new WebApplicationException(
-              "Failed to authenticate",
+        throw new NotAuthorizedException(
+              "failed to authenticate",
               Response
                 .status(Response.Status.UNAUTHORIZED)
                 .header(HttpHeaders.WWW_AUTHENTICATE, String.format(CHALLENGE_FORMAT, realm))
-                .entity("Invalid credentials")
+                .entity("invalid credentials")
                 .build());
       }
     }
 
-    return createContext(request.isSecure(), SCHEME, principal);
+    String cookieToken = extractCookieToken(request);
+
+    if (cookieToken != null) {
+
+      // if cookie token is provided,
+      // authentication is optional
+      TokenCredentials cookieCredentials = new TokenCredentials(cookieToken, address);
+      try {
+        // create context based on header token auth
+        return createContext(secure, SCHEME, authenticate(cookieCredentials));
+      } catch (AuthenticationException ex) {
+        LOGGER.warn("failed to authenticate <" + cookieCredentials + ">");
+      }
+    }
+    
+    return createContext(secure, SCHEME, null);
   }
 
-  protected TokenCredentials extractAccessToken(HttpServletRequest request) {
+  protected String extractHeaderToken(HttpServletRequest request) {
 
     final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -81,9 +102,24 @@ public class UserSecurityContextFactory extends SecurityContextFactory<User> {
       if (space > 0) {
         final String method = header.substring(0, space);
         if (SCHEME.equalsIgnoreCase(method)) {
-          return new TokenCredentials(header.substring(space + 1), request.getRemoteAddr());
+          return header.substring(space + 1);
         }
       }
+    }
+
+    return null;
+  }
+
+  protected String extractCookieToken(HttpServletRequest request) {
+
+    Cookie[] cookies = request.getCookies();
+
+    if (cookies != null) {
+      return Stream.of(cookies)
+                .filter(c -> "__sid".equals(c.getName()))
+                .map(c -> c.getValue())
+                .findAny()
+                .orElse(null);
     }
 
     return null;
