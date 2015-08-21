@@ -24,6 +24,7 @@
 package kickr.web;
 
 import java.net.URI;
+import javax.inject.Singleton;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -37,6 +38,7 @@ import javax.ws.rs.ext.Provider;
  * @author nikku
  */
 @Provider
+@Singleton
 public class NotAuthorizedErrorHandler implements ExceptionMapper<NotAuthorizedException> {
 
   @Context

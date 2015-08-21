@@ -29,7 +29,7 @@ import kickr.web.view.BaseView;
  *
  * @author nikku
  */
-public class NotFoundView extends BaseView {
+public class NotFoundView extends BaseView<NotFoundView> {
 
   public NotFoundView() {
     super(NotFoundView.class, "not_found.ftl");

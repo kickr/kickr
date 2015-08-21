@@ -26,7 +26,7 @@
       <div class="item">
         <a class="ui green compact button" href="/match/new">+Match</a>
       </div>
-      <div class="right menu">
+      <div class="right account menu">
         <#if user??>
           <form class="item" method="post" action="/logout">
             <input type="submit" class="ui button" value="Logout">

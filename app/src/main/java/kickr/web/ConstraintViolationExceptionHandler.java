@@ -24,6 +24,7 @@
 package kickr.web;
 
 import javax.annotation.Priority;
+import javax.inject.Singleton;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -35,14 +36,17 @@ import kickr.web.view.error.ValidationErrorsView;
  *
  * @author nikku
  */
+@Singleton
 @Provider
 @Produces("text/html")
 @Priority(2000)
-public class ConstraintViolationExceptionHandler implements ExceptionMapper<ConstraintViolationException> {
+public class ConstraintViolationExceptionHandler extends ViewProvider implements ExceptionMapper<ConstraintViolationException> {
 
   @Override
   public Response toResponse(ConstraintViolationException exception) {
-    ValidationErrorsView validationErrorsView = new ValidationErrorsView().withErrors(exception.getConstraintViolations());
+    ValidationErrorsView validationErrorsView = 
+        createView(ValidationErrorsView.class)
+          .withErrors(exception.getConstraintViolations());
 
     return Response.status(Response.Status.BAD_REQUEST).entity(validationErrorsView).build();
   }

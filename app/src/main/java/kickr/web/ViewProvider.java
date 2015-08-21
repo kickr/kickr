@@ -23,29 +23,33 @@
  */
 package kickr.web;
 
-import javax.inject.Singleton;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-import kickr.web.view.error.NotFoundView;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+import kickr.db.entity.user.User;
+import kickr.web.view.BaseView;
 
 /**
  *
  * @author nikku
  */
-@Provider
-@Singleton
-public class NotFoundErrorHandler extends ViewProvider implements ExceptionMapper<NotFoundException> {
+public class ViewProvider {
 
-  @Override
-  public Response toResponse(NotFoundException exception) {
-    Response originalResponse = exception.getResponse();
-    
-    final NotFoundView notFoundView = createView(NotFoundView.class);
-    
-    // we will not have user information here,
-    // due to processing via Jersey
-    return Response.fromResponse(originalResponse).entity(notFoundView).build();
+  @Context
+  private SecurityContext securityContext;
+
+  @Context
+  private HttpServletRequest request;
+
+  protected <T extends BaseView> T createView(Class<T> cls) {
+    boolean layout = request.getHeader("X-PJAX") == null;
+
+    try {
+      T view = (T) cls.newInstance();
+
+      return (T) view.useLayout(layout).withUser((User) securityContext.getUserPrincipal());
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new IllegalArgumentException("Failed to instantiate view", e);
+    }
   }
 }
