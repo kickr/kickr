@@ -2,7 +2,7 @@
   ${team.offense.alias}<#if team.offense.alias != team.defense.alias>,${team.defense.alias}</#if>
 </#macro>
 
-<#macro row match>
+<#macro matchRow match>
   <tr class="${match.rated?string('', 'unrated')} ${match.removed?string('removed', '')}">
     <td class="collapsing"><a href="/match/${match.id}">${match.id}</a></td>
     <td class="collapsing players">

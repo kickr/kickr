@@ -12,7 +12,7 @@
       <table class="ui very basic compact matches table">
         <tbody>
           <#list matches as m>
-            <@match.row match=m />
+            <@match.matchRow match=m />
           <#else>
             <tr>
               <td>No recorded matches. Go play!</td>

@@ -35,17 +35,50 @@ public class MatchesView extends BaseView<MatchesView> {
   
   private List<MatchData> matches;
 
+  private String filter;
+  
+  private String search;
+
+  private int page = 1;
+
   public MatchesView() {
     super(MatchesView.class, "list.ftl");
   }
 
+  public MatchesView withFilter(String filter) {
+    this.filter = filter;
+    return this;
+  }
+
+  public MatchesView withSearch(String search) {
+    this.search = search;
+    return this;
+  }
+  
   public MatchesView withMatches(List<MatchData> matches) {
     this.matches = matches;
     return this;
   }
 
+  public MatchesView withPage(int page) {
+    this.page = page;
+    return this;
+  }
+
   public List<MatchData> getMatches() {
     return matches;
+  }
+
+  public String getFilter() {
+    return filter;
+  }
+
+  public String getSearch() {
+    return search;
+  }
+
+  public int getPage() {
+    return page;
   }
 
 }

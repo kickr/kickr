@@ -41,19 +41,24 @@ public class MatchResource extends BaseResource {
     this.matchService = matchService;
   }
 
-
   @GET
   @RolesAllowed("user")
   @UnitOfWork
   public MatchesView list(
-      @QueryParam("firstResult") @DefaultValue("0") int firstResult,
-      @QueryParam("maxResults") @DefaultValue("10") int maxResults) {
+      @QueryParam("page") @DefaultValue("1") int page,
+      @QueryParam("filter") String filter,
+      @QueryParam("search") String search) {
 
-    assertValidPagination(firstResult, maxResults);
+    int pageSize = 10;
+    
+    List<Match> matches = matchDao.getMatches((page - 1 * pageSize), pageSize);
 
-    List<Match> matches = matchDao.getMatches(firstResult, maxResults);
 
-    return createView(MatchesView.class).withMatches(MatchData.fromMatches(matches));
+    return createView(MatchesView.class)
+              .withMatches(MatchData.fromMatches(matches))
+              .withPage(page)
+              .withFilter(filter)
+              .withSearch(search);
   }
 
   @GET

@@ -1,4 +1,5 @@
 <#import 'match_macros.ftl' as match>
+<#import 'pagination.ftl' as pagination>
 
 <#include "*/header.ftl">
 
@@ -12,18 +13,23 @@
 <h1 class="ui header">Recorded Matches</h1>
 
 <div class="ui secondary menu">
-  <a class="active item">
+  <a class="<#if (filter!"latest") == "latest">active</#if> item" href="?filter=latest">
     Latest
   </a>
-  <a class="item">
+  <a class="<#if (filter!"latest") == "your">active</#if> item" href="?filter=your">
     Your
   </a>
   <div class="right menu">
     <div class="item">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
-      </div>
+      <form>
+        <div class="ui icon input">
+          <#if filter??>
+            <input type="hidden" name="filter" value="${filter}">
+          </#if>
+          <input type="text" name="search" value="${search!""}" placeholder="Search...">
+          <i class="search link icon"></i>
+        </div>
+      </form>
     </div>
     <div class="horizontally fitted item">
       <a class="ui green compact button" href="/match/new">+Match</a>
@@ -36,7 +42,7 @@
   <table class="ui very basic compact matches table">
     <tbody>
       <#list matches as m>
-        <@match.row match=m />
+        <@match.matchRow match=m />
       <#else>
         <tr>
           <td>No recorded matches. Go play!</td>
@@ -46,24 +52,30 @@
   </table>
 </div>
 
+<#assign base="?">
+
+<#if filter??>
+  <#if base != "?">
+    <#assign base="${base}&">
+  </#if>
+
+  <#assign base="${base}filter=${filter}">
+</#if>
+
+<#if search??>
+  <#if base != "?">
+    <#assign base="${base}&">
+  </#if>
+
+  <#assign base="${base}search=${search}">
+</#if>
+
+<#if base != "?">
+  <#assign base="${base}&">
+</#if>
+
 <div class="ui center aligned basic segment">
-  <div class="ui compact small secondary menu">
-    <a class="active item">
-      1
-    </a>
-    <div class="disabled item">
-      ...
-    </div>
-    <a class="item">
-      10
-    </a>
-    <a class="item">
-      11
-    </a>
-    <a class="item">
-      12
-    </a>
-  </div>
+  <@pagination.pager page=page base=base />
 </div>
 
 
