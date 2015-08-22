@@ -16,6 +16,17 @@ public class PlayerData {
   
   protected String email;
 
+  public PlayerData() { }
+
+  public PlayerData(String alias, String email) {
+    this.alias = alias;
+    this.email = email;
+  }
+
+  public PlayerData(String alias) {
+    this(alias, null);
+  }
+
   public String getName() {
     return name;
   }

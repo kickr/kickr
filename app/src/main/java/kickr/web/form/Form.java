@@ -23,45 +23,36 @@
  */
 package kickr.web.form;
 
-import java.util.Date;
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import kickr.util.Types;
 
 /**
  *
  * @author nikku
+ * @param <T>
  */
-public class CreateMatchForm {
+public class Form<T extends Form> {
 
-  public static class Team {
+  private final Class<T> formCls;
 
-    @NotBlank
-    public String offense;
-
-    @NotBlank
-    public String defense;
+  public Form() {
+    this.formCls = (Class<T>) Types.inferActualType(this.getClass(), 0);
   }
 
-  @Valid
-  public Team team1;
+  private Set<ConstraintViolation<T>> errors;
 
-  @Valid
-  public Team team2;
+  public T withErrors(Set<ConstraintViolation<T>> errors) {
+    return chain(() -> this.errors = errors);
+  }
 
-  @NotBlank
-  @Pattern(regexp = "\\s*([\\d]+:[\\d]+\\s*)+")
-  public String matches;
-  
-  public Date played;
+  public Set<ConstraintViolation<T>> getErrors() {
+    return errors;
+  }
 
-  @Override
-  public String toString() {
-    return team1.offense + "," + team1.defense +
-              " vs " +
-           team2.offense + "," + team2.defense + ";" +
-              " played at " + played + ";" +
-              " matches: " + matches;
+  public T chain(Runnable r) {
+    r.run();
+
+    return formCls.cast(this);
   }
 }

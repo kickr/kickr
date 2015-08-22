@@ -36,12 +36,11 @@ public class ValidationErrorsView extends BaseView<ValidationErrorsView> {
   private Set<ConstraintViolation<?>> violations;
 
   public ValidationErrorsView() {
-    super(ValidationErrorsView.class, "validation_errors.ftl");
+    super("validation_errors.ftl");
   }
 
   public ValidationErrorsView withErrors(Set<ConstraintViolation<?>> violations) {
-    this.violations = violations;
-    return this;
+    return chain(() -> this.violations = violations);
   }
 
   public Set<ConstraintViolation<?>> getViolations() {

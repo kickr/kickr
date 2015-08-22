@@ -23,12 +23,34 @@
  */
 package kickr.web.view;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import kickr.util.Types;
+import kickr.web.form.Form;
+
 /**
  *
+ * @author nikku
+ * @param <T>
+ * @param <F>
  */
-public class IndexView extends BaseView<IndexView> {
+public class FormView<T extends FormView, F extends Form> extends BaseView<T> {
 
-  public IndexView() {
-    super("index.ftl");
+  @JsonIgnore
+  private final Class<F> formType;
+
+  private F form;
+
+  public FormView(String template) {
+    super(template);
+
+    this.formType = (Class<F>) Types.inferActualType(this.getClass(), 1);
+  }
+
+  public T withForm(F form) {
+    return chain(() -> this.form = form);
+  }
+
+  public F getForm() {
+    return form;
   }
 }

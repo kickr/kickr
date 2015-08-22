@@ -75,3 +75,16 @@ footer .ui.divider {
     margin: -1rem;
   }
 }
+
+.ui.search .result .content > * {
+  display: inline-block;
+}
+
+.ui.search .result .content > .title {
+  margin: 0 1em 0 0 !important;
+}
+
+.ui.search .result .description {
+  font-size: 1em;
+  float: right;
+}

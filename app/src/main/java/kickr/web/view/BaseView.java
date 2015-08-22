@@ -29,6 +29,7 @@ import io.dropwizard.views.View;
 import java.util.ArrayList;
 import java.util.List;
 import kickr.db.entity.user.User;
+import kickr.util.Types;
 
 /**
  *
@@ -60,6 +61,8 @@ public class BaseView<T extends BaseView> extends View {
     }
   }
 
+  @JsonIgnore
+  private final Class<T> viewCls;
 
   @JsonIgnore
   private User user;
@@ -74,8 +77,10 @@ public class BaseView<T extends BaseView> extends View {
   protected boolean layout = true;
 
 
-  public BaseView(Class<T> view, String template) {
+  public BaseView(String template) {
     super(template, Charsets.UTF_8);
+    
+    this.viewCls = (Class<T>) Types.inferActualType(this.getClass(), 0);
   }
 
   public List<Message> getMessages() {
@@ -99,8 +104,7 @@ public class BaseView<T extends BaseView> extends View {
   }
 
   public T addMessage(Message message) {
-    this.messages.add(message);
-    return (T) this;
+    return chain(() -> this.messages.add(message));
   }
 
   public T addError(String content) {
@@ -108,13 +112,11 @@ public class BaseView<T extends BaseView> extends View {
   }
 
   public T addError(Message message) {
-    this.errors.add(message);
-    return (T) this;
+    return chain(() -> this.errors.add(message));
   }
   
   public T withUser(User user) {
-    this.user = user;
-    return (T) this;
+    return chain(() -> this.user = user);
   }
 
   public boolean isLayout() {
@@ -122,7 +124,12 @@ public class BaseView<T extends BaseView> extends View {
   }
 
   public T useLayout(boolean layout) {
-    this.layout = layout;
-    return (T) this;
+    return chain(() -> this.layout = layout);
+  }
+  
+  protected T chain(Runnable runnable) {
+    runnable.run();
+
+    return viewCls.cast(this);
   }
 }

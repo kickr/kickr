@@ -21,14 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.util;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class Types {
 
-  public IndexView() {
-    super("index.ftl");
+
+  public static Class<?> inferActualType(Class cls, int index) {
+    Type t = cls.getGenericSuperclass();
+    ParameterizedType pt = (ParameterizedType) t;
+  
+    return (Class)pt.getActualTypeArguments()[0];
   }
+
 }

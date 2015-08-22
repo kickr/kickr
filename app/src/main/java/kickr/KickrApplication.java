@@ -175,7 +175,7 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     environment.jersey().register(new RootResource(authenticationService));
 
-    environment.jersey().register(new MatchResource(matchService, matchDao));
+    environment.jersey().register(new MatchResource(matchService, matchDao, environment.getValidator()));
     environment.jersey().register(new ScoreResource(scoreDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));

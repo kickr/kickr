@@ -23,29 +23,14 @@
  */
 package kickr.web.view.match;
 
-import java.util.List;
-import kickr.web.model.match.MatchData;
-import kickr.web.view.BaseView;
-
 /**
  *
  * @author nikku
  */
-public class LatestMatchesView extends BaseView<LatestMatchesView> {
-  
-  private List<MatchData> matches;
-
+public class LatestMatchesView extends BaseMatchesView<LatestMatchesView> {
+ 
   public LatestMatchesView() {
-    super(LatestMatchesView.class, "latest.ftl");
-  }
-
-  public LatestMatchesView withMatches(List<MatchData> matches) {
-    this.matches = matches;
-    return this;
-  }
-
-  public List<MatchData> getMatches() {
-    return matches;
+    super("latest.ftl");
   }
 
 }

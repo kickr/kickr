@@ -17,7 +17,7 @@ public class BaseResource extends ViewProvider {
   }
 
   protected Response.ResponseBuilder redirect(String uri) {
-    return Response.temporaryRedirect(URI.create(uri));
+    return Response.seeOther(URI.create(uri));
   }
 
   protected Response.ResponseBuilder unauthorized() {

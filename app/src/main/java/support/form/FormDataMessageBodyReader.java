@@ -23,7 +23,6 @@
  */
 package support.form;
 
-import io.dropwizard.jersey.validation.ValidationErrorMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -43,7 +42,6 @@ import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -242,6 +240,9 @@ public class FormDataMessageBodyReader implements MessageBodyReader<Object> {
 
     } else if (field.getType().isAssignableFrom(Integer.class)) {
       actualValue = Integer.parseInt(value, 10);
+
+    } else if (field.getType().isAssignableFrom(Long.class)) {
+      actualValue = Long.parseLong(value, 10);
 
     } else if (field.getType().isAssignableFrom(Double.class)) {
       actualValue = Double.parseDouble(value);

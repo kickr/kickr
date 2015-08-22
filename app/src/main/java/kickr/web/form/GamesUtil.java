@@ -21,14 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.form;
+
+import java.util.regex.Pattern;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class GamesUtil {
 
-  public IndexView() {
-    super("index.ftl");
-  }
+  public static final String GAMES_PATTERN_STRING = "^(([\\d]+):([\\d]+))+$";
+
+  public static final Pattern GAMES_PATTERN = Pattern.compile(GAMES_PATTERN_STRING);
 }

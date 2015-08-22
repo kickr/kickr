@@ -21,14 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.view.match;
+
+import kickr.web.model.FoosballTableData;
+import kickr.web.model.match.MatchData;
+import kickr.web.view.BaseView;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class MatchView extends BaseView<MatchView> {
+  
+  private MatchData match;
 
-  public IndexView() {
-    super("index.ftl");
+  private FoosballTableData table;
+
+  public MatchView() {
+    super("match.ftl");
   }
+
+  public MatchView withMatch(MatchData match) {
+    return chain(() -> this.match = match);
+  }
+
+  public MatchView withTable(FoosballTableData table) {
+    return chain(() -> this.table = table);
+  }
+
+  public MatchData getMatch() {
+    return match;
+  }
+
+  public FoosballTableData getTable() {
+    return table;
+  }
+
 }

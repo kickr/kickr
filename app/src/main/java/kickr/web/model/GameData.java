@@ -15,6 +15,13 @@ public class GameData {
   @NotNull
   protected Integer team2;
 
+  public GameData() { }
+
+  public GameData(Integer team1, Integer team2) {
+    this.team1 = team1;
+    this.team2 = team2;
+  }
+
   public Integer getTeam1() {
     return team1;
   }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import kickr.web.model.match.CoreMatchData;
 import kickr.web.model.PlayerData;
-import kickr.web.model.TableData;
+import kickr.web.model.FoosballTableData;
 import kickr.web.model.TeamData;
 import kickr.db.FoosballTableDAO;
 import kickr.db.GameDAO;
@@ -36,7 +36,7 @@ public class MatchService {
     this.tableDao = tableDao;
   }
   
-  protected FoosballTable selectTable(TableData tableData) {
+  protected FoosballTable selectTable(FoosballTableData tableData) {
     return tableDao.findTableById(tableData.getId());
   }
   
@@ -59,12 +59,12 @@ public class MatchService {
     match.setCreator(creator);
 
     // assign teams
-    TeamData team1Data = matchData.getTeams().getTeam1();
+    TeamData team1Data = matchData.getTeam1();
     
     Player offenseTeam1 = selectOrInsertPlayer(team1Data.getOffense());
     Team team1 = new Team(offenseTeam1, team1Data.getDefense() != null ? selectOrInsertPlayer(team1Data.getDefense()) : offenseTeam1);
 
-    TeamData team2Data = matchData.getTeams().getTeam2();
+    TeamData team2Data = matchData.getTeam2();
     
     Player offenseTeam2 = selectOrInsertPlayer(team2Data.getOffense());
     Team team2 = new Team(offenseTeam2, team2Data.getDefense() != null ? selectOrInsertPlayer(team2Data.getDefense()) : offenseTeam2);

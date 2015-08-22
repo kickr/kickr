@@ -9,9 +9,8 @@ import kickr.db.entity.Game;
 
 import kickr.db.entity.Match;
 import kickr.web.model.GameData;
-import kickr.web.model.TableData;
+import kickr.web.model.FoosballTableData;
 import kickr.web.model.TeamData;
-import kickr.web.model.TeamsData;
 
 public class MatchData extends CoreMatchData {
 
@@ -65,11 +64,8 @@ public class MatchData extends CoreMatchData {
     MatchData matchData = new MatchData();
     matchData.id = match.getId();
     
-    TeamsData teamsData = new TeamsData();
-    teamsData.setTeam1(TeamData.fromTeam(match.getTeam1()));
-    teamsData.setTeam2(TeamData.fromTeam(match.getTeam2()));
-
-    matchData.teams = teamsData;
+    matchData.team1 = TeamData.fromTeam(match.getTeam1());
+    matchData.team2 = TeamData.fromTeam(match.getTeam2());
     
     matchData.setCreated(match.getCreated());
     matchData.setPlayed(match.getPlayed());
@@ -78,7 +74,7 @@ public class MatchData extends CoreMatchData {
     
     matchData.result = MatchResultData.fromMatchResult(match.getResult());
     
-    matchData.table = TableData.fromTable(match.getTable());
+    matchData.table = FoosballTableData.fromTable(match.getTable());
         
     return matchData;
   }

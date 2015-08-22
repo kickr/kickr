@@ -74,7 +74,7 @@ public class RootResource extends BaseResource {
 
       NewCookie loginCookie = new NewCookie("__sid", token.getValue(), "/", null, null, (int) maxAge, false, true);
 
-      return Response.seeOther(URI.create(redirectTo)).cookie(loginCookie).build();
+      return redirect(redirectTo).cookie(loginCookie).build();
 
     } catch (AuthenticationException ex) {
 

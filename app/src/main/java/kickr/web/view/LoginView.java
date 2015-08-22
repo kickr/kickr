@@ -32,7 +32,7 @@ public class LoginView extends BaseView<LoginView> {
   private String redirectUri;
 
   public LoginView() {
-    super(LoginView.class, "login.ftl");
+    super("login.ftl");
   }
 
   public String getRedirectUri() {

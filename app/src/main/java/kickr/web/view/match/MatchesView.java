@@ -25,16 +25,13 @@ package kickr.web.view.match;
 
 import java.util.List;
 import kickr.web.model.match.MatchData;
-import kickr.web.view.BaseView;
 
 /**
  *
  * @author nikku
  */
-public class MatchesView extends BaseView<MatchesView> {
+public class MatchesView extends BaseMatchesView<MatchesView> {
   
-  private List<MatchData> matches;
-
   private String filter;
   
   private String search;
@@ -42,31 +39,19 @@ public class MatchesView extends BaseView<MatchesView> {
   private int page = 1;
 
   public MatchesView() {
-    super(MatchesView.class, "list.ftl");
+    super("list.ftl");
   }
 
   public MatchesView withFilter(String filter) {
-    this.filter = filter;
-    return this;
+    return chain(() -> this.filter = filter);
   }
 
   public MatchesView withSearch(String search) {
-    this.search = search;
-    return this;
+    return chain(() -> this.search = search);
   }
   
-  public MatchesView withMatches(List<MatchData> matches) {
-    this.matches = matches;
-    return this;
-  }
-
   public MatchesView withPage(int page) {
-    this.page = page;
-    return this;
-  }
-
-  public List<MatchData> getMatches() {
-    return matches;
+    return chain(() -> this.page = page);
   }
 
   public String getFilter() {

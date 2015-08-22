@@ -34,6 +34,16 @@ import kickr.util.Side;
               "LEFT JOIN FETCH m.creator " +
             "WHERE m.played IS NOT NULL ORDER BY m.played DESC"),
   @NamedQuery(
+    name = "Match.get",
+    query = "SELECT m FROM Match m " +
+              "LEFT JOIN FETCH m.team1.offense " +
+              "LEFT JOIN FETCH m.team1.defense " +
+              "LEFT JOIN FETCH m.team2.offense " +
+              "LEFT JOIN FETCH m.team2.defense " +
+              "JOIN FETCH m.table " +
+              "LEFT JOIN FETCH m.creator " +
+            "WHERE m.id = :id"),
+  @NamedQuery(
     name = "Match.getUnrated",
     query = "SELECT m FROM Match m WHERE m.removed = false AND m.rated = false AND m.played IS NOT NULL AND m.played < :played")
 })

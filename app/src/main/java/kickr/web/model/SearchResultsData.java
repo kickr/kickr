@@ -21,14 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.model;
+
+import java.util.List;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class SearchResultsData {
 
-  public IndexView() {
-    super("index.ftl");
+  public static class Result {
+
+    public String title;
+
+    public String description;
+
+    public Result(String title, String description) {
+      this.title = title;
+      this.description = description;
+    }
+
+  }
+
+  private List<Result> results;
+
+  public SearchResultsData withResults(List<Result> results) {
+    this.results = results;
+    return this;
+  }
+  
+  public List<Result> getResults() {
+    return results;
   }
 }

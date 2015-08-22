@@ -14,12 +14,6 @@
     </div>
   </footer>
 
-  <script src="/assets/lib/jquery.js"></script>
-  <script src="/assets/lib/semantic.js"></script>
-  <script src="/assets/lib/nprogress.js"></script>
-  <script src="/assets/lib/jquery.pjax.js"></script>
-
-  <script src="/assets/site.js"></script>
 </body>
 
 </html>

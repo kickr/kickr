@@ -18,7 +18,7 @@ public class MatchDAO extends AbstractDAO<Match> {
   }
   
   public Match findMatchById(Long id) {
-    return get(id);
+    return uniqueResult(namedQuery("Match.get").setParameter("id", id));
   }
   
   public void create(Match match) {

@@ -21,14 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package kickr.web.api;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import kickr.db.entity.Player;
+import kickr.web.model.PlayerData;
 
 /**
  *
+ * @author nikku
  */
-public class IndexView extends BaseView<IndexView> {
+public class PlayerUtil {
 
-  public IndexView() {
-    super("index.ftl");
+
+  public static Pattern CREATE_PLAYER_PATTERN =
+                    Pattern.compile("^(\\w+)\\s*(<([\\w@.]+)>)?$");
+
+  /**
+   * Parse a player from a <code>PATTERN&lt;email&gt;</code> string.
+   *
+   * @param str
+   * @return
+   */
+  public static PlayerData parsePlayer(String str) {
+
+    if (str == null) {
+      return null;
+    }
+    
+    Matcher matcher = CREATE_PLAYER_PATTERN.matcher(str);
+
+    if (!matcher.matches()) {
+      return null;
+    }
+
+    if (matcher.groupCount() > 3) {
+      return new PlayerData(matcher.group(1), matcher.group(3));
+    } else {
+      return new PlayerData(matcher.group(1));
+    }
   }
 }

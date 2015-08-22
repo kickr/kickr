@@ -6,7 +6,7 @@
   <tr class="${match.rated?string('', 'unrated')} ${match.removed?string('removed', '')}">
     <td class="collapsing"><a href="/match/${match.id}">${match.id}</a></td>
     <td class="collapsing players">
-      <@players team=match.teams.team1 />
+      <@players team=match.team1 />
     </td>
     <td class="collapsing">
       <strong title="${match.table.team1Alias!}">
@@ -18,7 +18,7 @@
       </strong>
     </td>
     <td class="collapsing players">
-      <@players team=match.teams.team2 />
+      <@players team=match.team2 />
     </td>
     <td class="right aligned">
       ${match.played?date}<#if match.table.name??>, ${match.table.name}</#if>

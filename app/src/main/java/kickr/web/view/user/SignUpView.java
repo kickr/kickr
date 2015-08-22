@@ -32,6 +32,6 @@ import kickr.web.view.BaseView;
 public class SignUpView extends BaseView<SignUpView> {
 
   public SignUpView() {
-    super(SignUpView.class, "signup.ftl");
+    super("signup.ftl");
   }
 }

@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import kickr.web.model.GameData;
-import kickr.web.model.TableData;
-import kickr.web.model.TeamsData;
+import kickr.web.model.FoosballTableData;
+import kickr.web.model.TeamData;
 
 public class CoreMatchData {
   
   @NotNull
-  protected TeamsData teams;
+  protected TeamData team1;
+  
+  @NotNull
+  protected TeamData team2;
 
   @NotNull
   protected List<GameData> games;
@@ -20,15 +23,22 @@ public class CoreMatchData {
   
   protected Date played;
   
-  protected TableData table;
-  
-  
-  public TeamsData getTeams() {
-    return teams;
+  protected FoosballTableData table;
+
+  public void setTeam1(TeamData team1) {
+    this.team1 = team1;
   }
-  
-  public void setTeams(TeamsData teams) {
-    this.teams = teams;
+
+  public TeamData getTeam1() {
+    return team1;
+  }
+
+  public TeamData getTeam2() {
+    return team2;
+  }
+
+  public void setTeam2(TeamData team2) {
+    this.team2 = team2;
   }
   
   public MatchResultData getResult() {
@@ -55,11 +65,11 @@ public class CoreMatchData {
     this.played = played;
   }
   
-  public TableData getTable() {
+  public FoosballTableData getTable() {
     return table;
   }
   
-  public void setTable(TableData table) {
+  public void setTable(FoosballTableData table) {
     this.table = table;
   }
   

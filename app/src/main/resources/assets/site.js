@@ -11,6 +11,16 @@ $(function() {
         $el.removeClass('loading').addClass('loaded');
       });
     });
+
+    $('[data-complete]').each(function() {
+      var $el = $(this);
+
+      $el.search({
+        apiSettings: {
+          url: $el.attr('data-complete')
+        }
+      });
+    });
   }
 
   NProgress.configure({ showSpinner: false });

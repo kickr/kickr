@@ -23,15 +23,17 @@
  */
 package kickr.web.view.match;
 
-import kickr.web.view.BaseView;
+import kickr.web.form.NewMatchForm;
+import kickr.web.view.FormView;
 
 /**
  *
  * @author nikku
  */
-public class NewMatchView extends BaseView<NewMatchView> {
-
+public class NewMatchView extends FormView<NewMatchView, NewMatchForm> {
+ 
   public NewMatchView() {
-    super(NewMatchView.class, "new.ftl");
+    super("new.ftl");
   }
+  
 }
