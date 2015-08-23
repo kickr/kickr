@@ -74,7 +74,7 @@
             <p>
               ${match.team1.offense.alias}
             </p>
-            <#if match.team1.defense??>
+            <#if match.team1.defense.alias != match.team1.offense.alias>
               <p>
                 ${match.team1.defense.alias}
               </p>
@@ -91,7 +91,7 @@
             <p>
               ${match.team2.offense.alias}
             </p>
-            <#if match.team2.defense??>
+            <#if match.team2.defense.alias != match.team2.offense.alias>
               <p>
                 ${match.team2.defense.alias}
               </p>
@@ -102,9 +102,9 @@
     </div>
 
     <div class="column">
-      <h2>
+      <span class="ui huge header">
         ${match.result.team1}:${match.result.team2}
-      </h2>
+      </span>
     </div>
 
   </div>
