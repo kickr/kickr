@@ -37,9 +37,26 @@
       </div>
       <div class="right account menu">
         <#if user??>
-          <form class="item" method="post" action="/logout">
-            <input type="submit" class="ui button" value="Logout">
-          </form>
+
+          <div class="ui item">
+
+            <div class="ui floating top right pointing dropdown account icon button">
+              <i class="user icon"></i>
+              <div class="menu" tabindex="-1">
+                <div class="header">Signed in as <strong>${user.name}</strong></div>
+                <div class="divider"></div>
+                <form class="item" method="post" action="/logout">
+                  <div class="ui transparent input">
+                    <input class="ui transparent input" type="submit" value="Sign out">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <script type="text/javascript">
+            $('.account.icon').dropdown();
+          </script>
         <#else>
           <a class="item" href="/login">
             <div class="ui primary button">Login</div>
