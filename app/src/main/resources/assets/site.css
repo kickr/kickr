@@ -124,7 +124,7 @@ footer .ui.divider {
   position: absolute;
   top: -27px;
   bottom: 10px;
-  left: 31px;
+  left: 32px;
   z-index: -1;
 }
 
@@ -136,7 +136,7 @@ footer .ui.divider {
   width: 2.5em;
   height: 2.5em;
   line-height: 1em;
-  padding: .195em .165em;
+  padding: .24em .15em;
 }
 
 .ui.history.feed > .event > .label .icon {
