@@ -21,58 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.form;
+package kickr.util;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.lang.annotation.ElementType;
 import javax.validation.ConstraintViolation;
-import kickr.util.Types;
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 
 /**
  *
  * @author nikku
- * @param <T>
  */
-public class Form<T extends Form> {
+public class Constraints {
 
-  private final Class<T> formCls;
+  public static <T> ConstraintViolation<T> createFieldViolation(T bean, String message, String pathStr, Object value) {
 
-  public Form() {
-    this.formCls = (Class<T>) Types.inferActualType(this.getClass(), 0);
-  }
+    PathImpl path = PathImpl.createPathFromString(pathStr);
 
-  private Set<ConstraintViolation<T>> errors;
-
-  public T withGenericErrors(Set<ConstraintViolation<?>> errors) {
-
-    Set<ConstraintViolation<T>> castedErrors =
-            errors.stream()
-              .map((e) -> (ConstraintViolation<T>) e)
-              .collect(Collectors.toSet());
-    
-    return withErrors(castedErrors);
-  }
-
-  public T withErrors(Set<ConstraintViolation<T>> errors) {
-    return chain(() -> this.errors = errors);
-  }
-
-  public T withError(ConstraintViolation<T> error) {
-
-    Set<ConstraintViolation<T>> errors = new HashSet<>();
-    errors.add(error);
-  
-    return withErrors(errors);
-  }
-
-  public Set<ConstraintViolation<T>> getErrors() {
-    return errors;
-  }
-
-  public T chain(Runnable r) {
-    r.run();
-
-    return formCls.cast(this);
+    return ConstraintViolationImpl.<T>forBeanValidation(
+        message, message, (Class<T>) bean.getClass(), bean, null, value, path, null, ElementType.FIELD);
   }
 }
