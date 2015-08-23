@@ -56,7 +56,7 @@ public class PlayerUtil {
       return null;
     }
 
-    if (matcher.groupCount() > 3) {
+    if (matcher.groupCount() == 3) {
       return new PlayerData(matcher.group(1), matcher.group(3));
     } else {
       return new PlayerData(matcher.group(1));
