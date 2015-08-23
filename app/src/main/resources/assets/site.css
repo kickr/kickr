@@ -15,6 +15,16 @@ pre {
   width: 4em;
 }
 
+.ui.secondary.menu .floated.header {
+  margin-top: .5em;
+}
+
+.ui.secondary.menu .left.floated.header {
+  margin-left: .14285em;
+  margin-bottom: 0.4em;
+}
+
+
 /* footer */
 footer .ui.divider {
   margin-top: 3em;
@@ -76,6 +86,7 @@ footer .ui.divider {
   }
 }
 
+/** search */
 .ui.search .result .content > * {
   display: inline-block;
 }
@@ -87,4 +98,51 @@ footer .ui.divider {
 .ui.search .result .description {
   font-size: 1em;
   float: right;
+}
+
+/** tools */
+
+.ui.tools.segment .label {
+  margin-top: -0.3em;
+  margin-bottom: -0.3em;
+}
+
+/** feed */
+
+.ui.history.feed {
+  position: relative;
+  margin-top: 30px;
+}
+
+.ui.history.feed > .event {
+  margin: 15px;
+}
+
+.ui.history.feed:before {
+  content: '';
+  border-left: solid 2px #f3f4f5;
+  position: absolute;
+  top: -27px;
+  bottom: 10px;
+  left: 31px;
+  z-index: -1;
+}
+
+.ui.history.feed > .event > .label {
+  background: #f3f4f5;
+  border: solid 2px white;
+  text-align: center;
+  border-radius: 500rem;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 1em;
+  padding: .195em .165em;
+}
+
+.ui.history.feed > .event > .label .icon {
+
+}
+
+.ui.history.feed > .event > .content .summary {
+  font-weight: normal;
 }

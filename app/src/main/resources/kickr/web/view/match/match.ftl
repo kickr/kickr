@@ -9,18 +9,56 @@
 </div>
 
 
-<h1 class="ui header">
-  Match ${match.id}
+<div class="ui secondary menu">
+  <h1 class="ui left floated header">
+    Match ${match.id}
+  </h1>
 
-  <div class="ui icon buttons">
-    <button class="ui button"><i class="bold icon"></i></button>
-    <button class="ui button"><i class="underline icon"></i></button>
-    <button class="ui button"><i class="text width icon"></i></button>
+  <div class="right menu">
+
+    <div class="fitted item">
+
+      <div class="ui compact basic buttons">
+        <a class="ui button" href="/match/${match.id}/edit">Edit</a>
+
+        <#if !match.rated>
+          <div class="ui floating edit dropdown icon compact button" tabindex="0">
+            <i class="dropdown icon"></i>
+            <div class="menu" tabindex="-1">
+              <a class="item" href="#">Mark as cheated</a>
+            </div>
+          </div>
+        </#if>
+      </div>
+
+      <script type="text/javascript">
+        $('.edit.dropdown').dropdown();
+      </script>
+    </div>
   </div>
-</h1>
+</div>
 
-<div class="ui top attached secondary segment">
-  Played <strong>${match.played?date}</strong> at <strong>${table.name}</strong>.
+<div class="ui top attached tools secondary segment">
+
+  <div class="ui two column grid">
+    <div class="ui left floated ten wide column">
+      Played <strong>${match.played?date}</strong> at <strong>${table.name}</strong>
+    </div>
+
+    <div class="right floated right aligned six wide column">
+      <#if match.rated>
+        <div class="ui green label">
+          Rated
+        </div>
+      </#if>
+
+      <#if match.removed>
+        <div class="ui red label">
+          Removed
+        </div>
+      </#if>
+    </div>
+  </div>
 </div>
 
 <div class="ui bottom attached segment">
@@ -73,16 +111,30 @@
 
 </div>
 
-<#if match.rated>
-  <div class="ui green segment">
-    Match was rated.
+<div class="ui history feed">
+  <div class="event">
+    <div class="label">
+      <i class="add circle icon"></i>
+    </div>
+    <div class="content">
+      <div class="summary">
+        <a href class="user">Nikku</a> filed this game
+        <div class="date">5 hours ago</div>
+      </div>
+    </div>
   </div>
-</#if>
 
-<#if match.removed>
-  <div class="ui secondary segment">
-    Marked was removed.
+  <div class="event">
+    <div class="label">
+      <i class="selected radio icon"></i>
+    </div>
+    <div class="content">
+      <div class="summary">
+        <strong class="user">kckr</strong> rated this game
+        <div class="date">3 hours ago</div>
+      </div>
+    </div>
   </div>
-</#if>
+</div>
 
 <#include "*/footer.ftl">
