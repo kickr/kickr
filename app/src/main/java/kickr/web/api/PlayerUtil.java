@@ -34,9 +34,8 @@ import kickr.web.model.PlayerData;
  */
 public class PlayerUtil {
 
-
   public static Pattern CREATE_PLAYER_PATTERN =
-                    Pattern.compile("^(\\w+)\\s*(<([\\w@.]+)>)?$");
+                    Pattern.compile("^(\\S+)\\s*(<([^>]+)>)?$");
 
   /**
    * Parse a player from a <code>PATTERN&lt;email&gt;</code> string.
