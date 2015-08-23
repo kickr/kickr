@@ -31,7 +31,9 @@ import java.util.regex.Pattern;
  */
 public class GamesUtil {
 
-  public static final String GAMES_PATTERN_STRING = "^(([\\d]+):([\\d]+))+$";
+  public static final String GAME_PATTERN_STRING = "([\\d]+):([\\d]+)";
 
-  public static final Pattern GAMES_PATTERN = Pattern.compile(GAMES_PATTERN_STRING);
+  public static final String GAMES_PATTERN_STRING = "^(" + GAME_PATTERN_STRING + "\\s*)+$";
+
+  public static final Pattern GAME_PATTERN = Pattern.compile(GAME_PATTERN_STRING);
 }

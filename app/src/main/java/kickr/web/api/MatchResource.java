@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.ws.rs.BadRequestException;
 
@@ -184,28 +183,25 @@ public class MatchResource extends BaseResource {
     return new FoosballTableData(table.getId());
   }
 
-  private List<GameData> createGameData(String gamesStr) {
+  public List<GameData> createGameData(String gamesStr) {
 
-    Matcher matcher = GamesUtil.GAMES_PATTERN.matcher(gamesStr);
-
-    if (!matcher.matches()) {
-      throw new BadRequestException("Invalid input");
-    }
+    Matcher matcher = GamesUtil.GAME_PATTERN.matcher(gamesStr);
 
     List<GameData> games = new ArrayList<>();
 
-    int idx = 0;
-
-    while ((3 + (3 * idx)) < matcher.groupCount()) {
-
+    while (matcher.find()) {
       games.add(new GameData(
-        Integer.parseInt(matcher.group(2 + (3 * idx))),
-        Integer.parseInt(matcher.group(3 + (3 * idx)))
+        Integer.parseInt(matcher.group(1)),
+        Integer.parseInt(matcher.group(2))
       ));
-
-      idx++;
     }
-    
+
+    if (games.isEmpty()) {
+      throw new BadRequestException("Invalid input");
+    }
+
+    System.out.println(games);
+
     return games;
   }
 
