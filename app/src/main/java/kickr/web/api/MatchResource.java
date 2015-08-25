@@ -5,6 +5,7 @@ import kickr.web.view.match.MatchesView;
 import kickr.web.model.match.MatchData;
 import io.dropwizard.hibernate.UnitOfWork;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import kickr.db.entity.Match;
 import kickr.db.entity.user.User;
 import kickr.service.MatchService;
 import kickr.util.Constraints;
+import kickr.util.Page;
 import kickr.web.BaseResource;
 import static kickr.web.api.PlayerUtil.parsePlayer;
 import kickr.web.form.GamesUtil;
@@ -67,17 +69,23 @@ public class MatchResource extends BaseResource {
   @RolesAllowed("user")
   @UnitOfWork
   public MatchesView list(
-      @QueryParam("page") @DefaultValue("1") int page,
+      @QueryParam("page") @DefaultValue("1") int pageNo,
       @QueryParam("filter") String filter,
-      @QueryParam("search") String search) {
+      @QueryParam("search") @DefaultValue("") String search) {
 
-    int pageSize = 10;
+    Page page = new Page(pageNo);
     
-    List<Match> matches = matchDao.getMatches((page - 1 * pageSize), pageSize);
+    List<Match> matches;
+
+    if (search.isEmpty()) {
+      matches = matchDao.getMatches(page);
+    } else {
+      matches = matchDao.getMatchesByAliases(parseAliases(search), page);
+    }
 
     return createView(MatchesView.class)
               .withMatches(MatchData.fromMatches(matches))
-              .withPage(page)
+              .withPage(pageNo)
               .withFilter(filter)
               .withSearch(search);
   }
@@ -86,7 +94,7 @@ public class MatchResource extends BaseResource {
   @Path("latest")
   @UnitOfWork
   public LatestMatchesView listLatest() {
-    List<Match> matches = matchDao.getMatches(0, 5);
+    List<Match> matches = matchDao.getMatches(new Page(1, 5));
 
     return createView(LatestMatchesView.class).withMatches(MatchData.fromMatches(matches));
   }
@@ -183,6 +191,10 @@ public class MatchResource extends BaseResource {
     return new FoosballTableData(table.getId());
   }
 
+  private List<String> parseAliases(String searchStr) {
+    return Arrays.asList(searchStr.split(" "));
+  }
+
   public List<GameData> createGameData(String gamesStr) {
 
     Matcher matcher = GamesUtil.GAME_PATTERN.matcher(gamesStr);
@@ -199,8 +211,6 @@ public class MatchResource extends BaseResource {
     if (games.isEmpty()) {
       throw new BadRequestException("Invalid input");
     }
-
-    System.out.println(games);
 
     return games;
   }

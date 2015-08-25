@@ -3,6 +3,16 @@
 
 <#include "*/header.ftl">
 
+<#assign base="?">
+
+<#if filter??>
+  <#if base != "?">
+    <#assign base="${base}&">
+  </#if>
+
+  <#assign base="${base}filter=${filter}">
+</#if>
+
 <div class="ui breadcrumb">
   <a class="section" href="/">Home</a>
   <i class="right angle icon divider"></i>
@@ -45,22 +55,20 @@
         <@match.matchRow match=m />
       <#else>
         <tr>
-          <td>No recorded matches. Go play!</td>
+          <td>
+            No matches with found.
+
+            <#if page != 0>
+              Goto <a href="${base}page=${page - 1}">previous page</a>.
+            <#else>
+              Go play!
+            </#if>
+          </td>
         </tr>
       </#list>
     </tbody>
   </table>
 </div>
-
-<#assign base="?">
-
-<#if filter??>
-  <#if base != "?">
-    <#assign base="${base}&">
-  </#if>
-
-  <#assign base="${base}filter=${filter}">
-</#if>
 
 <#if search??>
   <#if base != "?">
