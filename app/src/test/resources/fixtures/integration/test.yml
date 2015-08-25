@@ -1,0 +1,32 @@
+# database settings
+database:
+  driverClass: org.h2.Driver
+  user: sa
+  password: sa
+  url: jdbc:h2:./target/kickr
+  properties:
+    hibernate.hbm2ddl.auto: update
+    hibernate.ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    hibernate.cache.use_second_level_cache: false
+
+server:
+  rootPath: /*
+  applicationConnectors:
+    - type: http
+      port: 10280
+  adminConnectors:
+    - type: http
+      port: 10281
+
+logging:
+
+  # default level can be { OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL }
+  level: INFO
+
+  # specific levels
+  loggers:
+    kickr: INFO
+    org.hibernate.SQL: ALL
+
+  appenders:
+    - type: console

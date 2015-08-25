@@ -1,7 +1,6 @@
-package kickr.core.model;
+package kickr.core.web.model;
 
 import kickr.web.model.match.CoreMatchData;
-import kickr.web.model.TeamsData;
 import static io.dropwizard.testing.FixtureHelpers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import io.dropwizard.jackson.Jackson;
@@ -20,12 +19,10 @@ public class CoreMatchDataTest {
   public void shouldDeserializesAddMatchData() throws Exception {
 
     // given
-    String matchDataJSON = fixture("fixtures/add-match.json");
+    String matchDataJSON = fixture("fixtures/json/add-match.json");
 
     // when
     CoreMatchData matchData = MAPPER.readValue(matchDataJSON, CoreMatchData.class);
-
-    TeamsData teamsData = matchData.getTeams();
 
     // then
     assertThat(matchData.getGames()).hasSize(2);
@@ -34,11 +31,9 @@ public class CoreMatchDataTest {
 
     assertThat(matchData.getTable()).isNotNull();
 
-    assertThat(teamsData).isNotNull();
-
-    assertThat(teamsData.getTeam1().getDefense()).isNotNull();
-    assertThat(teamsData.getTeam1().getOffense()).isNotNull();
-    assertThat(teamsData.getTeam2().getDefense()).isNotNull();
-    assertThat(teamsData.getTeam2().getOffense()).isNotNull();
+    assertThat(matchData.getTeam1().getDefense()).isNotNull();
+    assertThat(matchData.getTeam1().getOffense()).isNotNull();
+    assertThat(matchData.getTeam2().getDefense()).isNotNull();
+    assertThat(matchData.getTeam2().getOffense()).isNotNull();
   }
 }

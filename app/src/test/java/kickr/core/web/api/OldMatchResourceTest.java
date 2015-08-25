@@ -1,10 +1,11 @@
-package kickr.core.api;
+package kickr.core.web.api;
 
 import kickr.web.api.MatchResource;
 import static io.dropwizard.testing.FixtureHelpers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import javax.validation.Validator;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,15 +32,18 @@ import support.security.auth.AuthFactory;
  *
  * @author nikku
  */
-public class MatchResourceTest {
+public class OldMatchResourceTest {
 
   private static final MatchDAO matchDao = mock(MatchDAO.class);
   
   private static final PlayerDAO playerDao = mock(PlayerDAO.class);
   
   private static final GameDAO gameDao = mock(GameDAO.class);
-  
+
   private static final FoosballTableDAO tableDao = mock(FoosballTableDAO.class);
+
+  private static final Validator validator = mock(Validator.class);
+
 
   private static final MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
 
@@ -47,7 +51,7 @@ public class MatchResourceTest {
 
   @ClassRule
   public static final ResourceTestRule resources = ResourceTestRule.builder()
-          .addResource(new MatchResource(matchService, matchDao))
+          .addResource(new MatchResource(matchService, matchDao, playerDao, validator))
           .addProvider(new SecurityContextInitializer(securityContextFactory))
           .addProvider(new RolesAllowedDynamicFeature())
           .addProvider(AuthFactory.binder(new AuthFactory<>(User.class)))
@@ -69,7 +73,7 @@ public class MatchResourceTest {
     });
 
     // given
-    String matchDataJSON = fixture("fixtures/add-match.json");
+    String matchDataJSON = fixture("fixtures/json/add-match.json");
     Entity<String> matchDataEntity = Entity.entity(matchDataJSON, MediaType.APPLICATION_JSON);
 
     // when
