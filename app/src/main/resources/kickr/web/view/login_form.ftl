@@ -24,7 +24,7 @@
             <input type="password" name="password" placeholder="Password">
           </div>
         </div>
-        <input type="submit" class="ui fluid large blue submit button" value="Login" />
+        <input type="submit" class="ui fluid large blue submit button" value="Signin" />
         <#if redirectUri??>
           <input type="hidden" name="redirectTo" value="${redirectUri}">
         </#if>
@@ -33,7 +33,7 @@
     </form>
 
     <div class="ui message">
-      No account yet? <a href="/user/signup">Sign up</a> instead.
+      No account yet? <a href="/user/signup">Signup</a> instead.
     </div>
   </div>
 </div>

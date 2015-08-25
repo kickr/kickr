@@ -47,7 +47,7 @@
                 <div class="divider"></div>
                 <form class="item" method="post" action="/logout">
                   <div class="ui transparent input">
-                    <input class="ui transparent input" type="submit" value="Sign out">
+                    <input class="ui transparent input" type="submit" value="Log out">
                   </div>
                 </form>
               </div>
@@ -59,7 +59,7 @@
           </script>
         <#else>
           <a class="item" href="/login">
-            <div class="ui primary button">Login</div>
+            <div class="ui primary button">Log in</div>
           </a>
         </#if>
       </div>

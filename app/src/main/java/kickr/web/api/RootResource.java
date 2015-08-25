@@ -42,14 +42,14 @@ public class RootResource extends BaseResource {
 
 
   @GET
-  @Path("login")
+  @Path(Paths.LOGIN_PATH)
   @UnitOfWork
   public LoginView loginForm(@QueryParam("redirectTo") String redirectTo) {
     return new LoginView().redirectTo(redirectTo);
   }
 
   @POST
-  @Path("login")
+  @Path(Paths.LOGIN_PATH)
   @UnitOfWork
   public Response login(@FormData LoginForm loginForm) {
 
@@ -72,26 +72,26 @@ public class RootResource extends BaseResource {
         redirectTo = "/?hello=1";
       }
 
-      NewCookie loginCookie = new NewCookie("__sid", token.getValue(), "/", null, null, (int) maxAge, false, true);
+      NewCookie userCookie = new NewCookie("__sid", token.getValue(), "/", null, null, (int) maxAge, false, true);
 
-      return redirect(redirectTo).cookie(loginCookie).build();
+      return redirect(redirectTo).cookie(userCookie).build();
 
     } catch (AuthenticationException ex) {
 
-      LoginView loginView = createView(LoginView.class).redirectTo(redirectTo).addError("Invalid credentials");
+      LoginView signinView = createView(LoginView.class).redirectTo(redirectTo).addError("Invalid credentials");
 
-      return unauthorized().entity(loginView).build();
+      return unauthorized().entity(signinView).build();
     }
   }
 
   @POST
-  @Path("logout")
+  @Path(Paths.LOGOUT_PATH)
   @UnitOfWork
   public Response logout(@Auth User user, @QueryParam("token") String token) {
     authenticationService.unauthenticate(user, token);
 
-    NewCookie logoutCookie = new NewCookie("__sid", "", "/", null, null, -1, false, true);
+    NewCookie removeUserCookie = new NewCookie("__sid", "", "/", null, null, -1, false, true);
 
-    return Response.seeOther(URI.create("/")).cookie(logoutCookie).build();
+    return Response.seeOther(URI.create("/")).cookie(removeUserCookie).build();
   }
 }

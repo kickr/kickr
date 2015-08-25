@@ -21,36 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web;
-
-import java.net.URI;
-import javax.inject.Singleton;
-import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-import kickr.web.api.Paths;
+package kickr.web.api;
 
 /**
  *
  * @author nikku
  */
-@Provider
-@Singleton
-public class NotAuthorizedErrorHandler implements ExceptionMapper<NotAuthorizedException> {
+public class Paths {
 
-  @Context
-  UriInfo uriInfo;
+  public static final String LOGIN_PATH = "login";
 
-  @Override
-  public Response toResponse(NotAuthorizedException exception) {
-    URI uri = UriBuilder.fromUri(uriInfo.getPath(true) + uriInfo.relativize(uriInfo.getRequestUri()).toASCIIString()).build();
+  public static final String LOGIN_URL = "/" + LOGIN_PATH;
 
-    URI build = uriInfo.getAbsolutePathBuilder().path(Paths.LOGIN_URL).queryParam("redirectTo", "/" + uri.toString()).build();
+  public static final String LOGOUT_PATH = "logout";
 
-    return Response.temporaryRedirect(uriInfo.relativize(build)).build();
-  }
+  public static final String LOGOUT_URL = "/" + LOGOUT_PATH;
 }
