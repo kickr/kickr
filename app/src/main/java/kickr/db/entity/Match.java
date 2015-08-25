@@ -32,7 +32,8 @@ import kickr.util.Side;
               "LEFT JOIN FETCH m.team2.defense " +
               "JOIN FETCH m.table " +
               "LEFT JOIN FETCH m.creator " +
-            "WHERE m.played IS NOT NULL ORDER BY m.played DESC"),
+            "WHERE m.played IS NOT NULL " +
+            "ORDER BY m.played DESC"),
   @NamedQuery(
     name = "Match.get",
     query = "SELECT m FROM Match m " +
@@ -86,6 +87,8 @@ public class Match extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "creator_id")
   private User creator;
+
+  private String participants;
 
   public Match() { }
 
