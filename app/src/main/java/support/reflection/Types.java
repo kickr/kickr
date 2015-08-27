@@ -21,26 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.util;
+package support.reflection;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  *
  * @author nikku
  */
-public class Page {
+public class Types {
 
-  public static final int DEFAULT_PAGE_SIZE = 10;
 
-  public final int firstResult;
-  public final int maxResults;
-
-  public Page(int pageNumber, int pageSize) {
-    this.firstResult = (pageNumber - 1) * pageSize;
-    this.maxResults = pageSize;
-  }
-
-  public Page(int pageNumber) {
-    this(pageNumber, DEFAULT_PAGE_SIZE);
-  }
+  public static Class<?> inferActualType(Class cls, int index) {
+    Type t = cls.getGenericSuperclass();
+    ParameterizedType pt = (ParameterizedType) t;
   
+    return (Class)pt.getActualTypeArguments()[0];
+  }
+
 }

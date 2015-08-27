@@ -13,7 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import kickr.web.model.PlayerData;
-import kickr.db.PlayerDAO;
+import kickr.db.dao.PlayerDAO;
 import kickr.db.entity.Player;
 import kickr.web.model.SearchResultsData;
 

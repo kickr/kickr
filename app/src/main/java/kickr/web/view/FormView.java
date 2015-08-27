@@ -24,7 +24,7 @@
 package kickr.web.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kickr.util.Types;
+import support.reflection.Types;
 import kickr.web.form.Form;
 
 /**

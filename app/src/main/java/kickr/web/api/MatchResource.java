@@ -25,14 +25,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 
-import kickr.db.MatchDAO;
-import kickr.db.PlayerDAO;
+import kickr.db.dao.MatchDAO;
+import kickr.db.dao.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Match;
 import kickr.db.entity.user.User;
 import kickr.service.MatchService;
-import kickr.util.Constraints;
-import kickr.util.Page;
+import support.validation.Constraints;
+import kickr.db.util.Page;
 import kickr.web.BaseResource;
 import static kickr.web.api.PlayerUtil.parsePlayer;
 import kickr.web.form.GamesUtil;

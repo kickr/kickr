@@ -6,8 +6,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
-import kickr.db.FoosballTableDAO;
-import kickr.db.PlayerDAO;
+import kickr.db.dao.FoosballTableDAO;
+import kickr.db.dao.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Player;
 import kickr.db.entity.user.User;

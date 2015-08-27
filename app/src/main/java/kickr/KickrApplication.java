@@ -1,6 +1,6 @@
 package kickr;
 
-import kickr.db.AccessTokenDAO;
+import kickr.db.dao.AccessTokenDAO;
 import kickr.config.KickrConfiguration;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -26,12 +26,12 @@ import kickr.web.api.RootResource;
 import kickr.web.api.ScoreResource;
 import kickr.web.api.TableResource;
 import kickr.web.api.administration.AdminResource;
-import kickr.db.FoosballTableDAO;
-import kickr.db.GameDAO;
-import kickr.db.MatchDAO;
-import kickr.db.PlayerDAO;
-import kickr.db.ScoreDAO;
-import kickr.db.UserDAO;
+import kickr.db.dao.FoosballTableDAO;
+import kickr.db.dao.GameDAO;
+import kickr.db.dao.MatchDAO;
+import kickr.db.dao.PlayerDAO;
+import kickr.db.dao.ScoreDAO;
+import kickr.db.dao.UserDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;

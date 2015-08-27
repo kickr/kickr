@@ -1,4 +1,4 @@
-package kickr.db;
+package kickr.db.dao;
 
 import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Duration;
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import kickr.db.entity.Match;
-import kickr.util.Page;
+import kickr.db.util.Page;
 import org.hibernate.Query;
 
 import org.hibernate.SessionFactory;

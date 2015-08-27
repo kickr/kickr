@@ -1,4 +1,4 @@
-package kickr.db;
+package kickr.db.dao;
 
 import kickr.db.entity.PlayerStatistics;
 import kickr.db.entity.Score;

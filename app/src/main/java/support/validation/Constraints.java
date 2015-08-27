@@ -21,23 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.util;
+package support.validation;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.annotation.ElementType;
+import javax.validation.ConstraintViolation;
+import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
+import org.hibernate.validator.internal.engine.path.PathImpl;
 
 /**
  *
  * @author nikku
  */
-public class Types {
+public class Constraints {
 
+  public static <T> ConstraintViolation<T> createFieldViolation(T bean, String message, String pathStr, Object value) {
 
-  public static Class<?> inferActualType(Class cls, int index) {
-    Type t = cls.getGenericSuperclass();
-    ParameterizedType pt = (ParameterizedType) t;
-  
-    return (Class)pt.getActualTypeArguments()[0];
+    PathImpl path = PathImpl.createPathFromString(pathStr);
+
+    return ConstraintViolationImpl.<T>forBeanValidation(
+        message, message, (Class<T>) bean.getClass(), bean, null, value, path, null, ElementType.FIELD);
   }
-
 }

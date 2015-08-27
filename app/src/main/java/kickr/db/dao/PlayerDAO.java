@@ -1,4 +1,4 @@
-package kickr.db;
+package kickr.db.dao;
 
 import io.dropwizard.hibernate.AbstractDAO;
 

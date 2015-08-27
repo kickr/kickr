@@ -7,7 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import kickr.web.model.LeaderBoardData;
 import kickr.web.model.ScoreData;
-import kickr.db.ScoreDAO;
+import kickr.db.dao.ScoreDAO;
 import kickr.db.entity.PlayerStatistics;
 import kickr.db.entity.ScoreWithChanges;
 import kickr.web.BaseResource;

@@ -11,7 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import kickr.web.model.FoosballTableData;
-import kickr.db.FoosballTableDAO;
+import kickr.db.dao.FoosballTableDAO;
 import kickr.db.entity.FoosballTable;
 
 @Path("table")

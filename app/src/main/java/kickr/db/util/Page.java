@@ -21,24 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.util;
-
-import java.lang.annotation.ElementType;
-import javax.validation.ConstraintViolation;
-import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
-import org.hibernate.validator.internal.engine.path.PathImpl;
+package kickr.db.util;
 
 /**
  *
  * @author nikku
  */
-public class Constraints {
+public class Page {
 
-  public static <T> ConstraintViolation<T> createFieldViolation(T bean, String message, String pathStr, Object value) {
+  public static final int DEFAULT_PAGE_SIZE = 10;
 
-    PathImpl path = PathImpl.createPathFromString(pathStr);
+  public final int firstResult;
+  public final int maxResults;
 
-    return ConstraintViolationImpl.<T>forBeanValidation(
-        message, message, (Class<T>) bean.getClass(), bean, null, value, path, null, ElementType.FIELD);
+  public Page(int pageNumber, int pageSize) {
+    this.firstResult = (pageNumber - 1) * pageSize;
+    this.maxResults = pageSize;
   }
+
+  public Page(int pageNumber) {
+    this(pageNumber, DEFAULT_PAGE_SIZE);
+  }
+  
 }

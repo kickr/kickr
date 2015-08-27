@@ -6,7 +6,7 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import kickr.config.KickrConfiguration;
-import kickr.db.UserDAO;
+import kickr.db.dao.UserDAO;
 import kickr.db.entity.user.Role;
 import kickr.db.entity.user.User;
 import kickr.security.service.CredentialsService;

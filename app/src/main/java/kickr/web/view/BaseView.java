@@ -29,7 +29,7 @@ import io.dropwizard.views.View;
 import java.util.ArrayList;
 import java.util.List;
 import kickr.db.entity.user.User;
-import kickr.util.Types;
+import support.reflection.Types;
 
 /**
  *
