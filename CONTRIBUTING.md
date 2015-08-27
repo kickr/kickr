@@ -1,16 +1,24 @@
 # How to contribute
 
-We welcome you to contribute! See below how to setup a development environment and start hacking right away.
+We welcome you to contribute! Learn how to setup a development environment and start hacking.
 
 
 ## Setup a Development Environment
 
-You need Java + maven (back-end technology) and NodeJS + npm (front-end technology) to build and run the application locally. See our [README](https://github.com/kickr/kickr#technology-stack) to get a broader view on our technology stack.
+You need Java + maven (back-end technology) to build and run the application locally.
+
+
+### Used Components
+
+You need to provide the following things in order to develop kickr
+
+* Java / Maven for building and running the app
+* MySQL / MariaDB for database persistence
 
 
 ### Initialize MySQL / MariaDB
 
-You will need MySQL / MariaDB to resemble the official development setup. Set it up:
+You will need to setup a MySQL / MariaDB database that persists the kickr data.
 
 ```
 mysql> CREATE DATABASE kickr;
@@ -22,15 +30,6 @@ mysql> EXIT;
 ### Create a Configuration
 
 Create a file `app/kickr.development.yml` based on the provided [sample configuration](https://github.com/kickr/kickr/blob/master/app/kickr.development.sample.yml). Update it with your with your chosen database name, user and password.
-
-
-### Install Client Dependencies
-
-Install the stuff that is needed to build the application client via
-
-```
-(cd client && bower install && npm install && npm install -g grunt-cli)
-```
 
 
 ## Migrate Database
@@ -47,16 +46,9 @@ The application uses database migrations. You can use the `db migrate` task prov
 
 If you have set up a development environment use the command line to run the application.
 
-#### Backend
-
 ```
 (cd app && mvn clean compile exec:java)
 ```
 
-#### Client
-
-```
-(cd client && grunt auto-build)
-```
 
 Open [http://localhost:8280](http://localhost:8280) to inspect the website.

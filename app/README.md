@@ -1,26 +1,6 @@
-# app
+# kickr/app
 
-This is the repository backend that provides the actual repository services as well as the client files.
-
-
-## Overview
-
-> Before you start, add a `kickr.development.yml` file that contains your development database.
-
-The application is tested, packaged and (optionally) run via maven.
-
-```
-mvn clean verify exec:java
-```
-
-It serves the client from `target/classes/web`. To ensure that the resources are up to date, execute `grunt auto-build` in the `../client` directory.
-
-To package the application as a single `jar` file, ready for distribution execute
-
-```
-mvn clean package
-```
-
+This is the actual application. It is preferred to run this application via `../`.
 
 ## License
 

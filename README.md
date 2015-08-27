@@ -15,9 +15,12 @@ A kicker (áka table soccer) result tracker application.
 
 ## Technology Stack
 
-This application uses [dropwizard](http://www.dropwizard.io/) as a technology stack for the back-end. It builds on top of Hibernate for object relational mapping and Jersey for the REST api.
+This application uses a custom, developer and production friendly software stack based on [dropwizard](http://www.dropwizard.io/).
 
-The front-end stack consists of an AngularJS application that is being bundled for the browser using browserify. It uses less for CSS processing.
+
+## Setup and Run
+
+See our [contributing guide](https://github.com/kickr/kickr/blob/master/CONTRIBUTING.md) for how to get started with kickr.
 
 
 ## Resources
