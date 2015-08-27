@@ -3,20 +3,12 @@
 We welcome you to contribute! Learn how to setup a development environment and start hacking.
 
 
-## Setup a Development Environment
+## Setup Development Environment
 
 You need Java + maven (back-end technology) to build and run the application locally.
 
 
-### Used Components
-
-You need to provide the following things in order to develop kickr
-
-* Java / Maven for building and running the app
-* MySQL / MariaDB for database persistence
-
-
-### Initialize MySQL / MariaDB
+#### Setup Database
 
 You will need to setup a MySQL / MariaDB database that persists the kickr data.
 
@@ -26,10 +18,8 @@ mysql> GRANT ALL ON kickr.* TO 'kickr_user'@'localhost' IDENTIFIED BY 'kickr_pas
 mysql> EXIT;
 ```
 
+Create a configuration file `app/kickr.development.yml` based on the provided [sample configuration](https://github.com/kickr/kickr/blob/master/app/kickr.development.sample.yml). Update it with your chosen database name, user and password.
 
-### Create a Configuration
-
-Create a file `app/kickr.development.yml` based on the provided [sample configuration](https://github.com/kickr/kickr/blob/master/app/kickr.development.sample.yml). Update it with your with your chosen database name, user and password.
 
 
 ## Migrate Database
@@ -42,7 +32,7 @@ The application uses database migrations. You can use the `db migrate` task prov
 ```
 
 
-## Run the Application
+## Run Application
 
 If you have set up a development environment use the command line to run the application.
 
