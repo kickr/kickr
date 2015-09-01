@@ -49,7 +49,7 @@ public class NotAuthorizedErrorHandler implements ExceptionMapper<NotAuthorizedE
   public Response toResponse(NotAuthorizedException exception) {
     URI uri = UriBuilder.fromUri(uriInfo.getPath(true) + uriInfo.relativize(uriInfo.getRequestUri()).toASCIIString()).build();
 
-    URI build = uriInfo.getAbsolutePathBuilder().path("/FOO").queryParam("redirectTo", "/" + uri.toString()).build();
+    URI build = uriInfo.getAbsolutePathBuilder().path(Paths.LOGIN_PATH).queryParam("redirectTo", "/" + uri.toString()).build();
 
     return Response.temporaryRedirect(uriInfo.relativize(build)).build();
   }
