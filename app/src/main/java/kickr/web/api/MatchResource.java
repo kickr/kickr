@@ -24,6 +24,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 import kickr.db.dao.MatchDAO;
 import kickr.db.dao.PlayerDAO;
@@ -112,12 +113,12 @@ public class MatchResource extends BaseResource {
   @Path("new")
   @RolesAllowed("user")
   @UnitOfWork
-  public Object createFromForm(@Auth User user, @FormData NewMatchForm newMatchForm) {
+  public Response createFromForm(@Auth User user, @FormData NewMatchForm newMatchForm) {
 
     Set<ConstraintViolation<NewMatchForm>> validationErrors = validator.validate(newMatchForm);
 
     if (!validationErrors.isEmpty()) {
-      return createView(NewMatchView.class).withForm(newMatchForm.withErrors(validationErrors));
+      throw invalidForm(NewMatchView.class, newMatchForm.withErrors(validationErrors));
     }
 
     try {
@@ -146,8 +147,7 @@ public class MatchResource extends BaseResource {
       ConstraintViolation<NewMatchForm> violation = Constraints
             .createFieldViolation(newMatchForm, e.getMessage(), e.getPropertyPath(), e.getPropertyValue());
 
-      return createView(NewMatchView.class)
-                .withForm(newMatchForm.withError(violation));
+      throw invalidForm(NewMatchView.class, newMatchForm.withError(violation));
     }
   }
 

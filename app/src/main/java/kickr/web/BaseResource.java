@@ -3,6 +3,8 @@ package kickr.web;
 import java.net.URI;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import kickr.web.form.Form;
+import kickr.web.view.FormView;
 
 /**
  *
@@ -22,5 +24,22 @@ public class BaseResource extends ViewProvider {
 
   protected Response.ResponseBuilder unauthorized() {
     return Response.status(Response.Status.UNAUTHORIZED);
+  }
+
+  /**
+   * Indicate invalid form submit.
+   *
+   * @param <T>
+   * @param <F>
+   * @param formCls
+   * @param form
+   *
+   * @return
+   */
+  public <F extends Form, Z extends FormView<Z, F>> InvalidFormSubmitException invalidForm(Class<Z> formCls, F form) {
+
+    Z formView = createView(formCls).withForm(form);
+
+    return new InvalidFormSubmitException(formView);
   }
 }
