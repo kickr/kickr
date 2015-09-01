@@ -171,4 +171,12 @@ public class Match extends BaseEntity {
   public MatchResult getResult() {
     return result;
   }
+
+  public boolean isIndexed() {
+    return false;
+  }
+
+  public void setIndexed(boolean indexed) {
+
+  }
 }

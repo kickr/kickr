@@ -1,3 +1,6 @@
-dev/
+target
+data
+docs/DEVELOP.md
+kickr.development.yml
+dependency-reduced-pom.xml
 nb-configuration.xml
-node_modules

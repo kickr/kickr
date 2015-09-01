@@ -40,6 +40,8 @@ import kickr.db.entity.Score;
 import kickr.db.entity.ScoreChange;
 import kickr.db.entity.user.AccessToken;
 import kickr.db.entity.user.User;
+import kickr.search.ElasticSearch;
+import kickr.search.SearchIndexer;
 import kickr.security.UserSecurityContextFactory;
 import kickr.security.service.AuthenticationService;
 import kickr.security.service.CredentialsService;
@@ -127,6 +129,8 @@ public class KickrApplication extends Application<KickrConfiguration> {
     ScheduledExecutorService scheduledExecutorService = environment.lifecycle()
         .scheduledExecutorService("scheduled-pool-%d").build();
 
+    final ElasticSearch elasticSearch = new ElasticSearch(configuration.getElasticConfiguration());
+
     SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
 
     PlayerDAO playerDao = new PlayerDAO(sessionFactory);
@@ -184,6 +188,23 @@ public class KickrApplication extends Application<KickrConfiguration> {
     environment.jersey().register(new FormDataMessageBodyReader(environment.getValidator()));
 
     environment.jersey().register(new UserResource());
+
+    SearchIndexer searchIndexer = new SearchIndexer(matchDao, elasticSearch, environment.getObjectMapper());
+
+    scheduledExecutorService.schedule(() -> {
+      transactional.run(() -> {
+
+        try {
+          searchIndexer.index();
+        } catch (Exception e) {
+          System.err.println("Failed to index");
+          e.printStackTrace(System.err);
+        }
+      });
+    }, 10, TimeUnit.SECONDS);
+    
+
+    environment.lifecycle().manage(elasticSearch);
 
     // cross origin requests
 

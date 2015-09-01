@@ -18,6 +18,7 @@
     <hibernate.version>4.3.7.Final</hibernate.version>
     <jetty.version>9.2.9.v20150224</jetty.version>
     <junit.version>4.12</junit.version>
+    <elasticsearch.version>1.7.1</elasticsearch.version>
 
     <exec.mainClass>kickr.KickrApplication</exec.mainClass>
     <exec.args>server kickr.development.yml</exec.args>
@@ -93,6 +94,11 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-forms</artifactId>
       <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>${elasticsearch.version}</version>
     </dependency>
     <!-- password handling -->
     <dependency>
