@@ -1,6 +1,5 @@
 package kickr.db.dao;
 
-import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -13,7 +12,8 @@ import org.hibernate.Query;
 
 import org.hibernate.SessionFactory;
 
-public class MatchDAO extends AbstractDAO<Match> {
+
+public class MatchDAO extends BaseDAO<Match> {
 
   public MatchDAO(SessionFactory sessionFactory) {
     super(sessionFactory);
@@ -28,9 +28,7 @@ public class MatchDAO extends AbstractDAO<Match> {
   }
   
   public List<Match> getMatches(Page page) {
-    return list(namedQuery("Match.getAll")
-                  .setFirstResult(page.firstResult)
-                  .setMaxResults(page.maxResults));
+    return list(paginate(namedQuery("Match.getAll"), page));
   }
 
   public List<Match> getMatchesByAliases(List<String> aliases, Page page) {
