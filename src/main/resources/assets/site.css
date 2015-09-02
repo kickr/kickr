@@ -11,6 +11,10 @@ pre {
 }
 
 /* header */
+.ui.borderless.menu {
+  border: none;
+}
+
 .ui.menu .item>img:not(.ui) {
   width: 4em;
 }
