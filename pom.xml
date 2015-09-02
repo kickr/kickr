@@ -21,7 +21,7 @@
     <elasticsearch.version>1.7.1</elasticsearch.version>
 
     <exec.mainClass>kickr.KickrApplication</exec.mainClass>
-    <exec.args>server kickr.development.yml</exec.args>
+    <exec.args>server config/dev.yml</exec.args>
   </properties>
 
   <dependencies>

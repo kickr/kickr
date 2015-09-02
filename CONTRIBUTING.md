@@ -18,7 +18,7 @@ mysql> GRANT ALL ON kickr.* TO 'kickr_user'@'localhost' IDENTIFIED BY 'kickr_pas
 mysql> EXIT;
 ```
 
-Create a configuration file `app/kickr.development.yml` based on the provided [sample configuration](https://github.com/kickr/kickr/blob/master/app/kickr.development.sample.yml). Update it with your chosen database name, user and password.
+Create a configuration file `config/dev.yml` based on the provided [sample configuration](https://github.com/kickr/kickr/blob/master/config/dev.sample.yml). Update it with your chosen database name, user and password.
 
 
 
@@ -28,7 +28,7 @@ The application uses database migrations. You can use the `db migrate` task prov
 
 ```
 (cd app && mvn package && \
-   java -jar target/backend-0.0.1.jar db migrate kickr.development.yml)
+   java -jar target/backend-0.0.1.jar db migrate config/dev.yml)
 ```
 
 
