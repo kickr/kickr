@@ -1,6 +1,5 @@
 target
 data
-docs/DEVELOP.md
-kickr.development.yml
+config/dev.yml
 dependency-reduced-pom.xml
 nb-configuration.xml
