@@ -20,7 +20,7 @@ This application uses a custom, developer and production friendly software stack
 
 ## Setup and Run
 
-See our [contributing guide](https://github.com/kickr/kickr/blob/master/CONTRIBUTING.md) for how to get started with kickr.
+Read our [contributing guide](https://github.com/kickr/kickr/blob/master/CONTRIBUTING.md) to learn how to get started with kickr.
 
 
 ## Resources
