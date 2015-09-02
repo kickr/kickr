@@ -25,14 +25,14 @@ package kickr.web.view.match;
 
 import java.util.List;
 import kickr.web.model.match.MatchData;
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
  * @author nikku
  * @param <T>
  */
-public class BaseMatchesView<T extends BaseMatchesView> extends BaseView<T> {
+public class BaseMatchesView<T extends BaseMatchesView> extends AbstractView<T> {
 
   private List<MatchData> matches;
 

@@ -23,11 +23,13 @@
  */
 package kickr.web.view;
 
+import support.web.view.AbstractView;
+
 /**
  *
  * @author nikku
  */
-public class LoginView extends BaseView<LoginView> {
+public class LoginView extends AbstractView<LoginView> {
 
   private String redirectUri;
 

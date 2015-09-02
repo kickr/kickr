@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package support.web.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import support.reflection.Types;
-import kickr.web.form.Form;
+import support.web.form.AbstractForm;
 
 /**
  *
@@ -33,7 +33,7 @@ import kickr.web.form.Form;
  * @param <T>
  * @param <F>
  */
-public class FormView<T extends FormView, F extends Form> extends BaseView<T> {
+public class FormView<T extends FormView, F extends AbstractForm> extends AbstractView<T> {
 
   @JsonIgnore
   private final Class<F> formType;

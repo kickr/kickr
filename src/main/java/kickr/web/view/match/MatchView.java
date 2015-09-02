@@ -25,13 +25,13 @@ package kickr.web.view.match;
 
 import kickr.web.model.FoosballTableData;
 import kickr.web.model.match.MatchData;
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
  * @author nikku
  */
-public class MatchView extends BaseView<MatchView> {
+public class MatchView extends AbstractView<MatchView> {
   
   private MatchData match;
 

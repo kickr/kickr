@@ -10,7 +10,7 @@ import kickr.web.model.ScoreData;
 import kickr.db.dao.ScoreDAO;
 import kickr.db.entity.PlayerStatistics;
 import kickr.db.entity.ScoreWithChanges;
-import kickr.web.BaseResource;
+import support.web.api.AbstractResource;
 import kickr.web.view.ScoreLeaderboardView;
 
 /**
@@ -18,7 +18,7 @@ import kickr.web.view.ScoreLeaderboardView;
  * @author nikku
  */
 @Path("score")
-public class ScoreResource extends BaseResource {
+public class ScoreResource extends AbstractResource {
   
   private final ScoreDAO scoreDao;
 

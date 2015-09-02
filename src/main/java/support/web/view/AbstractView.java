@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.view;
+package support.web.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Charsets;
@@ -36,7 +36,7 @@ import support.reflection.Types;
  * @author nikku
  * @param <T>
  */
-public class BaseView<T extends BaseView> extends View {
+public abstract class AbstractView<T extends AbstractView> extends View {
 
   public static class Message {
 
@@ -77,7 +77,7 @@ public class BaseView<T extends BaseView> extends View {
   protected boolean layout = true;
 
 
-  public BaseView(String template) {
+  public AbstractView(String template) {
     super(template, Charsets.UTF_8);
     
     this.viewCls = (Class<T>) Types.inferActualType(this.getClass(), 0);

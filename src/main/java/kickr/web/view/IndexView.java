@@ -23,10 +23,12 @@
  */
 package kickr.web.view;
 
+import support.web.view.AbstractView;
+
 /**
  *
  */
-public class IndexView extends BaseView<IndexView> {
+public class IndexView extends AbstractView<IndexView> {
 
   public IndexView() {
     super("index.ftl");

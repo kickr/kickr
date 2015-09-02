@@ -25,13 +25,13 @@ package kickr.web.view.error;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
  * @author nikku
  */
-public class ValidationErrorsView extends BaseView<ValidationErrorsView> {
+public class ValidationErrorsView extends AbstractView<ValidationErrorsView> {
 
   private Set<ConstraintViolation<?>> violations;
 

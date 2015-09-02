@@ -23,6 +23,7 @@
  */
 package kickr.web;
 
+import support.web.ViewProvider;
 import javax.inject.Singleton;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;

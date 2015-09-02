@@ -25,7 +25,7 @@ package kickr.web;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
-import kickr.web.view.FormView;
+import support.web.view.FormView;
 
 /**
  *

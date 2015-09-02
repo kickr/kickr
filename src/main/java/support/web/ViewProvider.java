@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web;
+package support.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import kickr.db.entity.user.User;
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
@@ -41,7 +41,7 @@ public class ViewProvider {
   @Context
   private HttpServletRequest request;
 
-  protected <T extends BaseView> T createView(Class<T> cls) {
+  protected <T extends AbstractView> T createView(Class<T> cls) {
     boolean layout = request.getHeader("X-PJAX") == null;
 
     try {

@@ -23,6 +23,7 @@
  */
 package kickr.web.form;
 
+import support.web.form.AbstractForm;
 import java.util.Date;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,7 +34,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author nikku
  */
-public class NewMatchForm extends Form<NewMatchForm> {
+public class NewMatchForm extends AbstractForm<NewMatchForm> {
 
   public static class Team {
 

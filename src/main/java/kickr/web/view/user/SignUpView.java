@@ -23,13 +23,13 @@
  */
 package kickr.web.view.user;
 
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
  * @author nikku
  */
-public class SignUpView extends BaseView<SignUpView> {
+public class SignUpView extends AbstractView<SignUpView> {
 
   public SignUpView() {
     super("signup.ftl");

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.form;
+package support.web.form;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,11 +34,11 @@ import support.reflection.Types;
  * @author nikku
  * @param <T>
  */
-public class Form<T extends Form> {
+public abstract class AbstractForm<T extends AbstractForm> {
 
   private final Class<T> formCls;
 
-  public Form() {
+  public AbstractForm() {
     this.formCls = (Class<T>) Types.inferActualType(this.getClass(), 0);
   }
 

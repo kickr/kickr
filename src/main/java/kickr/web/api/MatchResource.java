@@ -34,7 +34,7 @@ import kickr.db.entity.user.User;
 import kickr.service.MatchService;
 import support.validation.Constraints;
 import kickr.db.util.Page;
-import kickr.web.BaseResource;
+import support.web.api.AbstractResource;
 import static kickr.web.api.PlayerUtil.parsePlayer;
 import kickr.web.form.GamesUtil;
 import kickr.web.form.NewMatchForm;
@@ -49,7 +49,7 @@ import support.form.FormData;
 import support.security.annotation.Auth;
 
 @Path("match")
-public class MatchResource extends BaseResource {
+public class MatchResource extends AbstractResource {
 
   protected MatchDAO matchDao;
   protected PlayerDAO playerDao;

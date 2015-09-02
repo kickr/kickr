@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import kickr.db.entity.user.AccessToken;
 import kickr.db.entity.user.User;
 import kickr.security.service.AuthenticationService;
-import kickr.web.BaseResource;
+import support.web.api.AbstractResource;
 import kickr.web.form.LoginForm;
 import kickr.web.view.LoginView;
 import support.form.FormData;
@@ -27,7 +27,7 @@ import support.security.annotation.Auth;
  * @author nikku
  */
 @Path("/")
-public class RootResource extends BaseResource {
+public class RootResource extends AbstractResource {
 
   private final AuthenticationService authenticationService;
 

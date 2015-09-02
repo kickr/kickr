@@ -1,16 +1,18 @@
-package kickr.web;
+package support.web.api;
 
 import java.net.URI;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import kickr.web.form.Form;
-import kickr.web.view.FormView;
+import kickr.web.InvalidFormSubmitException;
+import support.web.ViewProvider;
+import support.web.form.AbstractForm;
+import support.web.view.FormView;
 
 /**
  *
  * @author nikku
  */
-public class BaseResource extends ViewProvider {
+public abstract class AbstractResource extends ViewProvider {
 
   protected void assertValidPagination(int firstResult, int maxResults) {
     if (firstResult > 0 || maxResults < 1) {
@@ -29,14 +31,14 @@ public class BaseResource extends ViewProvider {
   /**
    * Indicate invalid form submit.
    *
-   * @param <T>
    * @param <F>
+   * @param <Z>
    * @param formCls
    * @param form
    *
    * @return
    */
-  public <F extends Form, Z extends FormView<Z, F>> InvalidFormSubmitException invalidForm(Class<Z> formCls, F form) {
+  public <F extends AbstractForm, Z extends FormView<Z, F>> InvalidFormSubmitException invalidForm(Class<Z> formCls, F form) {
 
     Z formView = createView(formCls).withForm(form);
 

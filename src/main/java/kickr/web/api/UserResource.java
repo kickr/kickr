@@ -2,7 +2,7 @@ package kickr.web.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import kickr.web.BaseResource;
+import support.web.api.AbstractResource;
 import kickr.web.view.user.SignUpView;
 
 /**
@@ -10,7 +10,7 @@ import kickr.web.view.user.SignUpView;
  * @author nikku
  */
 @Path("user")
-public class UserResource extends BaseResource {
+public class UserResource extends AbstractResource {
 
   @GET
   @Path("signup")

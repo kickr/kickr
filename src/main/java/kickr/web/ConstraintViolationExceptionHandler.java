@@ -23,6 +23,7 @@
  */
 package kickr.web;
 
+import support.web.ViewProvider;
 import javax.annotation.Priority;
 import javax.inject.Singleton;
 import javax.validation.ConstraintViolationException;

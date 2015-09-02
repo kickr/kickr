@@ -23,13 +23,13 @@
  */
 package kickr.web.view.error;
 
-import kickr.web.view.BaseView;
+import support.web.view.AbstractView;
 
 /**
  *
  * @author nikku
  */
-public class NotFoundView extends BaseView<NotFoundView> {
+public class NotFoundView extends AbstractView<NotFoundView> {
 
   public NotFoundView() {
     super("not_found.ftl");
