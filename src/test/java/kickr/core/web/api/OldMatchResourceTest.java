@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import static org.mockito.Mockito.*;
 import static kickr.security.Constants.*;
+import org.junit.Ignore;
 import support.security.SecurityContextFactory;
 import support.security.SecurityContextInitializer;
 import support.security.auth.AuthFactory;
@@ -32,6 +33,7 @@ import support.security.auth.AuthFactory;
  *
  * @author nikku
  */
+@Ignore
 public class OldMatchResourceTest {
 
   private static final MatchDAO matchDao = mock(MatchDAO.class);

@@ -36,6 +36,4 @@ import java.lang.annotation.Target;
  */
 @Target(PARAMETER)
 @Retention(RUNTIME)
-public @interface FormData {
-
-}
+public @interface FormData { }

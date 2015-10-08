@@ -23,59 +23,22 @@
  */
 package kickr.core.web.api;
 
-import io.dropwizard.client.JerseyClientBuilder;
-import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.testing.ResourceHelpers;
-import io.dropwizard.testing.junit.DropwizardAppRule;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
-import kickr.KickrApplication;
-import kickr.config.KickrConfiguration;
+import kickr.web.form.LoginForm;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.H2Dialect;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
-import support.DatabaseFixtures;
 
 /**
  *
  * @author nikku
  */
-public class MatchResourceTest {
-
-  @ClassRule
-  public static final DropwizardAppRule<KickrConfiguration> RULE =
-          new DropwizardAppRule<>(KickrApplication.class, ResourceHelpers.resourceFilePath("fixtures/integration/test.yml"));
-
-  @Before
-  public void before() {
-    final DataSourceFactory dataSourceFactory = RULE.getConfiguration().getDataSourceFactory();
-
-    Configuration configuration = new Configuration();
-    configuration.setProperty(AvailableSettings.URL, dataSourceFactory.getUrl());
-    configuration.setProperty(AvailableSettings.USER, dataSourceFactory.getUser());
-    configuration.setProperty(AvailableSettings.PASS, dataSourceFactory.getPassword());
-    configuration.setProperty(AvailableSettings.DRIVER, dataSourceFactory.getDriverClass());
-    configuration.setProperty(AvailableSettings.DIALECT, "org.hibernate.dialect.H2Dialect");
-    
-    configuration.setProperty("hibernate.cache.use_second_level_cache", "false");
-
-    DatabaseFixtures.setup("fixtures/sql/test.sql", configuration);
-  }
+@Ignore
+public class MatchResourceTest extends AbstractIntegrationTest {
 
   @Test
   public void loginHandlerRedirectsAfterPost() {
-    Client client = new JerseyClientBuilder(RULE.getEnvironment()).build("test client");
-
-    Response response = client.target(
-             String.format("http://localhost:%d/login", RULE.getLocalPort()))
-            .request()
-            .post(Entity.form(new Form("FOO", "BAR")));
+    Response response = submit("/login", new LoginForm("FOO", "BAR"));
 
     assertThat(response.getStatus()).isEqualTo(302);
   }

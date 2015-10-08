@@ -23,6 +23,7 @@
  */
 package support.web.form;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ import support.reflection.Types;
  * @author nikku
  * @param <T>
  */
-public abstract class AbstractForm<T extends AbstractForm> {
+public abstract class AbstractForm<T extends AbstractForm> implements Serializable {
 
   private final Class<T> formCls;
 

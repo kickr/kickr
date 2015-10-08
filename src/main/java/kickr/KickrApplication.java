@@ -17,6 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.DispatcherType;
+import kickr.cli.AnalyzeCommand;
 import kickr.cli.SetupCommand;
 import kickr.web.NotAuthorizedErrorHandler;
 import kickr.web.api.UserResource;
@@ -53,7 +54,7 @@ import kickr.web.NotFoundErrorHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
-import support.form.FormDataMessageBodyReader;
+import support.form.FormDataReaderWriter;
 import support.transactional.WithTransaction;
 import support.security.SecurityContextFactory;
 import support.security.SecurityContextInitializer;
@@ -75,6 +76,20 @@ public class KickrApplication extends Application<KickrConfiguration> {
   // instance
 
   private HibernateBundle<KickrConfiguration> hibernateBundle;
+  private ElasticSearch elasticSearch;
+  private SessionFactory sessionFactory;
+  private PlayerDAO playerDao;
+  private MatchDAO matchDao;
+  private GameDAO gameDao;
+  private ScoreDAO scoreDao;
+  private FoosballTableDAO tableDao;
+  private AccessTokenDAO accessTokenDao;
+  private UserDAO userDao;
+  private MatchService matchService;
+  private CredentialsService credentialsService;
+  private AuthenticationService authenticationService;
+  private RatingService ratingService;
+  private ScheduledExecutorService executorService;
 
 
   @Override
@@ -82,9 +97,8 @@ public class KickrApplication extends Application<KickrConfiguration> {
     return "kickr";
   }
 
-  @Override
-  public void initialize(Bootstrap<KickrConfiguration> bootstrap) {
-    hibernateBundle = new HibernateBundle<KickrConfiguration>(
+  public static HibernateBundle<KickrConfiguration> createHibernateBundle() {
+    return new HibernateBundle<KickrConfiguration>(
             FoosballTable.class,
             Game.class,
             Match.class,
@@ -99,6 +113,11 @@ public class KickrApplication extends Application<KickrConfiguration> {
         return configuration.getDataSourceFactory();
       }
     };
+  }
+
+  @Override
+  public void initialize(Bootstrap<KickrConfiguration> bootstrap) {
+    hibernateBundle = createHibernateBundle();
 
     bootstrap.addBundle(new MultiPartBundle());
 
@@ -122,37 +141,38 @@ public class KickrApplication extends Application<KickrConfiguration> {
     });
 
     bootstrap.addCommand(new SetupCommand());
+    bootstrap.addCommand(new AnalyzeCommand());
   }
 
   @Override
   public void run(KickrConfiguration configuration, Environment environment) throws Exception {
-    ScheduledExecutorService scheduledExecutorService = environment.lifecycle()
-        .scheduledExecutorService("scheduled-pool-%d").build();
+    
+    this.executorService = environment.lifecycle().scheduledExecutorService("scheduled-pool-%d").build();
 
-    final ElasticSearch elasticSearch = new ElasticSearch(configuration.getElasticConfiguration());
+    this.elasticSearch = new ElasticSearch(configuration.getElasticConfiguration());
 
-    SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
+    this.sessionFactory = hibernateBundle.getSessionFactory();
 
-    PlayerDAO playerDao = new PlayerDAO(sessionFactory);
-    MatchDAO matchDao = new MatchDAO(sessionFactory);
-    GameDAO gameDao = new GameDAO(sessionFactory);
-    ScoreDAO scoreDao = new ScoreDAO(sessionFactory);
-    FoosballTableDAO tableDao = new FoosballTableDAO(sessionFactory);
-    AccessTokenDAO accessTokenDao = new AccessTokenDAO(sessionFactory);
-    UserDAO userDao = new UserDAO(sessionFactory);
+    this.playerDao = new PlayerDAO(sessionFactory);
+    this.matchDao = new MatchDAO(sessionFactory);
+    this.gameDao = new GameDAO(sessionFactory);
+    this.scoreDao = new ScoreDAO(sessionFactory);
+    this.tableDao = new FoosballTableDAO(sessionFactory);
+    this.accessTokenDao = new AccessTokenDAO(sessionFactory);
+    this.userDao = new UserDAO(sessionFactory);
 
     WithTransaction transactional = new WithTransaction(sessionFactory);
 
-    MatchService matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
-    CredentialsService credentialsService = new CredentialsService();
-    AuthenticationService authenticationService = new AuthenticationService(credentialsService, userDao, accessTokenDao);
+    this.matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
+    this.credentialsService = new CredentialsService();
+    this.authenticationService = new AuthenticationService(credentialsService, userDao, accessTokenDao);
 
-    RatingService ratingService = new RatingService(matchDao, scoreDao, configuration.getRatingConfiguration());
+    this.ratingService = new RatingService(matchDao, scoreDao, configuration.getRatingConfiguration());
 
 
     // schedule update of ratings
 
-    scheduledExecutorService.scheduleWithFixedDelay(() -> {
+    executorService.scheduleWithFixedDelay(() -> {
       transactional.run(() -> {
         ratingService.calculateNewRatings();
       });
@@ -185,13 +205,13 @@ public class KickrApplication extends Application<KickrConfiguration> {
     environment.jersey().register(new TableResource(tableDao));
     environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao, sessionFactory));
     
-    environment.jersey().register(new FormDataMessageBodyReader(environment.getValidator()));
+    environment.jersey().register(new FormDataReaderWriter(environment.getValidator()));
 
     environment.jersey().register(new UserResource());
 
     SearchIndexer searchIndexer = new SearchIndexer(matchDao, elasticSearch, environment.getObjectMapper());
 
-    scheduledExecutorService.schedule(() -> {
+    executorService.schedule(() -> {
       transactional.run(() -> {
 
         try {

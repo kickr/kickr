@@ -18,6 +18,9 @@ server:
     - type: http
       port: 10281
 
+elastic:
+  url: http://localhost:9300
+
 logging:
 
   # default level can be { OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL }

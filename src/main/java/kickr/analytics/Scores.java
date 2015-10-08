@@ -21,28 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.web.form;
-
-import java.io.Serializable;
+package kickr.analytics;
 
 /**
  *
  * @author nikku
  */
-public class LoginForm implements Serializable {
+public class Scores {
 
-  public boolean rememberMe = false;
+  public static final int WIN_MULTIPLIER = 24;
+  public static final int LOSS_MULTIPLIER = 12;
+  
+  public static final int DEFAULT_WIN = 7;
 
-  public String password;
+  public static final double MV = 0.22;
 
-  public String name;
+  public static int calculateWinPoints(double w) {
+    return (int) ((1 - ((w * (1 - MV)) + MV)) / ((w * (1 - MV)) + MV) * WIN_MULTIPLIER) + DEFAULT_WIN;
+  }
 
-  public String redirectTo;
-
-  public LoginForm() {}
-
-  public LoginForm(String name, String password) {
-    this.name = name;
-    this.password = password;
+  public static int calculateLossPoints(double w) {
+    double l = 1.0 - w;
+    return (int) ((l * (1 - MV)) / (1 - (l * (1 - MV))) * -LOSS_MULTIPLIER);
   }
 }
