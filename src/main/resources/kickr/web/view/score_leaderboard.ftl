@@ -15,9 +15,9 @@
             <tr>
               <td class="collapsing">#${score?counter}</td>
               <td class="player"><strong>${score.player.alias}</td>
-              <td class="right aligned collapsing">${score.value}</td>
+              <td class="right aligned collapsing">${score.value?c}</td>
               <td class="right aligned collapsing" title="changes last 7 days">
-                (+${score.added})
+                (+${score.changes?c})
               </td>
             </tr>
           <#else>

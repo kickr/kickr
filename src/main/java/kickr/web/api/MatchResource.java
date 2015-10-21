@@ -74,7 +74,7 @@ public class MatchResource extends AbstractResource {
       @QueryParam("filter") String filter,
       @QueryParam("search") @DefaultValue("") String search) {
 
-    Page page = new Page(pageNo);
+    Page page = Page.oneBased(pageNo);
     
     List<Match> matches;
 
@@ -95,7 +95,7 @@ public class MatchResource extends AbstractResource {
   @Path("latest")
   @UnitOfWork
   public LatestMatchesView listLatest() {
-    List<Match> matches = matchDao.getMatches(new Page(1, 5));
+    List<Match> matches = matchDao.getMatches(Page.oneBased(1, 5));
 
     return createView(LatestMatchesView.class).withMatches(MatchData.fromMatches(matches));
   }

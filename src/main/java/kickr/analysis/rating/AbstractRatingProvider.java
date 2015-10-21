@@ -21,27 +21,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package kickr.analytics;
+package kickr.analysis.rating;
+
+import kickr.analysis.config.RatingConfiguration;
+import kickr.db.entity.Player;
+import kickr.db.entity.Rating;
 
 /**
  *
  * @author nikku
  */
-public class Scores {
+public abstract class AbstractRatingProvider implements RatingProvider {
 
-  public static final int WIN_MULTIPLIER = 24;
-  public static final int LOSS_MULTIPLIER = 12;
+  protected final RatingConfiguration ratingConfiguration;
+
+  public AbstractRatingProvider(RatingConfiguration ratingConfiguration) {
+    this.ratingConfiguration = ratingConfiguration;
+  }
+
+  protected abstract Rating loadRating(Player player);
   
-  public static final int DEFAULT_WIN = 7;
+  @Override
+  public final Rating getRating(Player player) {
+    Rating rating = this.loadRating(player);
 
-  public static final double MV = 0.22;
-
-  public static int calculateWinPoints(double w) {
-    return (int) ((1 - ((w * (1 - MV)) + MV)) / ((w * (1 - MV)) + MV) * WIN_MULTIPLIER) + DEFAULT_WIN;
+    if (rating == null) {
+      rating = this.createDefaultRating(player);
+    }
+    
+    return ratingConfiguration.adjustRating(rating);
   }
 
-  public static int calculateLossPoints(double w) {
-    double l = 1.0 - w;
-    return (int) ((l * (1 - MV)) / (1 - (l * (1 - MV))) * -LOSS_MULTIPLIER);
+  /**
+   * Create a default rating for the given player
+   *
+   * @param player
+   * @return
+   */
+  protected Rating createDefaultRating(Player player) {
+    return new Rating(player,
+                  ratingConfiguration.getInitialMean(),
+                  ratingConfiguration.getInitialStandardDeviation());
   }
+
 }

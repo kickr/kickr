@@ -1,11 +1,10 @@
 package kickr.db.entity;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,9 +17,12 @@ import javax.validation.constraints.NotNull;
 public class ScoreChange extends BaseEntity {
 
   @NotNull
-  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "score_type")
+  private String scoreType;
+
+  @NotNull
   @Column(name = "change_type")
-  private ScoreType type;
+  private String changeType;
   
   @NotNull
   @Column(name = "change_value")
@@ -33,21 +35,24 @@ public class ScoreChange extends BaseEntity {
   @NotNull
   @ManyToOne
   private Match match;
-  
+
   @NotNull
-  @ManyToOne
-  private Score score;
-  
+  @OneToOne
+  @JoinColumn(name = "rating_id")
+  private Rating rating;
+
   public ScoreChange() { }
   
-  public ScoreChange(ScoreType type, int value, Player player, Match match, Score score) {
-    this.type = type;
+  public ScoreChange(String scoreType, int value, Match match, Player player, Rating rating) {
+
+    this.scoreType = scoreType;
+    this.changeType = "matchResults";
     this.value = value;
-    
-    this.player = player;
+
     this.match = match;
-    this.score = score;
-    
+    this.player = player;
+    this.rating = rating;
+
     this.created = match.getPlayed();
   }
 
@@ -55,45 +60,30 @@ public class ScoreChange extends BaseEntity {
     return value;
   }
 
-  public void setValue(int value) {
-    this.value = value;
+  public String getScoreType() {
+    return scoreType;
   }
 
-  public ScoreType getType() {
-    return type;
+  public String getChangeType() {
+    return changeType;
   }
 
   public Player getPlayer() {
     return player;
   }
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
-
   public Match getMatch() {
     return match;
   }
 
-  public void setMatch(Match match) {
-    this.match = match;
+  public Rating getRating() {
+    return rating;
   }
 
-  public Score getScore() {
-    return score;
-  }
-
-  public void setScore(Score score) {
-    this.score = score;
-  }
-  
-  public void apply() {
-    score.addValue(value);
-    score.setLastUpdated(new Date());
-  }
-  
-  public void unapply() {
-    score.addValue(-1 * value);
-    score.setLastUpdated(new Date());
+  @Override
+  public String toString() {
+    return String.format(
+        "ScoreChange{ scoreType: %s, value: %s }",
+            scoreType, value);
   }
 }

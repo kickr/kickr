@@ -23,16 +23,18 @@
  */
 package kickr.cli;
 
-import kickr.analytics.Analytics;
 import io.dropwizard.cli.ConfiguredCommand;
-import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import java.util.Collections;
+import java.util.List;
 import kickr.KickrApplication;
+import kickr.analysis.config.RatingConfiguration;
+import kickr.analysis.test.OfflineAnalytics;
 import kickr.config.KickrConfiguration;
 import kickr.db.dao.MatchDAO;
-import kickr.db.entity.user.User;
+import kickr.db.entity.Match;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -74,7 +76,21 @@ public class AnalyzeCommand extends ConfiguredCommand<KickrConfiguration> {
     MatchDAO matchDao = new MatchDAO(sessionFactory);
 
     transactional.run(() -> {
-      new Analytics().run(matchDao);
+
+      RatingConfiguration ratingConfiguration = new RatingConfiguration();
+      
+      OfflineAnalytics offlineAnalytics = new OfflineAnalytics(ratingConfiguration);
+
+      List<Match> matches = matchDao.getMatches(null);
+
+      // reverse (ordered bottom -> top per default
+      Collections.reverse(matches);
+
+      for (Match match: matches) {
+        offlineAnalytics.rateMatch(match);
+      }
+      
+      offlineAnalytics.printResults();
     });
 
     LOGGER.info("Analytics done");

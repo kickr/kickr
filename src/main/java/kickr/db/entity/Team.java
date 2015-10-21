@@ -1,6 +1,8 @@
 package kickr.db.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -37,5 +39,24 @@ public class Team implements Serializable {
   
   public boolean isSingle() {
     return offense.equals(defense);
+  }
+
+  public boolean hasMember(Player player) {
+    return player.equals(defense) || player.equals(offense);
+  }
+
+  public Set<Player> getPlayers() {
+
+    HashSet<Player> players = new HashSet<>();
+
+    if (offense != null) {
+      players.add(offense);
+    }
+
+    if (defense != null) {
+      players.add(defense);
+    }
+
+    return players;
   }
 }

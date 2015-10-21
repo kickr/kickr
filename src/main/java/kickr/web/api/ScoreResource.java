@@ -8,8 +8,9 @@ import javax.ws.rs.Path;
 import kickr.web.model.LeaderBoardData;
 import kickr.web.model.ScoreData;
 import kickr.db.dao.ScoreDAO;
-import kickr.db.entity.PlayerStatistics;
-import kickr.db.entity.ScoreWithChanges;
+import kickr.db.dto.PlayerStatistics;
+import kickr.db.dto.ScoreWithChanges;
+import kickr.db.util.Page;
 import support.web.api.AbstractResource;
 import kickr.web.view.ScoreLeaderboardView;
 
@@ -31,9 +32,11 @@ public class ScoreResource extends AbstractResource {
   @Path("leaderboard")
   public ScoreLeaderboardView getLeaderBoard() {
 
-    List<ScoreWithChanges> scores = scoreDao.getScoresWithChanges(0, 5);
+    Page page = Page.oneBased(1, 5);
+    
+    List<ScoreWithChanges> scores = scoreDao.getScoresWithChanges(page);
 
-    List<PlayerStatistics> playerStatistics = scoreDao.getStatistics(0, 5);
+    List<PlayerStatistics> playerStatistics = scoreDao.getStatistics(page);
 
     return new ScoreLeaderboardView(new LeaderBoardData(
         ScoreData.fromScores(scores),

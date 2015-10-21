@@ -42,6 +42,6 @@ public class ScoreChangeData {
   }
   
   public static ScoreChangeData fromChange(ScoreChange change) {
-    return new ScoreChangeData(change.getValue(), change.getType(), change.getMatch().getId());
+    return new ScoreChangeData(change.getValue(), ScoreType.LOST, change.getMatch().getId());
   }
 }

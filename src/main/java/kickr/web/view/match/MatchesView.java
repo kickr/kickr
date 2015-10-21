@@ -23,9 +23,6 @@
  */
 package kickr.web.view.match;
 
-import java.util.List;
-import kickr.web.model.match.MatchData;
-
 /**
  *
  * @author nikku

@@ -34,7 +34,7 @@ public class Page {
   public final int firstResult;
   public final int maxResults;
 
-  public Page(int pageNumber, int pageSize) {
+  private Page(int pageNumber, int pageSize) {
     this.firstResult = (pageNumber - 1) * pageSize;
     this.maxResults = pageSize;
   }
@@ -42,5 +42,24 @@ public class Page {
   public Page(int pageNumber) {
     this(pageNumber, DEFAULT_PAGE_SIZE);
   }
-  
+
+
+  /////// static helpers /////////////////////////////////////
+
+  public static Page oneBased(int oneBasedNumber) {
+    return new Page(oneBasedNumber);
+  }
+
+  public static Page oneBased(int oneBasedNumber, int pageSize) {
+    return new Page(oneBasedNumber, pageSize);
+  }
+
+  public static Page zeroBased(int zeroBasedNumber) {
+    return new Page(zeroBasedNumber + 1);
+  }
+
+  public static Page zeroBased(int zeroBasedNumber, int pageSize) {
+    return new Page(zeroBasedNumber + 1, pageSize);
+  }
+
 }

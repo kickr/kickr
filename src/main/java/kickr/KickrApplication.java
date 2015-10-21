@@ -17,6 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.DispatcherType;
+import kickr.analysis.config.RatingConfiguration;
 import kickr.cli.AnalyzeCommand;
 import kickr.cli.SetupCommand;
 import kickr.web.NotAuthorizedErrorHandler;
@@ -31,12 +32,15 @@ import kickr.db.dao.FoosballTableDAO;
 import kickr.db.dao.GameDAO;
 import kickr.db.dao.MatchDAO;
 import kickr.db.dao.PlayerDAO;
+import kickr.db.dao.RatingDAO;
+import kickr.db.dao.ScoreChangeDAO;
 import kickr.db.dao.ScoreDAO;
 import kickr.db.dao.UserDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
+import kickr.db.entity.Rating;
 import kickr.db.entity.Score;
 import kickr.db.entity.ScoreChange;
 import kickr.db.entity.user.AccessToken;
@@ -48,9 +52,11 @@ import kickr.security.service.AuthenticationService;
 import kickr.security.service.CredentialsService;
 import kickr.service.MatchService;
 import kickr.service.RatingService;
+import kickr.service.RatingUpdateService;
 import kickr.web.CharsetResponseFilter;
 import kickr.web.ConstraintViolationExceptionHandler;
 import kickr.web.NotFoundErrorHandler;
+import kickr.web.api.GraphsResource;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
@@ -63,8 +69,11 @@ import support.security.auth.AuthFactory;
 
 public class KickrApplication extends Application<KickrConfiguration> {
 
-  private static final int ONE_SECOND = 1000;
-  private static final int FIVETEEN_MINUTES = ONE_SECOND * 60 * 15;
+  private static final int FIVE_SECOND = 1000 * 5;
+  private static final int TEN_SECONDS = FIVE_SECOND * 2;
+
+  private static final int FIVETEEN_MINUTES = TEN_SECONDS * 6 * 15;
+  private static final int ONE_HOUR = FIVETEEN_MINUTES * 4;
 
   // static
 
@@ -88,8 +97,11 @@ public class KickrApplication extends Application<KickrConfiguration> {
   private MatchService matchService;
   private CredentialsService credentialsService;
   private AuthenticationService authenticationService;
-  private RatingService ratingService;
+  private RatingUpdateService ratingUpdateService;
   private ScheduledExecutorService executorService;
+  private RatingDAO ratingDao;
+  private RatingService ratingService;
+  private ScoreChangeDAO scoreChangeDao;
 
 
   @Override
@@ -99,14 +111,15 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
   public static HibernateBundle<KickrConfiguration> createHibernateBundle() {
     return new HibernateBundle<KickrConfiguration>(
+            AccessToken.class,
             FoosballTable.class,
             Game.class,
             Match.class,
             Player.class,
+            Rating.class,
             Score.class,
             ScoreChange.class,
-            User.class,
-            AccessToken.class) {
+            User.class) {
 
       @Override
       public DataSourceFactory getDataSourceFactory(KickrConfiguration configuration) {
@@ -146,38 +159,46 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
   @Override
   public void run(KickrConfiguration configuration, Environment environment) throws Exception {
-    
+
+    RatingConfiguration ratingConfiguration = configuration.getRatingConfiguration();
+
     this.executorService = environment.lifecycle().scheduledExecutorService("scheduled-pool-%d").build();
 
     this.elasticSearch = new ElasticSearch(configuration.getElasticConfiguration());
 
     this.sessionFactory = hibernateBundle.getSessionFactory();
 
-    this.playerDao = new PlayerDAO(sessionFactory);
+    this.accessTokenDao = new AccessTokenDAO(sessionFactory);
     this.matchDao = new MatchDAO(sessionFactory);
     this.gameDao = new GameDAO(sessionFactory);
+    this.playerDao = new PlayerDAO(sessionFactory);
+    this.ratingDao = new RatingDAO(sessionFactory);
     this.scoreDao = new ScoreDAO(sessionFactory);
+    this.scoreChangeDao = new ScoreChangeDAO(sessionFactory);
     this.tableDao = new FoosballTableDAO(sessionFactory);
-    this.accessTokenDao = new AccessTokenDAO(sessionFactory);
     this.userDao = new UserDAO(sessionFactory);
 
     WithTransaction transactional = new WithTransaction(sessionFactory);
 
+    this.ratingService = new RatingService(ratingConfiguration, ratingDao, scoreDao, scoreChangeDao);
     this.matchService = new MatchService(matchDao, gameDao, playerDao, tableDao);
     this.credentialsService = new CredentialsService();
     this.authenticationService = new AuthenticationService(credentialsService, userDao, accessTokenDao);
-
-    this.ratingService = new RatingService(matchDao, scoreDao, configuration.getRatingConfiguration());
-
+    this.ratingUpdateService = new RatingUpdateService(matchService, ratingService, ratingConfiguration);
 
     // schedule update of ratings
 
     executorService.scheduleWithFixedDelay(() -> {
       transactional.run(() -> {
-        ratingService.calculateNewRatings();
+        ratingUpdateService.updateRatings();
       });
-    }, ONE_SECOND, FIVETEEN_MINUTES, TimeUnit.MILLISECONDS);
+    }, FIVE_SECOND, TEN_SECONDS, TimeUnit.MILLISECONDS);
 
+    executorService.scheduleWithFixedDelay(() -> {
+      transactional.run(() -> {
+        ratingUpdateService.updateScores();
+      });
+    }, TEN_SECONDS, ONE_HOUR, TimeUnit.MILLISECONDS);
 
     // user management
 
@@ -199,11 +220,13 @@ public class KickrApplication extends Application<KickrConfiguration> {
 
     environment.jersey().register(new RootResource(authenticationService));
 
+    environment.jersey().register(new GraphsResource(scoreDao));
+
     environment.jersey().register(new MatchResource(matchService, matchDao, playerDao, environment.getValidator()));
     environment.jersey().register(new ScoreResource(scoreDao));
     environment.jersey().register(new PlayerResource(playerDao));
     environment.jersey().register(new TableResource(tableDao));
-    environment.jersey().register(new AdminResource(ratingService, tableDao, playerDao, sessionFactory));
+    environment.jersey().register(new AdminResource(ratingUpdateService, tableDao, playerDao, sessionFactory));
     
     environment.jersey().register(new FormDataReaderWriter(environment.getValidator()));
 

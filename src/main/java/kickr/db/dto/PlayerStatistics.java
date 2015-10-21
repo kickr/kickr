@@ -1,4 +1,6 @@
-package kickr.db.entity;
+package kickr.db.dto;
+
+import kickr.db.entity.Player;
 
 /**
  *

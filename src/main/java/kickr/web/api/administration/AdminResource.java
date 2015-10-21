@@ -11,7 +11,7 @@ import kickr.db.dao.PlayerDAO;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Player;
 import kickr.db.entity.user.User;
-import kickr.service.RatingService;
+import kickr.service.RatingUpdateService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import support.security.annotation.Auth;
@@ -23,11 +23,11 @@ public class AdminResource {
   protected FoosballTableDAO tableDao;
   protected PlayerDAO playerDao;
   
-  private final RatingService ratingService;
+  private final RatingUpdateService ratingService;
   
   private final SessionFactory sessionFactory;
   
-  public AdminResource(RatingService ratingService, FoosballTableDAO tableDao, PlayerDAO playerDao, SessionFactory sessionFactory) {
+  public AdminResource(RatingUpdateService ratingService, FoosballTableDAO tableDao, PlayerDAO playerDao, SessionFactory sessionFactory) {
     this.ratingService = ratingService;
     
     this.tableDao = tableDao;
@@ -58,7 +58,7 @@ public class AdminResource {
   @Path("scoreboard/update")
   @UnitOfWork
   public void updateScoreBoard() {
-    ratingService.calculateNewRatings();
+    ratingService.updateRatings();
   }
   
   @POST

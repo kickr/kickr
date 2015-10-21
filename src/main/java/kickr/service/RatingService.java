@@ -1,19 +1,48 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2015 nikku.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package kickr.service;
 
-import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
-import kickr.config.RatingConfiguration;
-import kickr.db.dao.MatchDAO;
+import java.util.Map;
+import java.util.stream.Stream;
+import kickr.analysis.config.RatingConfiguration;
+import kickr.db.dao.RatingDAO;
+import kickr.db.dao.ScoreChangeDAO;
 import kickr.db.dao.ScoreDAO;
 import kickr.db.entity.Match;
 import kickr.db.entity.Player;
+import kickr.db.entity.Rating;
 import kickr.db.entity.Score;
-import kickr.db.entity.ScoreChange;
-import kickr.db.entity.ScoreType;
-import kickr.db.entity.Team;
-import kickr.util.MatchResultDetails;
-import kickr.util.ScoreUpdates;
-import kickr.util.Side;
+import kickr.analysis.rating.AbstractRatingProvider;
+import kickr.analysis.rating.RatingCalculator;
+import kickr.analysis.model.RatingResults;
+import kickr.analysis.model.ScoreDefinition;
+import kickr.analysis.model.ScoringResults;
+import kickr.analysis.score.ScoringCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,105 +50,113 @@ import org.slf4j.LoggerFactory;
  *
  * @author nikku
  */
-public class RatingService {
-  
+public class RatingService extends AbstractRatingProvider {
+
   private static final Logger LOG = LoggerFactory.getLogger(RatingService.class);
-  
-  private final MatchDAO matchDao;
+
+  private final ScoreChangeDAO scoreChangeDao;
   private final ScoreDAO scoreDao;
-  
-  private final Duration ratingDelay;
+  private final RatingDAO ratingDao;
 
-  public RatingService(MatchDAO matchDao, ScoreDAO scoreDao, RatingConfiguration configuration) {
-    this.matchDao = matchDao;
+  private final RatingCalculator ratingCalculator;
+  private final ScoringCalculator scoringCalculator;
+
+  public RatingService(RatingConfiguration ratingConfiguration, RatingDAO ratingDao, ScoreDAO scoreDao, ScoreChangeDAO scoreChangeDao) {
+    super(ratingConfiguration);
+    
+    this.ratingDao = ratingDao;
     this.scoreDao = scoreDao;
-    
-    this.ratingDelay = configuration.getDelay();
+
+    this.scoreChangeDao = scoreChangeDao;
+
+    this.ratingCalculator = new RatingCalculator(this);
+    this.scoringCalculator = new ScoringCalculator(ratingConfiguration);
   }
 
-  public void calculateNewRatings() {
-    List<Match> unratedMatches = matchDao.getUnratedMatches(ratingDelay);
-    
-    LOG.info("rating {} matches", unratedMatches.size());
-    
-    try {
-      unratedMatches.stream()
-          .map(MatchResultDetails::compute)
-          .map(this::createChanges)
-          .flatMap(changes -> changes.stream())
-          .forEach(change -> {
-            scoreDao.createChanges(change);
-            change.apply();
-          });
-      
-    } catch (Throwable t) {
-      LOG.error("rating failed", t);
-      throw t;
+  protected void logChanges(Match match, RatingResults ratingResults, ScoringResults scoringResults) {
+    LOG.info("rated Match{id: {}} with \n\tratings={}\n\tscoreChanges={}", match, ratingResults, scoringResults);
+  }
+
+  @Override
+  protected Rating loadRating(Player player) {
+    return ratingDao.getLatest(player);
+  }
+
+  public void rateMatches(List<Match> unratedMatches) {
+    for (Match match: unratedMatches) {
+      this.rateMatch(match);
     }
   }
- 
-  public List<ScoreChange> createChanges(MatchResultDetails result) {
-    
-    Match match = result.getMatch();
+  
+  protected void rateMatch(Match match) {
 
-    ScoreUpdates updates = new ScoreUpdates(match, player -> getScore(match, player));
+    ScoreDefinition defaultScores = ScoreDefinition.DEFAULT;
 
-    if (result.isTied()) {
-      
-      // add tie updates
-      updates.add(Side.TEAM1, ScoreType.TIE, 2);
-      updates.add(Side.TEAM2, ScoreType.TIE, 2);
-      
-      for (Side side : Side.values()) {
-        if (result.getCloseLosses(side) > 0) {
-          updates.add(side, ScoreType.CLOSE_LOSS, 1);
-        }
-        
-        if (result.getStomps(side) > 0) {
-          updates.add(side, ScoreType.STOMP, 2);
-        }
-      }
-    }
-    
-    for (Side side : Side.values()) {
-      
-      Team team = match.getTeam(side);
-      boolean shortHanded = team.isSingle() && !match.getTeam(side.opposite()).isSingle();
-      
-      // add win updates
-      if (result.isWinner(side)) {
-        updates.add(side, ScoreType.WON, 5);
-        
-        if (result.getStomps(side) > 0) {
-          updates.add(side, ScoreType.STOMP, 1);
-        }
-      }
-      // add loss updates
-      else {
-        updates.add(side, ScoreType.LOST, -1);
+    ScoreDefinition lastWeekScores = ScoreDefinition.LAST_WEEK;
 
-        if (result.getCloseLosses(side) > 0) {
-          updates.add(side, ScoreType.CLOSE_LOSS, 1);
-        }
-        
-        if (result.getStomps(side) > 0) {
-          updates.add(side, ScoreType.STOMP, 2);
-        }
-      }
+    RatingResults ratingResults = ratingCalculator.calculateNewRatings(match);
+    ScoringResults scoringResults = scoringCalculator.calculateScoreChanges(match, ratingResults, defaultScores);
+
+    logChanges(match, ratingResults, scoringResults);
+
+    Date scoringDate = Date.from(
+            match.getPlayed().toInstant()
+              .plus(ratingConfiguration.getDelay()));
+
+    ratingResults.forEach((p, rating) -> {
+      rating.setCreated(scoringDate);
       
-      if (shortHanded) {
-        updates.add(side, ScoreType.SHORT_HANDED, 2);
-      }
-    }
+      ratingDao.save(rating);
+    });
+
+    scoringResults.forEach((player, scoreChange) -> {
+
+      Stream.of(defaultScores, lastWeekScores).forEach(scoreDefinition -> {
+
+        int scoreUpdate = scoreChange.getValue();
+
+        Score currentScore = scoreDao.getLatestScore(scoreDefinition, player);
+        Score newScore;
+
+        if (currentScore != null) {
+          newScore = currentScore.addValue(scoreUpdate);
+        } else {
+          newScore = new Score(player, scoreDefinition.getKey(), scoreUpdate);
+        }
+
+        newScore.setCreated(scoringDate);
+
+        scoreDao.save(newScore);
+      });
+
+      scoreChange.setCreated(scoringDate);
+
+      scoreChangeDao.save(scoreChange);
+    });
     
     match.setRated(true);
-
-    LOG.info("rated Match#{}", match.getId());
-      
-    return updates.asList();
   }
+  
+  public void resetScores() {
+    Instant now = Instant.now();
+    Instant before = now.minus(7, ChronoUnit.DAYS);
+    Instant lastBefore = now.minus(10, ChronoUnit.DAYS);
 
-  public Score getScore(Match match, Player player) {
-    return scoreDao.getOrCreateScore(player);
+    ScoreDefinition defaultScores = ScoreDefinition.DEFAULT;
+    ScoreDefinition lastWeekScores = ScoreDefinition.LAST_WEEK;
+
+    List<Player> players = scoreChangeDao.findActivePlayers(defaultScores, Date.from(lastBefore));
+
+    Map<Player, Integer> summarizedScores = scoreChangeDao.getScoresByDefinition(defaultScores, Date.from(before), Date.from(now));
+
+    for (Player player: players) {
+      Integer sum = summarizedScores.getOrDefault(player, 0);
+      
+      LOG.info("[LAST WEEK] {}: {}", player.getAlias(), sum);
+
+      scoreDao.save(new Score(player, lastWeekScores.getKey(), 0, sum));
+    }
+
+    System.out.println("Summarized Scores: " + summarizedScores);
   }
 }

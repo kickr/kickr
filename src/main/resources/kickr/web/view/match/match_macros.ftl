@@ -4,7 +4,7 @@
 
 <#macro matchRow match>
   <tr class="${match.rated?string('', 'unrated')} ${match.removed?string('removed', '')}">
-    <td class="collapsing"><a href="/match/${match.id}">${match.id}</a></td>
+    <td class="collapsing"><a href="/match/${match.id?c}">${match.id?c}</a></td>
     <td class="collapsing players">
       <@players team=match.team1 />
     </td>

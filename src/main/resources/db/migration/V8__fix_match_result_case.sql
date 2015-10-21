@@ -1,0 +1,3 @@
+ALTER TABLE kickr_match CHANGE team1Wins team1_wins INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE kickr_match CHANGE team2Wins team2_wins INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE kickr_match CHANGE totalGames total_games INTEGER NOT NULL DEFAULT 0;

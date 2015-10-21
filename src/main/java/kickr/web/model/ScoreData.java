@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kickr.db.entity.Score;
 import kickr.db.entity.ScoreChange;
-import kickr.db.entity.ScoreWithChanges;
+import kickr.db.dto.ScoreWithChanges;
 
 /**
  *
@@ -16,18 +16,15 @@ public class ScoreData {
   private final PlayerData player;
   
   private final int value;
-  private final long added;
+  private final long changes;
   
   private final Date lastUpdated;
-  private final List<ScoreChangeData> changes;
 
-  public ScoreData(PlayerData player, int value, Date lastUpdated, int added, List<ScoreChangeData> changes) {
+  public ScoreData(PlayerData player, int value, Date lastUpdated, int changes) {
     
     this.player = player;
     
     this.value = value;
-    this.added = added;
-    
     this.changes = changes;
     
     this.lastUpdated = lastUpdated;
@@ -35,16 +32,14 @@ public class ScoreData {
   
   public static ScoreData fromScore(ScoreWithChanges scoreWithChanges) {
     Score score = scoreWithChanges.getScore();
-    List<ScoreChange> changes = scoreWithChanges.getChanges();
     
-    int added = (int) changes.stream().collect(Collectors.summarizingInt(c -> c.getValue())).getSum();
+    int changes = scoreWithChanges.getChanges();
     
     return new ScoreData(
       PlayerData.fromPlayer(score.getPlayer()), 
       score.getValue(),
-      score.getLastUpdated(),
-      added,
-      ScoreChangeData.fromChanges(changes));
+      score.getCreated(),
+      changes);
   }
   
   public static List<ScoreData> fromScores(List<ScoreWithChanges> scoresWithChanges) {
@@ -65,11 +60,7 @@ public class ScoreData {
     return lastUpdated;
   }
 
-  public long getAdded() {
-    return added;
-  }
-
-  public List<ScoreChangeData> getChanges() {
+  public long getChanges() {
     return changes;
   }
 }

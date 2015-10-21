@@ -22,6 +22,12 @@ public class PlayerData {
     this.alias = alias;
     this.email = email;
   }
+  
+  public PlayerData(String alias, String email, String name) {
+    this.alias = alias;
+    this.email = email;
+    this.name = name;
+  }
 
   public PlayerData(String alias) {
     this(alias, null);

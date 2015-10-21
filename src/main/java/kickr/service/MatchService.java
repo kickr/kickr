@@ -1,5 +1,6 @@
 package kickr.service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,14 +13,13 @@ import kickr.db.dao.FoosballTableDAO;
 import kickr.db.dao.GameDAO;
 import kickr.db.dao.MatchDAO;
 import kickr.db.dao.PlayerDAO;
+import kickr.db.dto.Conversions;
 import kickr.db.entity.FoosballTable;
 import kickr.db.entity.Game;
 import kickr.db.entity.Match;
-import kickr.db.entity.MatchResult;
 import kickr.db.entity.Player;
 import kickr.db.entity.Team;
 import kickr.db.entity.user.User;
-import kickr.util.MatchResultDetails;
 
 
 public class MatchService {
@@ -88,13 +88,21 @@ public class MatchService {
 
     match.setGames(games);
 
-    MatchResultDetails resultDetails = MatchResultDetails.compute(match);
-
-    match.setResult(MatchResult.create(resultDetails));
+    match.setResult(Conversions.createMatchResult(games));
 
     matchDao.create(match);
     
     return match;
+  }
+
+  /**
+   * Return unrated matches that need rating.
+   *
+   * @param ratingDelay
+   * @return
+   */
+  public List<Match> getUnratedMatches(Duration ratingDelay, int maxResults) {
+    return matchDao.getUnratedMatches(ratingDelay, maxResults);
   }
 
 }

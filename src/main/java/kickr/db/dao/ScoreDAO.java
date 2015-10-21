@@ -1,43 +1,48 @@
 package kickr.db.dao;
 
-import kickr.db.entity.PlayerStatistics;
+import kickr.db.dto.PlayerStatistics;
 import kickr.db.entity.Score;
-import io.dropwizard.hibernate.AbstractDAO;
 import java.time.Instant;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
+import kickr.analysis.model.ScoreDefinition;
 import kickr.db.entity.Player;
 import kickr.db.entity.ScoreChange;
-import kickr.db.entity.ScoreWithChanges;
+import kickr.db.dto.ScoreWithChanges;
+import kickr.db.util.Page;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 
 /**
  *
  * @author nikku
  */
-public class ScoreDAO extends AbstractDAO<Score> {
+public class ScoreDAO extends BaseDAO<Score> {
 
   public ScoreDAO(SessionFactory sessionFactory) {
     super(sessionFactory);
   }
 
-  public Score getOrCreateScore(Player player) {
-    Score score = uniqueResult(namedQuery("Score.byPlayer").setParameter("player", player));
+  public Score getLatestScore(ScoreDefinition scoreDefinition, Player player) {
 
-    if (score == null) {
-      score = new Score(player, 0);
-      persist(score);
-    }
+    String scoreType = scoreDefinition.getKey();
 
-    return score;
+    return uniqueResult(namedQuery("Score.latestByPlayer")
+                                  .setParameter("player", player)
+                                  .setParameter("scoreType", scoreType)
+                                  .setParameter("latestDate", new Date())
+                                  .setMaxResults(1));
   }
 
-  public List<PlayerStatistics> getStatistics(int firstResult, int maxResults) {
+  public List<PlayerStatistics> getStatistics(Page page) {
 
     Date latestDate = Date.from(Instant.now().minus(Period.ofDays(7)));
 
@@ -64,45 +69,117 @@ public class ScoreDAO extends AbstractDAO<Score> {
 
     return playerStatistics.stream().sorted((s1, s2) -> {
       return -1 * Double.compare(s1.getRating(), s2.getRating());
-    }).skip(firstResult)
-      .limit(maxResults)
+    }).skip(page.firstResult)
+      .limit(page.maxResults)
       .collect(Collectors.toList());
   }
 
-  public List<ScoreWithChanges> getScoresWithChanges(int firstResult, int maxResults) {
-    
-    List<Score> scores = list(currentSession()
-                            .createQuery("SELECT s FROM Score s ORDER BY s.value DESC")
-                            .setFirstResult(firstResult)
-                            .setMaxResults(maxResults));
-   
-    if (scores.isEmpty()) {
-      return Collections.emptyList();
-    }
+  public <T> Function<Object, T> extractValue(Class<T> cls, int index) {
+    return (row) -> {
+      return cls.cast(((Object[]) row)[index]);
+    };
+  }
 
+  public Map<Player, Score> getLatestScores(ScoreDefinition scoreDefinition, Collection<Player> players, Date latestDate) {
+
+    SQLQuery query = currentSession()
+            .createSQLQuery("SELECT s.*, p.* FROM kickr_score s " +
+                              "JOIN (" +
+                                "SELECT MAX(sm.created) created, MAX(sm.run_index) run_index, sm.player_id FROM kickr_score sm " +
+                                  "WHERE sm.score_type = :scoreType AND sm.created <= :latestDate " +
+                                  "GROUP BY sm.player_id " +
+                              ") so ON (" +
+                                "s.created = so.created AND " +
+                                "s.run_index = so.run_index AND " +
+                                "s.player_id = so.player_id " +
+                              ") " +
+                              "JOIN kickr_player p ON (s.player_id = p.id) " +
+                            "WHERE s.score_type = :scoreType AND s.player_id IN :players");
+
+    query.setParameterList("players", players);
+    query.setParameter("latestDate", latestDate);
+    query.setParameter("scoreType", scoreDefinition.getKey());
     
-    Date latestDate = Date.from(Instant.now().minus(Period.ofDays(7)));
-    
-    List<ScoreChange> changes = currentSession()
-                                   .createQuery(
-                                      "SELECT c FROM ScoreChange c " +
-                                        "JOIN FETCH c.match " +
-                                        "JOIN FETCH c.score " +
-                                        "JOIN FETCH c.score.player " +
-                                      "WHERE c.created > :latestDate AND c.score IN :scores")
-                                   .setDate("latestDate", latestDate)
-                                   .setParameterList("scores", scores)
-                                   .list();
-    
-    Map<Score, List<ScoreChange>> changesByScore = changes.stream()
-                                                      .collect(Collectors.groupingBy(ScoreChange::getScore));
-    
-    return scores.stream()
-              .map(s -> new ScoreWithChanges(s, changesByScore.getOrDefault(s, Collections.emptyList())))
-              .collect(Collectors.toList());
+    query.addEntity("s", Score.class);
+    query.addEntity("p", Player.class);
+    query.addFetch("p", "s", "player");
+
+    List<Object> results = query.list();
+
+    return results.stream()
+              .map(extractValue(Score.class, 0))
+              .reduce(new HashMap<Player, Score>(),
+                  (map, s) -> {
+                    map.put(s.getPlayer(), s);
+                    return map;
+                  },
+                  (a, b) -> a);
+  }
+
+  public List<ScoreWithChanges> getScoresWithChanges(Date latestDate, Page page) {
+
+    List<Score> scores = getScores(latestDate, page);
+
+    List<Player> players = scores.stream().map(s ->  s.getPlayer()).collect(toList());
+
+    Score nullScore = new Score();
+
+    Map<Player, Score> latestScores = getLatestScores(ScoreDefinition.LAST_WEEK, players, latestDate);
+
+    return scores.stream().map((s) -> {
+      Player player = s.getPlayer();
+
+      return new ScoreWithChanges(s, latestScores.getOrDefault(player, nullScore).getValue());
+    }).collect(toList());
+  }
+
+  public List<ScoreWithChanges> getScoresWithChanges(Page page) {
+    return this.getScoresWithChanges(new Date(), page);
   }
 
   public void createChanges(ScoreChange update) {
     currentSession().persist(update);
   }
+
+  public Score save(Score score) {
+    return persist(score);
+  }
+
+  public List<Score> getScores(Date latestDate) {
+    return getScores(latestDate, null);
+  }
+  
+  public List<Score> getScores(Date latestDate, Page page) {
+
+    SQLQuery query = currentSession()
+            .createSQLQuery("SELECT s.*, p.* FROM kickr_score s " +
+                              "JOIN (" +
+                                "SELECT MAX(sm.created) created, MAX(sm.run_index) run_index, sm.player_id FROM kickr_score sm " +
+                                  "WHERE sm.score_type = :scoreType AND sm.created <= :latestDate " +
+                                  "GROUP BY sm.player_id " +
+                              ") so ON (" +
+                                "s.created = so.created AND " +
+                                "s.run_index = so.run_index AND " +
+                                "s.player_id = so.player_id " +
+                              ") " +
+                              "JOIN kickr_player p ON (s.player_id = p.id) " +
+                            "WHERE s.score_type = :scoreType " +
+                            "ORDER BY s.value DESC");
+
+    if (page != null) {
+      paginate(query, page);
+    }
+
+    query.setParameter("scoreType", ScoreDefinition.DEFAULT.getKey());
+    query.setParameter("latestDate", latestDate);
+
+    query.addEntity("s", Score.class);
+    query.addEntity("p", Player.class);
+    query.addFetch("p", "s", "player");
+
+    List<Object> results = query.list();
+
+    return results.stream().map(extractValue(Score.class, 0)).collect(toList());
+  }
+
 }

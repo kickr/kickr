@@ -2,6 +2,7 @@ package kickr.db.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.Embedded;
@@ -17,7 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import kickr.db.entity.user.User;
-import kickr.util.Side;
 
 
 @Entity
@@ -41,12 +41,22 @@ import kickr.util.Side;
               "LEFT JOIN FETCH m.team1.defense " +
               "LEFT JOIN FETCH m.team2.offense " +
               "LEFT JOIN FETCH m.team2.defense " +
+              "JOIN FETCH m.result " +
               "JOIN FETCH m.table " +
               "LEFT JOIN FETCH m.creator " +
             "WHERE m.id = :id"),
   @NamedQuery(
     name = "Match.getUnrated",
-    query = "SELECT m FROM Match m WHERE m.removed = false AND m.rated = false AND m.played IS NOT NULL AND m.played < :played")
+    query = "SELECT m FROM Match m " +
+              "LEFT JOIN FETCH m.team1.offense " +
+              "LEFT JOIN FETCH m.team1.defense " +
+              "LEFT JOIN FETCH m.team2.offense " +
+              "LEFT JOIN FETCH m.team2.defense " +
+              "WHERE m.removed = false AND " +
+              "m.rated = false AND " +
+              "m.played IS NOT NULL AND " +
+              "m.played < :played " +
+            "ORDER BY m.played ASC")
 })
 public class Match extends BaseEntity {
 
@@ -155,13 +165,12 @@ public class Match extends BaseEntity {
   public void setGames(List<Game> games) {
     this.games = games;
   }
-  
-  public Team getTeam(Side side) {
-    if (side == Side.TEAM1) {
-      return team1;
-    } else {
-      return team2;
-    }
+
+  public Team getTeam(Player player) {
+    return Stream.of(team1, team2)
+                    .filter(t -> t.hasMember(player))
+                    .findAny()
+                      .orElse(null);
   }
 
   public void setResult(MatchResult result) {
@@ -177,6 +186,13 @@ public class Match extends BaseEntity {
   }
 
   public void setIndexed(boolean indexed) {
+    // TODO(nre): implement (!)
+  }
 
+  @Override
+  public String toString() {
+    return String.format(
+        "Match{ id: %s, participants: %s, result: [%s,%s] }",
+          id, participants, result.team1Wins, result.getTeam2Wins());
   }
 }

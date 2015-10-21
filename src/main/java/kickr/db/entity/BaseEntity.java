@@ -21,7 +21,7 @@ public class BaseEntity implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   protected Long id;
-    
+  
   @NotNull
   @Temporal(TemporalType.TIMESTAMP)
   protected Date created;
@@ -33,9 +33,13 @@ public class BaseEntity implements Serializable {
   public Long getId() {
     return id;
   }
-  
+
   public Date getCreated() {
     return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
   }
 
   @Override

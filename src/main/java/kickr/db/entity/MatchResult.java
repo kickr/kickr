@@ -1,9 +1,8 @@
 package kickr.db.entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import kickr.util.MatchResultDetails;
-import kickr.util.Side;
 
 /**
  *
@@ -12,15 +11,18 @@ import kickr.util.Side;
 @Embeddable
 public class MatchResult implements Serializable {
 
+  @Column(name = "team1_wins")
   protected int team1Wins;
 
+  @Column(name = "team2_wins")
   protected int team2Wins;
-  
+
+  @Column(name = "total_games")
   protected int totalGames;
 
   public MatchResult() { }
 
-  private MatchResult(int team1Wins, int team2Wins, int totalGames) {
+  public MatchResult(int team1Wins, int team2Wins, int totalGames) {
     this.team1Wins = team1Wins;
     this.team2Wins = team2Wins;
     this.totalGames = totalGames;
@@ -48,15 +50,5 @@ public class MatchResult implements Serializable {
 
   public void setTotalGames(int totalGames) {
     this.totalGames = totalGames;
-  }
-
-  /**
-   * Create a match result from the given match result details.
-   *
-   * @param result
-   * @return
-   */
-  public static MatchResult create(MatchResultDetails result) {
-    return new MatchResult(result.getWins(Side.TEAM1), result.getWins(Side.TEAM2), result.getTotalGames());
   }
 }

@@ -65,10 +65,10 @@ public class MatchDAO extends BaseDAO<Match> {
     match.setRemoved(true);
   }
 
-  public List<Match> getUnratedMatches(Duration delay) {
+  public List<Match> getUnratedMatches(Duration delay, int maxResults) {
     Date played = Date.from(Instant.now().minus(delay));
     
-    return list(namedQuery("Match.getUnrated").setParameter("played", played));
+    return list(namedQuery("Match.getUnrated").setParameter("played", played).setMaxResults(maxResults));
   }
 
   private void addAliasFilterers(StringBuilder filterBuilder, List<String> aliases) {

@@ -1,5 +1,6 @@
 package kickr.config;
 
+import kickr.analysis.config.RatingConfiguration;
 import kickr.search.config.ElasticConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;

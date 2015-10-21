@@ -128,7 +128,7 @@
   </div>
 
   <div class="ui attached segment">
-    <input type="submit" class="ui primary button" value="Save Game">
+    <input type="submit" class="ui primary button" value="Create Match">
   </div>
 
 </form>

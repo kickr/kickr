@@ -2,7 +2,7 @@ package kickr.web.model;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import kickr.db.entity.PlayerStatistics;
+import kickr.db.dto.PlayerStatistics;
 
 /**
  *

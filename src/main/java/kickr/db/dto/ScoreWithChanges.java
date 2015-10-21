@@ -1,6 +1,6 @@
-package kickr.db.entity;
+package kickr.db.dto;
 
-import java.util.List;
+import kickr.db.entity.Score;
 
 /**
  *
@@ -10,9 +10,9 @@ public class ScoreWithChanges {
   
   private final Score score;
   
-  private final List<ScoreChange> changes;
+  private final int changes;
 
-  public ScoreWithChanges(Score score, List<ScoreChange> changes) {
+  public ScoreWithChanges(Score score, int changes) {
     this.score = score;
     this.changes = changes;
   }
@@ -21,7 +21,7 @@ public class ScoreWithChanges {
     return score;
   }
 
-  public List<ScoreChange> getChanges() {
+  public int getChanges() {
     return changes;
   }
 }

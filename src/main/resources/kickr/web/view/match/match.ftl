@@ -5,13 +5,13 @@
   <i class="right angle icon divider"></i>
   <a class="section" href="/match">Matches</a>
   <i class="right angle icon divider"></i>
-  <span class="active section">${match.id}</span>
+  <span class="active section">${match.id?c}</span>
 </div>
 
 
 <div class="ui secondary menu">
   <h1 class="ui left floated header">
-    Match ${match.id}
+    Match ${match.id?c}
   </h1>
 
   <div class="right menu">
@@ -19,7 +19,7 @@
     <div class="fitted item">
 
       <div class="ui compact basic buttons">
-        <a class="ui button" href="/match/${match.id}/edit">Edit</a>
+        <a class="ui button" href="/match/${match.id?c}/edit">Edit</a>
 
         <#if !match.rated>
           <div class="ui floating edit dropdown icon compact button" tabindex="0">

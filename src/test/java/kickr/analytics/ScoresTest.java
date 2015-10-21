@@ -23,9 +23,8 @@
  */
 package kickr.analytics;
 
+import kickr.analysis.config.RatingConfiguration;
 import org.junit.Test;
-
-import static kickr.analytics.Scores.*;
 
 /**
  *
@@ -36,13 +35,18 @@ public class ScoresTest {
   @Test
   public void shouldHaveAwesomeProbability() {
 
+    RatingConfiguration config = new RatingConfiguration();
+
     double[] scenarios = {
       0.01, 0.1, 0.25,
       0.43, 0.47, 0.5, 0.53, 0.57,
       0.75, 0.9, 0.99
     };
 
-    System.out.printf("mv=%.2f, winMultiplier=%s, lossMultiplier=%s\n", MV, WIN_MULTIPLIER, LOSS_MULTIPLIER);
+    System.out.printf("mv=%.2f, winMultiplier=%s, lossMultiplier=%s\n", 
+            RatingConfiguration.MV,
+            RatingConfiguration.WIN_MULTIPLIER,
+            RatingConfiguration.LOSS_MULTIPLIER);
 
     System.out.println("");
     System.out.println("prop | win | loss | sum | sum / prop");
@@ -50,10 +54,10 @@ public class ScoresTest {
     for (double probability : scenarios) {
       System.out.printf("%.2f | %2d | %2d | %2d | %.3f\n",
               probability,
-              calculateWinPoints(probability),
-              calculateLossPoints(probability),
-              calculateWinPoints(probability) + -1 * calculateLossPoints(probability),
-              (calculateWinPoints(probability) + -1 * calculateLossPoints(probability)) / (1 - probability));
+              config.getWinPoints(probability),
+              config.getLossPoints(probability),
+              config.getWinPoints(probability) + -1 * config.getLossPoints(probability),
+              (config.getWinPoints(probability) + -1 * config.getLossPoints(probability)) / (1 - probability));
     }
   }
 }
