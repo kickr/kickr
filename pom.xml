@@ -100,10 +100,11 @@
       <artifactId>elasticsearch</artifactId>
       <version>${elasticsearch.version}</version>
     </dependency>
+    <!-- jskills -->
     <dependency>
-      <groupId>jskills</groupId>
-      <artifactId>jskills</artifactId>
-      <version>0.9.1-SNAPSHOT</version>
+      <groupId>org.ejml</groupId>
+      <artifactId>simple</artifactId>
+      <version>0.28</version>
     </dependency>
     <!-- password handling -->
     <dependency>
