@@ -1,7 +1,6 @@
 /* clean up old scorings */
 DROP TABLE kickr_score_change;
 DROP TABLE kickr_score;
-DROP TABLE IF EXISTS kickr_rating;
 
 CREATE TABLE kickr_score (
   id bigint NOT NULL,
