@@ -13,7 +13,7 @@
         ${match.result.team1}
       </strong>
       :
-      <strong title="$h.table.team2Alias!}">
+      <strong title="${match.table.team2Alias!}">
         ${match.result.team2}
       </strong>
     </td>
