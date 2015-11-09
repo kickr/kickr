@@ -1,7 +1,7 @@
 <div class="ui middle aligned center aligned login grid">
   <div class="column">
     <h3 class="ui header">
-      Log in to kckr
+      Enter kckr
     </h3>
     <form class="ui form ${(errors?size > 0)?string('error', '')}" action="/login" method="post">
 
@@ -24,7 +24,7 @@
             <input type="password" name="password" placeholder="Password">
           </div>
         </div>
-        <input type="submit" class="ui fluid large blue submit button" value="Signin" />
+        <input type="submit" class="ui fluid large blue submit button" value="Sign in" />
         <#if redirectUri??>
           <input type="hidden" name="redirectTo" value="${redirectUri}">
         </#if>
@@ -33,7 +33,7 @@
     </form>
 
     <div class="ui message">
-      No account yet? <a href="/user/signup">Signup</a> instead.
+      No account yet? <a href="/user/signup">Sign up</a> instead.
     </div>
   </div>
 </div>
