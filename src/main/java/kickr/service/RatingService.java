@@ -115,7 +115,7 @@ public class RatingService extends AbstractRatingProvider {
 
         int scoreUpdate = scoreChange.getValue();
 
-        Score currentScore = scoreDao.getLatestScore(scoreDefinition, player);
+        Score currentScore = scoreDao.getLatestByPlayer(scoreDefinition, player);
         Score newScore;
 
         if (currentScore != null) {

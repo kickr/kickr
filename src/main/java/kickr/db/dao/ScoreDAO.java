@@ -31,7 +31,7 @@ public class ScoreDAO extends BaseDAO<Score> {
     super(sessionFactory);
   }
 
-  public Score getLatestScore(ScoreDefinition scoreDefinition, Player player) {
+  public Score getLatestByPlayer(ScoreDefinition scoreDefinition, Player player) {
 
     String scoreType = scoreDefinition.getKey();
 
@@ -80,7 +80,7 @@ public class ScoreDAO extends BaseDAO<Score> {
     };
   }
 
-  public Map<Player, Score> getLatestScores(ScoreDefinition scoreDefinition, Collection<Player> players, Date latestDate) {
+  public Map<Player, Score> getByPlayers(ScoreDefinition scoreDefinition, Collection<Player> players, Date latestDate) {
 
     SQLQuery query = currentSession()
             .createSQLQuery("SELECT s.*, p.* FROM kickr_score s " +
@@ -124,7 +124,7 @@ public class ScoreDAO extends BaseDAO<Score> {
 
     Score nullScore = new Score();
 
-    Map<Player, Score> latestScores = getLatestScores(ScoreDefinition.LAST_WEEK, players, latestDate);
+    Map<Player, Score> latestScores = getByPlayers(ScoreDefinition.LAST_WEEK, players, latestDate);
 
     return scores.stream().map((s) -> {
       Player player = s.getPlayer();
